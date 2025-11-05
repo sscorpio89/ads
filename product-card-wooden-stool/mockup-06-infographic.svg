@@ -1,0 +1,136 @@
+<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Белый фон -->
+  <rect width="1500" height="1500" fill="#FFFFFF"/>
+
+  <!-- Заголовок -->
+  <text x="750" y="80" font-family="Arial, sans-serif" font-size="48" fill="#333333" text-anchor="middle" font-weight="bold">
+    Табурет деревянный "Классик"
+  </text>
+
+  <!-- Подзаголовок -->
+  <text x="750" y="130" font-family="Arial, sans-serif" font-size="28" fill="#666666" text-anchor="middle">
+    Ручная работа | Массив дуба
+  </text>
+
+  <!-- Упрощённое изображение табурета (вид сбоку) -->
+  <g id="stool-side" transform="translate(650, 200)">
+    <!-- Ножки -->
+    <rect x="0" y="300" width="30" height="250" fill="#B8956A" rx="15"/>
+    <rect x="170" y="300" width="30" height="250" fill="#B8956A" rx="15"/>
+
+    <!-- Сиденье -->
+    <ellipse cx="100" cy="300" rx="120" ry="25" fill="#C9A978"/>
+    <ellipse cx="100" cy="298" rx="120" ry="23" fill="#D4B896"/>
+
+    <!-- Текстура -->
+    <ellipse cx="100" cy="298" rx="110" ry="20" fill="#9D7D52" opacity="0.1"/>
+  </g>
+
+  <!-- Размерные линии -->
+  <g id="dimensions">
+    <!-- Высота -->
+    <line x1="600" y1="500" x2="600" y2="750" stroke="#FF6B6B" stroke-width="3"/>
+    <line x1="590" y1="500" x2="610" y2="500" stroke="#FF6B6B" stroke-width="3"/>
+    <line x1="590" y1="750" x2="610" y2="750" stroke="#FF6B6B" stroke-width="3"/>
+    <text x="550" y="630" font-family="Arial, sans-serif" font-size="36" fill="#FF6B6B" text-anchor="end" font-weight="bold">
+      45 см
+    </text>
+
+    <!-- Диаметр сиденья -->
+    <line x1="650" y1="470" x2="890" y2="470" stroke="#4ECDC4" stroke-width="3"/>
+    <line x1="650" y1="460" x2="650" y2="480" stroke="#4ECDC4" stroke-width="3"/>
+    <line x1="890" y1="460" x2="890" y2="480" stroke="#4ECDC4" stroke-width="3"/>
+    <text x="770" y="455" font-family="Arial, sans-serif" font-size="36" fill="#4ECDC4" text-anchor="middle" font-weight="bold">
+      ⌀ 32 см
+    </text>
+  </g>
+
+  <!-- Ключевые характеристики в блоках -->
+  <g id="features">
+    <!-- Блок 1: Материал -->
+    <rect x="100" y="850" width="300" height="150" fill="#C9A978" rx="15"/>
+    <text x="250" y="900" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Материал
+    </text>
+    <text x="250" y="940" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Массив дуба
+    </text>
+    <text x="250" y="975" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">
+      100% натуральное
+    </text>
+
+    <!-- Блок 2: Максимальная нагрузка -->
+    <rect x="450" y="850" width="300" height="150" fill="#FF6B6B" rx="15"/>
+    <text x="600" y="900" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Нагрузка
+    </text>
+    <text x="600" y="945" font-family="Arial, sans-serif" font-size="48" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      120 кг
+    </text>
+    <text x="600" y="975" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">
+      максимум
+    </text>
+
+    <!-- Блок 3: Покрытие -->
+    <rect x="800" y="850" width="300" height="150" fill="#4ECDC4" rx="15"/>
+    <text x="950" y="900" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Покрытие
+    </text>
+    <text x="950" y="940" font-family="Arial, sans-serif" font-size="28" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Масло-воск
+    </text>
+    <text x="950" y="975" font-family="Arial, sans-serif" font-size="20" fill="#FFFFFF" text-anchor="middle">
+      Экологичное
+    </text>
+
+    <!-- Блок 4: Ручная работа -->
+    <rect x="100" y="1050" width="300" height="150" fill="#95E1D3" rx="15"/>
+    <text x="250" y="1135" font-family="Arial, sans-serif" font-size="32" fill="#333333" text-anchor="middle" font-weight="bold">
+      ✓ Ручная работа
+    </text>
+    <text x="250" y="1175" font-family="Arial, sans-serif" font-size="20" fill="#333333" text-anchor="middle">
+      Мастер
+    </text>
+
+    <!-- Блок 5: Гарантия -->
+    <rect x="450" y="1050" width="300" height="150" fill="#F8B500" rx="15"/>
+    <text x="600" y="1120" font-family="Arial, sans-serif" font-size="24" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Гарантия
+    </text>
+    <text x="600" y="1165" font-family="Arial, sans-serif" font-size="42" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      12 мес
+    </text>
+
+    <!-- Блок 6: Сделано в России -->
+    <rect x="800" y="1050" width="300" height="150" fill="#6C5CE7" rx="15"/>
+    <text x="950" y="1120" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      🇷🇺
+    </text>
+    <text x="950" y="1165" font-family="Arial, sans-serif" font-size="28" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      Сделано в России
+    </text>
+  </g>
+
+  <!-- Цена -->
+  <g id="price">
+    <rect x="200" y="1280" width="1100" height="120" fill="#28A745" rx="20"/>
+    <text x="400" y="1335" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="start">
+      Цена:
+    </text>
+    <text x="600" y="1335" font-family="Arial, sans-serif" font-size="36" fill="#FFFFFF" text-anchor="start" text-decoration="line-through">
+      6990 ₽
+    </text>
+    <text x="850" y="1355" font-family="Arial, sans-serif" font-size="64" fill="#FFFFFF" text-anchor="start" font-weight="bold">
+      5990 ₽
+    </text>
+    <rect x="1150" y="1290" width="120" height="50" fill="#FF6B6B" rx="10"/>
+    <text x="1210" y="1325" font-family="Arial, sans-serif" font-size="32" fill="#FFFFFF" text-anchor="middle" font-weight="bold">
+      -14%
+    </text>
+  </g>
+
+  <!-- Футер -->
+  <text x="750" y="1450" font-family="Arial, sans-serif" font-size="24" fill="#999999" text-anchor="middle">
+    Мастерская "Родное дерево" | Бесплатная доставка от 3000 ₽
+  </text>
+</svg>
