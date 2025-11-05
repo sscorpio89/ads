@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Техническое задание: Telegram-бот для бронирования слотов Ozon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #005bff;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #005bff;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #0066cc;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #0066cc;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #005bff;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e9ecef;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .tech-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .tech-card h4 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .pros, .cons {
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .pros {
+            background: #d4edda;
+            border: 2px solid #28a745;
+        }
+
+        .cons {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+        }
+
+        .pros h4, .cons h4 {
+            margin-top: 0;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        a {
+            color: #005bff;
+            text-decoration: none;
+            border-bottom: 1px dashed #005bff;
+        }
+
+        a:hover {
+            color: #0056b3;
+            border-bottom: 1px solid #0056b3;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        .architecture-diagram {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .badge-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Техническое задание: Telegram-бот для бронирования слотов Ozon</h1>
+
+        <div class="info-box">
+            <strong>Дата составления:</strong> 05 ноября 2025<br>
+            <strong>Версия документа:</strong> 1.0<br>
+            <strong>Статус:</strong> Аналитический отчёт с техническим заданием
+        </div>
+
+        <div class="toc">
+            <h3>📑 Содержание</h3>
+            <ul>
+                <li><a href="#executive-summary">1. Краткое резюме проекта</a></li>
+                <li><a href="#market-analysis">2. Анализ рынка и конкурентов</a></li>
+                <li><a href="#problem-statement">3. Постановка задачи</a></li>
+                <li><a href="#functional-requirements">4. Функциональные требования</a></li>
+                <li><a href="#technical-architecture">5. Техническая архитектура</a></li>
+                <li><a href="#tech-stack">6. Технологический стек</a></li>
+                <li><a href="#api-integration">7. Интеграция с Ozon Seller API</a></li>
+                <li><a href="#implementation-roadmap">8. План реализации</a></li>
+                <li><a href="#risks">9. Риски и ограничения</a></li>
+                <li><a href="#budget">10. Бюджет и ресурсы</a></li>
+                <li><a href="#conclusion">11. Заключение</a></li>
+            </ul>
+        </div>
+
+        <h2 id="executive-summary">1. Краткое резюме проекта</h2>
+
+        <p>Проект представляет собой разработку Telegram-бота для автоматизации процесса мониторинга и бронирования временных слотов на складах маркетплейса Ozon. Основная цель — решить проблему дефицита доступных слотов для поставок товаров продавцами.</p>
+
+        <div class="success-box">
+            <h4>🎯 Целевая аудитория</h4>
+            <ul>
+                <li>Продавцы на маркетплейсе Ozon, работающие по схеме FBO (Fulfillment by Ozon)</li>
+                <li>Крупные поставщики с регулярными поставками на несколько складов</li>
+                <li>Логистические компании, работающие с Ozon</li>
+                <li>Малый и средний бизнес с объёмом поставок от 10 SKU</li>
+            </ul>
+        </div>
+
+        <h2 id="market-analysis">2. Анализ рынка и конкурентов</h2>
+
+        <h3>2.1. Проблема рынка</h3>
+        <p>Бронирование слотов на складах Ozon — критически важная задача для продавцов. Доступные окна для поставок ограничены и разбираются за секунды. Продавцы вынуждены постоянно обновлять страницу личного кабинета, что отнимает время и не гарантирует успех.</p>
+
+        <h3>2.2. Обзор существующих решений</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Сервис</th>
+                    <th>Функционал</th>
+                    <th>Преимущества</th>
+                    <th>Недостатки</th>
+                    <th>Ссылка</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MetricLab.Поставки</strong></td>
+                    <td>
+                        • Автобронирование 24/7<br>
+                        • Ребукинг слотов<br>
+                        • Мониторинг недоступных складов<br>
+                        • Telegram уведомления<br>
+                        • Не требует Premium+
+                    </td>
+                    <td>
+                        ✅ Индивидуальная мощность для каждого клиента<br>
+                        ✅ Максимальная скорость бронирования<br>
+                        ✅ Поддержка за 1 час<br>
+                        ✅ 14 дней тестового периода
+                    </td>
+                    <td>
+                        ❌ Платная подписка<br>
+                        ❌ Риск блокировки аккаунта при автобронировании
+                    </td>
+                    <td><a href="https://supplies.metriclab.ru/" target="_blank">supplies.metriclab.ru</a></td>
+                </tr>
+                <tr>
+                    <td><strong>LimitBot</strong></td>
+                    <td>
+                        • Мониторинг слотов 24/7<br>
+                        • Мгновенные уведомления<br>
+                        • Фильтры по складам<br>
+                        • Поддержка WB и Ozon<br>
+                        • Автобронирование по параметрам
+                    </td>
+                    <td>
+                        ✅ Простой интерфейс<br>
+                        ✅ Промокод GURU (5 дней бесплатно)<br>
+                        ✅ Не нарушает правила маркетплейса<br>
+                        ✅ Доступен T-Pay, СБП, Яндекс.Пэй
+                    </td>
+                    <td>
+                        ❌ Требует активную подписку<br>
+                        ❌ Ограничения бесплатной версии
+                    </td>
+                    <td><a href="https://limitbot.ru" target="_blank">limitbot.ru</a></td>
+                </tr>
+                <tr>
+                    <td><strong>GuruSeller Bot</strong></td>
+                    <td>
+                        • Автомониторинг по кластерам/складам<br>
+                        • Мгновенные Telegram уведомления<br>
+                        • Тихие часы<br>
+                        • Фильтры по типу доставки<br>
+                        • История сигналов
+                    </td>
+                    <td>
+                        ✅ Только мониторинг (без автобронирования)<br>
+                        ✅ Легальный подход<br>
+                        ✅ Промокод GURU на 5 дней<br>
+                        ✅ Telegram @gurusellers_bot
+                    </td>
+                    <td>
+                        ❌ Нет автобронирования<br>
+                        ❌ Требует ручное действие продавца
+                    </td>
+                    <td><a href="https://guruseller.ru/bot-bron-stol-ozon/" target="_blank">guruseller.ru</a></td>
+                </tr>
+                <tr>
+                    <td><strong>WBCON</strong></td>
+                    <td>
+                        • Автоматический поиск слотов<br>
+                        • Бронирование через API Ozon<br>
+                        • Калькулятор логистики<br>
+                        • Парсер @WBCON_PARSER_BOT
+                    </td>
+                    <td>
+                        ✅ Работает на официальном API<br>
+                        ✅ Дополнительные инструменты<br>
+                        ✅ Калькулятор комиссий
+                    </td>
+                    <td>
+                        ❌ Информации о ценах мало<br>
+                        ❌ Риски автобронирования
+                    </td>
+                    <td><a href="https://wbcon.ru/service-bot-autobroni-ozon/" target="_blank">wbcon.ru</a></td>
+                </tr>
+                <tr>
+                    <td><strong>STPulse</strong></td>
+                    <td>
+                        • STPulse.Finance (P&L)<br>
+                        • STPulse.Logistics (планирование)<br>
+                        • STPulse.BOT (AI-ответы на отзывы)<br>
+                        • Загрузка данных одной кнопкой
+                    </td>
+                    <td>
+                        ✅ Комплексная аналитика<br>
+                        ✅ AI на базе ChatGPT<br>
+                        ✅ 100 ответов на отзывы бесплатно<br>
+                        ✅ Telegram @stpulse_ozon
+                    </td>
+                    <td>
+                        ❌ Нет прямого функционала бронирования слотов<br>
+                        ❌ Фокус на аналитике, а не логистике
+                    </td>
+                    <td><a href="https://t.me/stpulse_ozon" target="_blank">t.me/stpulse_ozon</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <h4>⚠️ Важное предупреждение от рынка</h4>
+            <p>Использование ботов для <strong>отслеживания</strong> свободных слотов <strong>легально</strong>, но использование ботов для <strong>автоматического бронирования</strong> рискованно. Маркетплейсы могут обнаружить автоботов, что может привести к блокировке аккаунта продавца.</p>
+            <p><strong>Рекомендация:</strong> Разрабатывать бота как инструмент мониторинга с уведомлениями, позволяя пользователю самостоятельно принимать решение о бронировании.</p>
+        </div>
+
+        <h3>2.3. Анализ STPulse Slot Bot</h3>
+        <p>Бот <code>@STPulse_slot_bot</code> является частью экосистемы STPulse для оцифровки бизнеса на Ozon. Основной фокус компании — финансовая аналитика и планирование поставок, а не прямое бронирование слотов.</p>
+
+        <h2 id="problem-statement">3. Постановка задачи</h2>
+
+        <h3>3.1. Проблема</h3>
+        <ul>
+            <li>Слоты на складах Ozon разбираются за секунды после появления</li>
+            <li>Продавцы тратят часы на ручной мониторинг</li>
+            <li>Пропущенный слот = задержка поставки = потеря продаж</li>
+            <li>Отсутствие единого удобного интерфейса для управления поставками</li>
+        </ul>
+
+        <h3>3.2. Решение</h3>
+        <p>Telegram-бот, который:</p>
+        <ol>
+            <li>Мониторит доступность слотов 24/7 через Ozon Seller API</li>
+            <li>Мгновенно уведомляет пользователя о появлении подходящих слотов</li>
+            <li>Предоставляет удобный интерфейс для настройки параметров мониторинга</li>
+            <li>(Опционально) Автоматически бронирует слоты при соблюдении условий</li>
+            <li>Ведёт историю бронирований и аналитику</li>
+        </ol>
+
+        <h2 id="functional-requirements">4. Функциональные требования</h2>
+
+        <h3>4.1. Основной функционал (MVP)</h3>
+
+        <h4>Регистрация и авторизация</h4>
+        <ul>
+            <li>Регистрация через Telegram (автоматически при старте бота)</li>
+            <li>Подключение Ozon Seller API ключей (Client ID + API Key)</li>
+            <li>Проверка валидности ключей</li>
+            <li>Хранение токенов в зашифрованном виде</li>
+        </ul>
+
+        <h4>Настройка мониторинга</h4>
+        <ul>
+            <li>Выбор складов для мониторинга (список доступных складов из API)</li>
+            <li>Установка предпочитаемых дат (от-до)</li>
+            <li>Выбор типа поставки (короб, монопаллет, смешанная паллета и т.д.)</li>
+            <li>Настройка минимального лимита приёмки</li>
+            <li>Включение/выключение "тихих часов"</li>
+        </ul>
+
+        <h4>Мониторинг слотов</h4>
+        <ul>
+            <li>Периодический опрос Ozon API (каждые 30-60 секунд)</li>
+            <li>Обнаружение новых доступных слотов</li>
+            <li>Мгновенное уведомление пользователя</li>
+            <li>Отображение деталей слота (дата, время, склад, лимит)</li>
+        </ul>
+
+        <h4>Уведомления</h4>
+        <ul>
+            <li>Уведомления о найденных слотах с кнопками быстрых действий</li>
+            <li>Уведомления об изменении статуса бронирования</li>
+            <li>Ежедневные дайджесты с аналитикой</li>
+        </ul>
+
+        <h3>4.2. Расширенный функционал</h3>
+
+        <h4>Автоматическое бронирование (с осторожностью)</h4>
+        <ul>
+            <li>Автобронирование при соблюдении заданных условий</li>
+            <li>Возможность установить приоритеты складов</li>
+            <li>Подтверждение бронирования от пользователя (опционально)</li>
+            <li>Ограничение частоты автобронирований (антибан)</li>
+        </ul>
+
+        <h4>Управление поставками</h4>
+        <ul>
+            <li>Просмотр списка активных бронирований</li>
+            <li>Отмена бронирования</li>
+            <li>Изменение слота (ребукинг)</li>
+            <li>Создание черновика поставки</li>
+        </ul>
+
+        <h4>Аналитика</h4>
+        <ul>
+            <li>История всех мониторингов и бронирований</li>
+            <li>Статистика успешности бронирований</li>
+            <li>Анализ доступности слотов по складам</li>
+            <li>Экспорт данных (CSV, Excel)</li>
+        </ul>
+
+        <h4>Монетизация</h4>
+        <ul>
+            <li>Бесплатный тариф (ограниченный функционал)</li>
+            <li>Платные подписки (различные уровни)</li>
+            <li>Интеграция с T-Pay, СБП, Яндекс.Пэй, банковские карты</li>
+            <li>Промокоды и реферальная программа</li>
+        </ul>
+
+        <h2 id="technical-architecture">5. Техническая архитектура</h2>
+
+        <h3>5.1. Архитектурная диаграмма</h3>
+
+        <div class="architecture-diagram">
+            <pre style="text-align: left; font-size: 0.85em;">
+┌─────────────────────────────────────────────────────────────────┐
+│                         TELEGRAM CLIENT                          │
+│                  (Пользователь в Telegram)                       │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+                         │ Webhook / Long Polling
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      TELEGRAM BOT API                            │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                     API GATEWAY / NGINX                          │
+│                   (SSL Termination, Rate Limiting)               │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+        ┌────────────────┴────────────────┐
+        │                                 │
+        ▼                                 ▼
+┌──────────────────┐            ┌──────────────────┐
+│   BOT SERVICE    │            │  WEB DASHBOARD   │
+│   (Python/Node)  │            │   (React/Vue)    │
+│                  │            │   [Optional]     │
+│ • aiogram 3      │            └──────────────────┘
+│ • FastAPI        │
+│ • Handlers       │
+└────────┬─────────┘
+         │
+         │ Commands & Updates
+         ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      BUSINESS LOGIC LAYER                        │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   User       │  │   Slot       │  │   Booking    │         │
+│  │   Service    │  │   Monitor    │  │   Service    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │ Notification │  │  Analytics   │  │   Payment    │         │
+│  │   Service    │  │   Service    │  │   Service    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└────────┬────────────────────┬────────────────────┬──────────────┘
+         │                    │                    │
+         ▼                    ▼                    ▼
+┌──────────────────┐  ┌──────────────┐  ┌──────────────────┐
+│   PostgreSQL     │  │    Redis     │  │  Ozon Seller API │
+│                  │  │              │  │                  │
+│ • Users          │  │ • Cache      │  │ • /v1/draft/     │
+│ • Settings       │  │ • Sessions   │  │   timeslot/info  │
+│ • Bookings       │  │ • Queue      │  │ • /v1/draft/     │
+│ • History        │  │ • State      │  │   create         │
+└──────────────────┘  └──────────────┘  │ • /v1/draft/     │
+                                        │   supply/create  │
+         ┌──────────────────────────────┴──────────────────┘
+         │
+         ▼
+┌──────────────────┐
+│  Message Queue   │
+│  (RabbitMQ/      │
+│   Celery/Redis)  │
+│                  │
+│ • Slot Monitor   │
+│   Workers        │
+│ • Notification   │
+│   Workers        │
+└──────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│                     OBSERVABILITY LAYER                          │
+│                                                                  │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │    Sentry    │  │  Prometheus  │  │   Grafana    │         │
+│  │  (Errors)    │  │  (Metrics)   │  │  (Dashboards)│         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+            </pre>
+        </div>
+
+        <h3>5.2. Микросервисная vs Монолитная архитектура</h3>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <h4>✅ Рекомендуемый подход: Модульный монолит</h4>
+                <p><strong>Для MVP и средней нагрузки (до 10,000 пользователей)</strong></p>
+                <ul>
+                    <li>Быстрая разработка и развёртывание</li>
+                    <li>Проще отладка и мониторинг</li>
+                    <li>Меньше инфраструктурных затрат</li>
+                    <li>Легче поддерживать</li>
+                    <li>Возможность миграции на микросервисы позже</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <h4>⚡ Микросервисы (для масштабирования)</h4>
+                <p><strong>При росте более 50,000+ пользователей</strong></p>
+                <ul>
+                    <li>Независимое масштабирование компонентов</li>
+                    <li>Изоляция отказов</li>
+                    <li>Гибкость в выборе технологий</li>
+                    <li>Но: сложнее в разработке и поддержке</li>
+                    <li>Требует опыта работы с распределёнными системами</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>5.3. Выбор: Webhook vs Polling</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Критерий</th>
+                    <th>Long Polling</th>
+                    <th>Webhook</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Латентность</strong></td>
+                    <td>⚠️ Средняя (зависит от интервала polling)</td>
+                    <td>✅ Низкая (instant push)</td>
+                </tr>
+                <tr>
+                    <td><strong>Нагрузка на сервер</strong></td>
+                    <td>⚠️ Постоянные запросы к Telegram API</td>
+                    <td>✅ Только входящие события</td>
+                </tr>
+                <tr>
+                    <td><strong>Сложность настройки</strong></td>
+                    <td>✅ Простая (не нужен SSL/домен)</td>
+                    <td>⚠️ Требует SSL сертификат и домен</td>
+                </tr>
+                <tr>
+                    <td><strong>Масштабируемость</strong></td>
+                    <td>❌ Ограничена</td>
+                    <td>✅ Высокая</td>
+                </tr>
+                <tr>
+                    <td><strong>Для production</strong></td>
+                    <td>⚠️ Подходит для малых ботов</td>
+                    <td>✅ Рекомендуется для высоконагруженных</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box">
+            <h4>🎯 Рекомендация</h4>
+            <p><strong>Для MVP:</strong> Начать с Long Polling для быстрого прототипирования</p>
+            <p><strong>Для production:</strong> Использовать Webhook для лучшей производительности и масштабируемости</p>
+        </div>
+
+        <h2 id="tech-stack">6. Технологический стек</h2>
+
+        <h3>6.1. Backend</h3>
+
+        <div class="tech-stack">
+            <div class="tech-card">
+                <h4>🐍 Python 3.11+</h4>
+                <p>Основной язык программирования</p>
+                <ul>
+                    <li>Богатая экосистема библиотек</li>
+                    <li>Отличная поддержка async/await</li>
+                    <li>Быстрая разработка</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🤖 aiogram 3.x</h4>
+                <p>Фреймворк для Telegram ботов</p>
+                <ul>
+                    <li>Современный async подход</li>
+                    <li>FSM (Finite State Machine)</li>
+                    <li>Middleware и filters</li>
+                    <li>Отличная документация</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>⚡ FastAPI</h4>
+                <p>Веб-фреймворк для API</p>
+                <ul>
+                    <li>Высокая производительность</li>
+                    <li>Автогенерация OpenAPI</li>
+                    <li>Валидация через Pydantic</li>
+                    <li>Async поддержка</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🐘 PostgreSQL 15+</h4>
+                <p>Основная СУБД</p>
+                <ul>
+                    <li>ACID транзакции</li>
+                    <li>JSON/JSONB поддержка</li>
+                    <li>Надёжность и масштабируемость</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🔴 Redis 7+</h4>
+                <p>Кэш и очереди</p>
+                <ul>
+                    <li>FSM state хранилище</li>
+                    <li>Кэширование API ответов</li>
+                    <li>Rate limiting</li>
+                    <li>Pub/Sub для уведомлений</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🔧 SQLAlchemy 2.x</h4>
+                <p>ORM</p>
+                <ul>
+                    <li>Async поддержка</li>
+                    <li>Миграции через Alembic</li>
+                    <li>Type hints</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🌊 Celery + RabbitMQ</h4>
+                <p>Асинхронные задачи</p>
+                <ul>
+                    <li>Фоновый мониторинг слотов</li>
+                    <li>Отложенные уведомления</li>
+                    <li>Retry механизмы</li>
+                </ul>
+            </div>
+
+            <div class="tech-card">
+                <h4>🐳 Docker + Docker Compose</h4>
+                <p>Контейнеризация</p>
+                <ul>
+                    <li>Изоляция сервисов</li>
+                    <li>Легкое развертывание</li>
+                    <li>Масштабирование</li>
+                </ul>
+            </div>
+        </div>
+
+        <h3>6.2. Альтернативный стек (Node.js)</h3>
+
+        <div class="info-box">
+            <h4>Node.js + TypeScript вариант</h4>
+            <ul>
+                <li><strong>Фреймворк бота:</strong> Telegraf.js или Grammy</li>
+                <li><strong>Backend:</strong> NestJS (enterprise-ready) или Express</li>
+                <li><strong>ORM:</strong> Prisma или TypeORM</li>
+                <li><strong>Преимущества:</strong> Единый язык (JS/TS), высокая производительность I/O</li>
+                <li><strong>Недостатки:</strong> Меньше готовых решений для Ozon API</li>
+            </ul>
+        </div>
+
+        <h3>6.3. Мониторинг и логирование</h3>
+
+        <ul>
+            <li><strong>Sentry:</strong> Отслеживание ошибок и исключений</li>
+            <li><strong>Prometheus + Grafana:</strong> Метрики и дашборды</li>
+            <li><strong>ELK Stack (опционально):</strong> Централизованное логирование</li>
+            <li><strong>Amplitude / Mixpanel:</strong> Продуктовая аналитика</li>
+        </ul>
+
+        <h3>6.4. CI/CD</h3>
+
+        <ul>
+            <li><strong>GitHub Actions</strong> или <strong>GitLab CI</strong>: Автоматизация тестов и деплоя</li>
+            <li><strong>Docker Registry:</strong> Хранение образов</li>
+            <li><strong>Terraform:</strong> Infrastructure as Code</li>
+        </ul>
+
+        <h2 id="api-integration">7. Интеграция с Ozon Seller API</h2>
+
+        <h3>7.1. Ключевые эндпоинты</h3>
+
+        <div class="info-box">
+            <h4>📚 Официальная документация</h4>
+            <p><a href="https://docs.ozon.ru/api/seller/" target="_blank">https://docs.ozon.ru/api/seller/</a></p>
+        </div>
+
+        <h4>Основные методы для работы со слотами</h4>
+
+        <pre><code>POST https://api-seller.ozon.ru/v1/draft/timeslot/info
+POST https://api-seller.ozon.ru/v1/draft/create
+POST https://api-seller.ozon.ru/v1/draft/supply/create
+POST https://api-seller.ozon.ru/v1/cargoes/create
+GET  https://api-seller.ozon.ru/v1/supply/list
+POST https://api-seller.ozon.ru/v1/supply/cancel</code></pre>
+
+        <h4>Пример: Получение информации о слотах</h4>
+
+        <pre><code>import aiohttp
+
+async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
+    url = "https://api-seller.ozon.ru/v1/draft/timeslot/info"
+    headers = {
+        "Client-Id": client_id,
+        "Api-Key": api_key,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "warehouse_id": warehouse_id,
+        "delivery_type": "fbo"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=payload, headers=headers) as response:
+            if response.status == 200:
+                data = await response.json()
+                return data.get("result", {}).get("timeslots", [])
+            else:
+                raise Exception(f"API Error: {response.status}")
+</code></pre>
+
+        <h4>Пример: Создание черновика поставки</h4>
+
+        <pre><code>async def create_draft(client_id: str, api_key: str, supply_date: str):
+    url = "https://api-seller.ozon.ru/v1/draft/create"
+    headers = {
+        "Client-Id": client_id,
+        "Api-Key": api_key,
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "supply_date": supply_date,
+        "warehouse_id": 12345,
+        "delivery_type": "fbo"
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=payload, headers=headers) as response:
+            data = await response.json()
+            return data.get("result", {}).get("draft_id")
+</code></pre>
+
+        <h3>7.2. Особенности работы с API</h3>
+
+        <ul>
+            <li><strong>Аутентификация:</strong> Client-Id + Api-Key в заголовках</li>
+            <li><strong>Rate Limiting:</strong> Ozon ограничивает количество запросов (обычно 100-200 req/min)</li>
+            <li><strong>Кэширование:</strong> Кэшировать список складов и справочную информацию</li>
+            <li><strong>Retry Logic:</strong> Реализовать повторные попытки при ошибках сети</li>
+            <li><strong>Webhook от Ozon:</strong> Возможность получать уведомления о изменениях (если доступно)</li>
+        </ul>
+
+        <h3>7.3. Безопасность API ключей</h3>
+
+        <div class="danger-box">
+            <h4>🔐 Критически важно</h4>
+            <ul>
+                <li>Хранить API ключи в зашифрованном виде в БД (AES-256)</li>
+                <li>Использовать переменные окружения для мастер-ключа шифрования</li>
+                <li>Никогда не логировать API ключи</li>
+                <li>Реализовать ротацию ключей</li>
+                <li>Использовать HTTPS для всех соединений</li>
+            </ul>
+        </div>
+
+        <h2 id="implementation-roadmap">8. План реализации</h2>
+
+        <h3>8.1. Фаза 1: MVP (4-6 недель)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Неделя</th>
+                    <th>Задачи</th>
+                    <th>Результат</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1-2</strong></td>
+                    <td>
+                        • Настройка инфраструктуры (Docker, PostgreSQL, Redis)<br>
+                        • Базовая структура проекта<br>
+                        • Интеграция с Telegram Bot API (aiogram)<br>
+                        • Система регистрации пользователей
+                    </td>
+                    <td>Рабочий скелет бота с базовыми командами</td>
+                </tr>
+                <tr>
+                    <td><strong>3-4</strong></td>
+                    <td>
+                        • Интеграция с Ozon Seller API<br>
+                        • Модуль мониторинга слотов<br>
+                        • Система уведомлений<br>
+                        • FSM для настройки параметров мониторинга
+                    </td>
+                    <td>Функциональный мониторинг с уведомлениями</td>
+                </tr>
+                <tr>
+                    <td><strong>5-6</strong></td>
+                    <td>
+                        • Юнит и интеграционные тесты<br>
+                        • Интеграция с Sentry<br>
+                        • Документация API<br>
+                        • Альфа-тестирование с 10-20 пользователями
+                    </td>
+                    <td>Стабильный MVP готовый к запуску</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>8.2. Фаза 2: Расширенный функционал (4-6 недель)</h3>
+
+        <ul>
+            <li>Автоматическое бронирование (с подтверждением)</li>
+            <li>Управление поставками из бота</li>
+            <li>Базовая аналитика и история</li>
+            <li>Система тарифов и монетизация</li>
+            <li>Интеграция с платёжными системами</li>
+        </ul>
+
+        <h3>8.3. Фаза 3: Масштабирование (8-12 недель)</h3>
+
+        <ul>
+            <li>Оптимизация производительности</li>
+            <li>Переход на Webhook</li>
+            <li>Расширенная аналитика и дашборды</li>
+            <li>Мобильное веб-приложение (опционально)</li>
+            <li>Поддержка нескольких аккаунтов Ozon на пользователя</li>
+            <li>Интеграция с Wildberries (расширение на другие маркетплейсы)</li>
+        </ul>
+
+        <h3>8.4. Команда разработки</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Роль</th>
+                    <th>Количество</th>
+                    <th>Обязанности</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Backend разработчик</strong></td>
+                    <td>1-2</td>
+                    <td>Python, FastAPI, aiogram, PostgreSQL, Redis</td>
+                </tr>
+                <tr>
+                    <td><strong>DevOps инженер</strong></td>
+                    <td>0.5-1</td>
+                    <td>Docker, CI/CD, мониторинг, масштабирование</td>
+                </tr>
+                <tr>
+                    <td><strong>Frontend разработчик</strong></td>
+                    <td>0.5 (опционально)</td>
+                    <td>Веб-дашборд на React/Vue (если требуется)</td>
+                </tr>
+                <tr>
+                    <td><strong>QA инженер</strong></td>
+                    <td>0.5</td>
+                    <td>Тестирование, багрепорты, регрессионное тестирование</td>
+                </tr>
+                <tr>
+                    <td><strong>Product Owner</strong></td>
+                    <td>0.5</td>
+                    <td>Требования, приоритизация, коммуникация с пользователями</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="risks">9. Риски и ограничения</h2>
+
+        <h3>9.1. Технические риски</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Риск</th>
+                    <th>Вероятность</th>
+                    <th>Влияние</th>
+                    <th>Митигация</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Изменения в Ozon API</td>
+                    <td><span class="badge badge-warning">Средняя</span></td>
+                    <td><span class="badge badge-danger">Высокое</span></td>
+                    <td>
+                        • Мониторинг API changelog<br>
+                        • Версионирование API клиента<br>
+                        • Fallback механизмы
+                    </td>
+                </tr>
+                <tr>
+                    <td>Блокировка аккаунтов при автобронировании</td>
+                    <td><span class="badge badge-danger">Высокая</span></td>
+                    <td><span class="badge badge-danger">Критическое</span></td>
+                    <td>
+                        • Акцент на мониторинг, а не автобронирование<br>
+                        • Rate limiting<br>
+                        • Имитация человеческого поведения<br>
+                        • Disclaimer для пользователей
+                    </td>
+                </tr>
+                <tr>
+                    <td>Высокая нагрузка при росте пользователей</td>
+                    <td><span class="badge badge-warning">Средняя</span></td>
+                    <td><span class="badge badge-warning">Среднее</span></td>
+                    <td>
+                        • Горизонтальное масштабирование<br>
+                        • Кэширование<br>
+                        • Load balancing<br>
+                        • Мониторинг метрик
+                    </td>
+                </tr>
+                <tr>
+                    <td>Утечка API ключей пользователей</td>
+                    <td><span class="badge badge-success">Низкая</span></td>
+                    <td><span class="badge badge-danger">Критическое</span></td>
+                    <td>
+                        • Шифрование в БД<br>
+                        • Безопасное логирование<br>
+                        • Регулярные аудиты безопасности<br>
+                        • Сертификация PCI DSS (для платежей)
+                    </td>
+                </tr>
+                <tr>
+                    <td>Нестабильность Telegram Bot API</td>
+                    <td><span class="badge badge-success">Низкая</span></td>
+                    <td><span class="badge badge-warning">Среднее</span></td>
+                    <td>
+                        • Retry логика<br>
+                        • Очереди сообщений<br>
+                        • Альтернативные каналы уведомлений (email)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>9.2. Бизнес-риски</h3>
+
+        <ul>
+            <li><strong>Юридические риски:</strong> Убедиться, что автоматизация не нарушает ToS Ozon</li>
+            <li><strong>Конкуренция:</strong> На рынке уже есть игроки (MetricLab, LimitBot, GuruSeller)</li>
+            <li><strong>Монетизация:</strong> Сложность с конвертацией в платящих пользователей</li>
+            <li><strong>Зависимость от Ozon:</strong> Бизнес полностью завязан на экосистему одного маркетплейса</li>
+        </ul>
+
+        <h3>9.3. Операционные риски</h3>
+
+        <ul>
+            <li>Необходимость 24/7 поддержки пользователей</li>
+            <li>Сложность масштабирования команды</li>
+            <li>Высокие требования к uptime (99.9%+)</li>
+        </ul>
+
+        <h2 id="budget">10. Бюджет и ресурсы</h2>
+
+        <h3>10.1. Оценка затрат на разработку</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Статья расходов</th>
+                    <th>MVP (4-6 недель)</th>
+                    <th>Полная версия (3-4 месяца)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Backend разработка</strong></td>
+                    <td>$4,000 - $8,000</td>
+                    <td>$15,000 - $25,000</td>
+                </tr>
+                <tr>
+                    <td><strong>DevOps</strong></td>
+                    <td>$1,500 - $3,000</td>
+                    <td>$5,000 - $8,000</td>
+                </tr>
+                <tr>
+                    <td><strong>Frontend (опционально)</strong></td>
+                    <td>$2,000 - $4,000</td>
+                    <td>$6,000 - $10,000</td>
+                </tr>
+                <tr>
+                    <td><strong>QA тестирование</strong></td>
+                    <td>$1,000 - $2,000</td>
+                    <td>$3,000 - $5,000</td>
+                </tr>
+                <tr>
+                    <td><strong>Дизайн</strong></td>
+                    <td>$500 - $1,000</td>
+                    <td>$2,000 - $3,000</td>
+                </tr>
+                <tr>
+                    <td><strong><em>ИТОГО разработка</em></strong></td>
+                    <td><strong>$9,000 - $18,000</strong></td>
+                    <td><strong>$31,000 - $51,000</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>10.2. Инфраструктурные расходы (месяц)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Сервис</th>
+                    <th>MVP (до 1000 пользователей)</th>
+                    <th>Рост (до 10,000 пользователей)</th>
+                    <th>Масштаб (50,000+ пользователей)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>VPS/Cloud (DigitalOcean/AWS)</strong></td>
+                    <td>$50-100</td>
+                    <td>$300-500</td>
+                    <td>$1,500-3,000</td>
+                </tr>
+                <tr>
+                    <td><strong>PostgreSQL (managed)</strong></td>
+                    <td>$15-30</td>
+                    <td>$50-100</td>
+                    <td>$300-600</td>
+                </tr>
+                <tr>
+                    <td><strong>Redis (managed)</strong></td>
+                    <td>$10-20</td>
+                    <td>$30-60</td>
+                    <td>$150-300</td>
+                </tr>
+                <tr>
+                    <td><strong>Sentry</strong></td>
+                    <td>$0 (free tier)</td>
+                    <td>$29</td>
+                    <td>$99+</td>
+                </tr>
+                <tr>
+                    <td><strong>Мониторинг (Grafana Cloud)</strong></td>
+                    <td>$0 (free tier)</td>
+                    <td>$49</td>
+                    <td>$299+</td>
+                </tr>
+                <tr>
+                    <td><strong>CDN & Storage</strong></td>
+                    <td>$5-10</td>
+                    <td>$20-50</td>
+                    <td>$100-300</td>
+                </tr>
+                <tr>
+                    <td><strong>Домен + SSL</strong></td>
+                    <td>$15/год</td>
+                    <td>$15/год</td>
+                    <td>$15/год</td>
+                </tr>
+                <tr>
+                    <td><strong><em>ИТОГО/месяц</em></strong></td>
+                    <td><strong>$80-160</strong></td>
+                    <td><strong>$480-790</strong></td>
+                    <td><strong>$2,350-4,500</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>10.3. Модель монетизации</h3>
+
+        <h4>Предлагаемые тарифы</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Тариф</th>
+                    <th>Цена</th>
+                    <th>Функции</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Free</strong></td>
+                    <td>0₽</td>
+                    <td>
+                        • 1 склад для мониторинга<br>
+                        • 3 уведомления в день<br>
+                        • Нет автобронирования<br>
+                        • Нет истории
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Start</strong></td>
+                    <td>490₽/мес</td>
+                    <td>
+                        • До 3 складов<br>
+                        • Неограниченные уведомления<br>
+                        • История за 30 дней<br>
+                        • Email поддержка
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Pro</strong></td>
+                    <td>1,490₽/мес</td>
+                    <td>
+                        • Неограниченные склады<br>
+                        • Автобронирование (с подтверждением)<br>
+                        • Приоритетные уведомления<br>
+                        • Аналитика и экспорт<br>
+                        • Telegram поддержка 24/7
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Business</strong></td>
+                    <td>4,990₽/мес</td>
+                    <td>
+                        • Всё из Pro<br>
+                        • Несколько Ozon аккаунтов<br>
+                        • API доступ<br>
+                        • Персональный менеджер<br>
+                        • SLA 99.9%
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Прогноз выручки (оптимистичный сценарий)</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Месяц</th>
+                    <th>Пользователей</th>
+                    <th>Конверсия в платных</th>
+                    <th>Средний чек</th>
+                    <th>MRR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>3</td>
+                    <td>500</td>
+                    <td>10% (50)</td>
+                    <td>990₽</td>
+                    <td>49,500₽ (~$550)</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>2,000</td>
+                    <td>15% (300)</td>
+                    <td>1,190₽</td>
+                    <td>357,000₽ (~$4,000)</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td>10,000</td>
+                    <td>20% (2,000)</td>
+                    <td>1,490₽</td>
+                    <td>2,980,000₽ (~$33,000)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="conclusion">11. Заключение</h2>
+
+        <h3>11.1. Плюсы проекта</h3>
+
+        <div class="success-box">
+            <h4>✅ Преимущества</h4>
+            <ul>
+                <li><strong>Реальная проблема:</strong> Бронирование слотов — болевая точка тысяч продавцов Ozon</li>
+                <li><strong>Растущий рынок:</strong> Ozon активно растёт, количество продавцов увеличивается</li>
+                <li><strong>Низкий порог входа:</strong> Telegram бот не требует установки приложений</li>
+                <li><strong>Масштабируемость:</strong> Архитектура позволяет расти до миллионов пользователей</li>
+                <li><strong>Монетизация:</strong> Понятная freemium модель с высокой willingness to pay</li>
+                <li><strong>Расширяемость:</strong> Можно добавить Wildberries, Яндекс.Маркет и другие</li>
+                <li><strong>Технологии 2025:</strong> Современный стек с лучшими практиками</li>
+            </ul>
+        </div>
+
+        <h3>11.2. Минусы и вызовы</h3>
+
+        <div class="danger-box">
+            <h4>❌ Недостатки и риски</h4>
+            <ul>
+                <li><strong>Юридические риски:</strong> Ozon может блокировать аккаунты за автоматизацию</li>
+                <li><strong>Конкуренция:</strong> На рынке уже есть MetricLab, LimitBot, GuruSeller</li>
+                <li><strong>Зависимость от API:</strong> Любые изменения в Ozon API могут сломать функционал</li>
+                <li><strong>Требования к uptime:</strong> Бизнес зависит от 24/7 доступности сервиса</li>
+                <li><strong>Поддержка:</strong> Нужна круглосуточная техподдержка</li>
+                <li><strong>Этика:</strong> Споры вокруг справедливости автоматизации бронирования</li>
+            </ul>
+        </div>
+
+        <h3>11.3. Рекомендации</h3>
+
+        <ol>
+            <li><strong>Начать с MVP:</strong> Фокус на мониторинг и уведомления, без агрессивного автобронирования</li>
+            <li><strong>Легальность:</strong> Проконсультироваться с юристами относительно ToS Ozon</li>
+            <li><strong>Конкурентное преимущество:</strong> Найти уникальную ценность (лучший UX, аналитика, ML-прогнозы)</li>
+            <li><strong>Пользовательские отзывы:</strong> Тесная работа с ранними пользователями для Product-Market Fit</li>
+            <li><strong>Партнёрства:</strong> Рассмотреть интеграцию с ERP системами для продавцов</li>
+            <li><strong>Диверсификация:</strong> Не зависеть только от Ozon, добавить другие маркетплейсы</li>
+        </ol>
+
+        <h3>11.4. Следующие шаги</h3>
+
+        <div class="info-box">
+            <h4>🚀 План действий</h4>
+            <ol>
+                <li><strong>Валидация идеи:</strong> Провести интервью с 20-30 продавцами Ozon</li>
+                <li><strong>Прототип:</strong> Создать минимальный прототип за 2 недели</li>
+                <li><strong>Альфа-тест:</strong> Закрытое тестирование с 10-15 продавцами</li>
+                <li><strong>Итерация:</strong> Доработка на основе фидбека</li>
+                <li><strong>Бета-запуск:</strong> Открытый запуск с бесплатным периодом</li>
+                <li><strong>Маркетинг:</strong> Таргетированная реклама в Telegram каналах для селлеров</li>
+                <li><strong>Масштабирование:</strong> На основе метрик (retention, ARPU, CAC) принять решение о масштабировании</li>
+            </ol>
+        </div>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #dee2e6;">
+
+        <h3>📚 Полезные ресурсы</h3>
+
+        <ul>
+            <li><strong>Ozon Seller API:</strong> <a href="https://docs.ozon.ru/api/seller/" target="_blank">docs.ozon.ru/api/seller/</a></li>
+            <li><strong>aiogram документация:</strong> <a href="https://docs.aiogram.dev/" target="_blank">docs.aiogram.dev</a></li>
+            <li><strong>Telegram Bot API:</strong> <a href="https://core.telegram.org/bots/api" target="_blank">core.telegram.org/bots/api</a></li>
+            <li><strong>FastAPI документация:</strong> <a href="https://fastapi.tiangolo.com/" target="_blank">fastapi.tiangolo.com</a></li>
+            <li><strong>PostgreSQL Best Practices:</strong> <a href="https://www.postgresql.org/docs/" target="_blank">postgresql.org/docs</a></li>
+            <li><strong>Redis документация:</strong> <a href="https://redis.io/docs/" target="_blank">redis.io/docs</a></li>
+        </ul>
+
+        <h3>🔗 Ссылки на конкурентов</h3>
+
+        <ul>
+            <li><strong>MetricLab Поставки:</strong> <a href="https://supplies.metriclab.ru/" target="_blank">supplies.metriclab.ru</a></li>
+            <li><strong>LimitBot:</strong> <a href="https://limitbot.ru" target="_blank">limitbot.ru</a></li>
+            <li><strong>GuruSeller:</strong> <a href="https://guruseller.ru/bot-bron-stol-ozon/" target="_blank">guruseller.ru/bot-bron-stol-ozon</a></li>
+            <li><strong>WBCON:</strong> <a href="https://wbcon.ru/service-bot-autobroni-ozon/" target="_blank">wbcon.ru/service-bot-autobroni-ozon</a></li>
+            <li><strong>STPulse:</strong> <a href="https://t.me/stpulse_ozon" target="_blank">t.me/stpulse_ozon</a></li>
+        </ul>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #dee2e6;">
+
+        <div style="text-align: center; color: #6c757d; padding: 20px;">
+            <p><strong>Техническое задание подготовлено:</strong> 05 ноября 2025</p>
+            <p><strong>Версия:</strong> 1.0</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                Документ создан на основе анализа рынка, технических требований и лучших практик разработки Telegram-ботов 2025 года
+            </p>
+        </div>
+    </div>
+</body>
+</html>
