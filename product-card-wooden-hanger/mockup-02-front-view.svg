@@ -1,0 +1,121 @@
+<svg width="1500" height="1500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Белый фон -->
+  <rect width="1500" height="1500" fill="#FFFFFF"/>
+
+  <!-- Заголовок -->
+  <text x="750" y="100" font-family="Arial, sans-serif" font-size="42" fill="#333333" text-anchor="middle" font-weight="bold">
+    Вид спереди | Анатомическая форма
+  </text>
+
+  <!-- Центральная вешалка -->
+  <g id="main-hanger" transform="translate(350, 300)">
+    <!-- Тень -->
+    <ellipse cx="400" cy="650" rx="250" ry="35" fill="#000000" opacity="0.08"/>
+
+    <!-- Крючок -->
+    <defs>
+      <linearGradient id="chromeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#F0F0F0;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#C0C0C0;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#E8E8E8;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+
+    <rect x="395" y="80" width="10" height="120" fill="url(#chromeGradient)" rx="5"/>
+    <circle cx="400" cy="70" r="20" fill="url(#chromeGradient)"/>
+    <circle cx="400" cy="70" r="15" fill="#F8F8F8"/>
+    <circle cx="395" cy="65" r="5" fill="#FFFFFF" opacity="0.8"/>
+
+    <!-- Градиент для дерева -->
+    <defs>
+      <radialGradient id="woodRadial">
+        <stop offset="0%" style="stop-color:#D4B896;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#B8956A;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#A0826D;stop-opacity:1" />
+      </radialGradient>
+    </defs>
+
+    <!-- Левое плечо (анатомическая форма) -->
+    <path d="M 400 200 Q 300 180 200 220 L 180 235 Q 285 195 395 215 Z"
+          fill="url(#woodRadial)" stroke="#8B6F47" stroke-width="2"/>
+
+    <!-- Правое плечо (анатомическая форма) -->
+    <path d="M 400 200 Q 500 180 600 220 L 620 235 Q 515 195 405 215 Z"
+          fill="url(#woodRadial)" stroke="#8B6F47" stroke-width="2"/>
+
+    <!-- Центральная часть (соединение с крючком) -->
+    <ellipse cx="400" cy="200" rx="25" ry="35" fill="#B8956A"/>
+    <ellipse cx="400" cy="197" rx="22" ry="32" fill="#C9A978"/>
+
+    <!-- Текстура дерева на левом плече -->
+    <path d="M 220 225 Q 300 190 380 210" stroke="#8B6F47" stroke-width="2" fill="none" opacity="0.3"/>
+    <path d="M 230 228 Q 300 195 375 213" stroke="#8B6F47" stroke-width="1" fill="none" opacity="0.2"/>
+
+    <!-- Текстура дерева на правом плече -->
+    <path d="M 420 210 Q 500 190 580 225" stroke="#8B6F47" stroke-width="2" fill="none" opacity="0.3"/>
+    <path d="M 425 213 Q 500 195 570 228" stroke="#8B6F47" stroke-width="1" fill="none" opacity="0.2"/>
+
+    <!-- Блики -->
+    <path d="M 250 210 Q 320 185 390 205" stroke="#FFFFFF" stroke-width="12" fill="none" opacity="0.2" stroke-linecap="round"/>
+    <path d="M 410 205 Q 480 185 550 210" stroke="#FFFFFF" stroke-width="12" fill="none" opacity="0.2" stroke-linecap="round"/>
+
+    <!-- Перекладина для брюк -->
+    <line x1="220" y1="350" x2="580" y2="350" stroke="#B8956A" stroke-width="16" stroke-linecap="round"/>
+    <line x1="220" y1="350" x2="580" y2="350" stroke="#A0826D" stroke-width="14" stroke-linecap="round"/>
+    <line x1="230" y1="348" x2="570" y2="348" stroke="#FFFFFF" stroke-width="4" opacity="0.2"/>
+
+    <!-- Крепления перекладины -->
+    <circle cx="220" cy="350" r="12" fill="#8B6F47"/>
+    <circle cx="580" cy="350" r="12" fill="#8B6F47"/>
+  </g>
+
+  <!-- Размерные линии -->
+  <g id="measurements">
+    <!-- Ширина -->
+    <line x1="530" y1="900" x2="930" y2="900" stroke="#FF6B6B" stroke-width="3"/>
+    <line x1="530" y1="890" x2="530" y2="910" stroke="#FF6B6B" stroke-width="3"/>
+    <line x1="930" y1="890" x2="930" y2="910" stroke="#FF6B6B" stroke-width="3"/>
+    <text x="730" y="945" font-family="Arial, sans-serif" font-size="38" fill="#FF6B6B" text-anchor="middle" font-weight="bold">
+      44 см
+    </text>
+
+    <!-- Высота -->
+    <line x1="1050" y1="370" x2="1050" y2="650" stroke="#4ECDC4" stroke-width="3"/>
+    <line x1="1040" y1="370" x2="1060" y2="370" stroke="#4ECDC4" stroke-width="3"/>
+    <line x1="1040" y1="650" x2="1060" y2="650" stroke="#4ECDC4" stroke-width="3"/>
+    <text x="1150" y="520" font-family="Arial, sans-serif" font-size="38" fill="#4ECDC4" text-anchor="middle" font-weight="bold">
+      23 см
+    </text>
+  </g>
+
+  <!-- Особенности -->
+  <g id="features">
+    <rect x="100" y="1050" width="600" height="80" fill="#F0F8FF" rx="10"/>
+    <text x="400" y="1100" font-family="Arial, sans-serif" font-size="28" fill="#333333" text-anchor="middle" font-weight="bold">
+      ✓ Анатомическая форма сохраняет вид одежды
+    </text>
+
+    <rect x="800" y="1050" width="600" height="80" fill="#F0F8FF" rx="10"/>
+    <text x="1100" y="1100" font-family="Arial, sans-serif" font-size="28" fill="#333333" text-anchor="middle" font-weight="bold">
+      ✓ Вращающийся крючок 360°
+    </text>
+
+    <rect x="100" y="1150" width="600" height="80" fill="#F0F8FF" rx="10"/>
+    <text x="400" y="1200" font-family="Arial, sans-serif" font-size="28" fill="#333333" text-anchor="middle" font-weight="bold">
+      ✓ Идеальная шлифовка - не цепляет ткань
+    </text>
+
+    <rect x="800" y="1150" width="600" height="80" fill="#F0F8FF" rx="10"/>
+    <text x="1100" y="1200" font-family="Arial, sans-serif" font-size="28" fill="#333333" text-anchor="middle" font-weight="bold">
+      ✓ Выдерживает до 5 кг
+    </text>
+  </g>
+
+  <!-- Футер -->
+  <text x="750" y="1380" font-family="Arial, sans-serif" font-size="32" fill="#666666" text-anchor="middle">
+    Массив бука • Покрытие масло-воск • Ручная работа
+  </text>
+  <text x="750" y="1450" font-family="Arial, sans-serif" font-size="24" fill="#999999" text-anchor="middle">
+    Мастерская "Родное дерево"
+  </text>
+</svg>

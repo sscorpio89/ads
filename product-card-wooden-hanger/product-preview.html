@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вешалка-плечики деревянная Premium - Предпросмотр карточки Ozon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #005bff 0%, #0043ba 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .product-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .gallery {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gallery img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .gallery-note {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #f8b500;
+            font-size: 14px;
+            color: #856404;
+            margin-top: 15px;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .stars {
+            color: #f8b500;
+            font-size: 20px;
+        }
+
+        .rating-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .price-block {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #005bff;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 20px;
+        }
+
+        .current-price {
+            font-size: 42px;
+            font-weight: bold;
+            color: #005bff;
+            margin: 5px 0;
+        }
+
+        .price-per-item {
+            color: #666;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .discount {
+            display: inline-block;
+            background: #ff4545;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .delivery-info {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+
+        .buy-button {
+            background: #005bff;
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .buy-button:hover {
+            background: #0043ba;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .feature-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+        }
+
+        .tabs {
+            border-top: 1px solid #e0e0e0;
+            padding: 0;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #f5f5f5;
+            padding: 0;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button.active {
+            background: white;
+            border-bottom: 3px solid #005bff;
+            color: #005bff;
+        }
+
+        .tab-content {
+            padding: 30px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .characteristics-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .characteristics-table tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .characteristics-table td {
+            padding: 15px 10px;
+        }
+
+        .characteristics-table td:first-child {
+            color: #666;
+            width: 40%;
+        }
+
+        .characteristics-table td:last-child {
+            font-weight: 500;
+        }
+
+        .description h3 {
+            color: #1a1a1a;
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+
+        .description p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .description ul {
+            margin: 15px 0 15px 20px;
+        }
+
+        .description li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .reviews {
+            padding: 20px 0;
+        }
+
+        .review-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .review-author {
+            font-weight: 600;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .product-header {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>📦 Предпросмотр карточки товара Ozon</h1>
+        <p>Вешалка-плечики деревянная ручной работы "Premium"</p>
+    </div>
+
+    <div class="container">
+        <div class="product-header">
+            <!-- Gallery -->
+            <div class="gallery">
+                <img src="mockup-01-main.svg" alt="Вешалка-плечики главное фото">
+                <img src="mockup-02-front-view.svg" alt="Вид спереди">
+                <img src="mockup-06-infographic.svg" alt="Инфографика">
+
+                <div class="gallery-note">
+                    <strong>📸 Примечание:</strong> Здесь показаны SVG-макеты.
+                    Для реальной карточки нужны профессиональные фотографии
+                    (см. images-description.md)
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title">
+                    Вешалка-плечики деревянная ручной работы "Premium" массив бука набор 3 шт
+                </h1>
+
+                <div class="rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9 • 156 отзывов</span>
+                </div>
+
+                <div class="price-block">
+                    <div class="old-price">2 990 ₽</div>
+                    <div class="current-price">
+                        2 490 ₽
+                        <span class="discount">-17%</span>
+                    </div>
+                    <div class="price-per-item">Всего 830 ₽ за одну премиум-вешалку</div>
+                </div>
+
+                <div class="delivery-info">
+                    <strong>🚚 Бесплатная доставка</strong> от 3 000 ₽<br>
+                    📦 Доставка: 2-5 рабочих дней<br>
+                    ✅ В наличии
+                </div>
+
+                <div class="features">
+                    <div class="feature-item">
+                        <span class="feature-icon">🌳</span>
+                        <div>
+                            <strong>Массив бука</strong><br>
+                            <small>Премиум качество</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✋</span>
+                        <div>
+                            <strong>Ручная работа</strong><br>
+                            <small>Мастер-краснодеревщик</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">👔</span>
+                        <div>
+                            <strong>Анатомическая форма</strong><br>
+                            <small>Сохраняет вид одежды</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <div>
+                            <strong>Вращающийся крючок</strong><br>
+                            <small>360° поворот</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">💪</span>
+                        <div>
+                            <strong>Нагрузка 5 кг</strong><br>
+                            <small>Для пальто и шуб</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🎁</span>
+                        <div>
+                            <strong>Подарочная упаковка</strong><br>
+                            <small>Готовый подарок</small>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="buy-button">В корзину</button>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="openTab(event, 'description')">
+                    Описание
+                </button>
+                <button class="tab-button" onclick="openTab(event, 'characteristics')">
+                    Характеристики
+                </button>
+                <button class="tab-button" onclick="openTab(event, 'reviews')">
+                    Отзывы (156)
+                </button>
+            </div>
+
+            <!-- Description Tab -->
+            <div id="description" class="tab-content active">
+                <div class="description">
+                    <h3>О товаре</h3>
+                    <p>
+                        Премиальные вешалки-плечики из массива бука ручной работы. Анатомическая форма
+                        сохраняет идеальный вид вашей одежды. Экологичное покрытие маслом-воском.
+                        Набор из 3 штук в подарочной упаковке. Идеальное решение для бережного хранения
+                        костюмов, платьев и верхней одежды.
+                    </p>
+
+                    <h3>Премиальный массив бука</h3>
+                    <p>
+                        Бук - элитная порода древесины, по прочности сравнимая с дубом, но при этом более
+                        гибкая и менее склонная к растрескиванию. Мы отбираем только древесину высшего
+                        сорта без сучков и дефектов. Плотная структура бука обеспечивает долговечность
+                        изделия - эти вешалки прослужат десятилетиями.
+                    </p>
+
+                    <h3>Анатомическая форма - забота о вашей одежде</h3>
+                    <p>
+                        Плечики имеют анатомически правильную форму, которая точно повторяет линию плеч.
+                        Это предотвращает деформацию ткани, растяжение, появление "пузырей" на плечах
+                        пиджаков и платьев. Ваша одежда сохраняет идеальную форму, как после покупки в бутике.
+                    </p>
+
+                    <h3>Функциональность и удобство:</h3>
+                    <ul>
+                        <li><strong>Вращающийся крючок</strong> - хромированный, поворачивается на 360°</li>
+                        <li><strong>Съёмная перекладина</strong> - для брюк, юбок или шарфов</li>
+                        <li><strong>Выдерживает до 5 кг</strong> - подходит для пальто, дублёнок, шуб</li>
+                        <li><strong>Не цепляет ткань</strong> - идеальная шлифовка</li>
+                    </ul>
+
+                    <h3>Универсальное применение:</h3>
+                    <ul>
+                        <li>✓ Мужские костюмы и пиджаки</li>
+                        <li>✓ Женские платья и блузки</li>
+                        <li>✓ Верхняя одежда (пальто, куртки, шубы)</li>
+                        <li>✓ Брюки и юбки (с перекладиной)</li>
+                        <li>✓ Рубашки и кардиганы</li>
+                    </ul>
+
+                    <h3>Почему выбирают нас:</h3>
+                    <ul>
+                        <li>🌳 <strong>Мастерская "Родное дерево"</strong> – 15 лет опыта</li>
+                        <li>⭐ <strong>Рейтинг 4.9</strong> – тысячи довольных покупателей</li>
+                        <li>🎁 <strong>Подарочная упаковка</strong> – готовый подарок</li>
+                        <li>✅ <strong>Гарантия 12 месяцев</strong></li>
+                        <li>💚 <strong>Экологичность</strong> – только натуральные материалы</li>
+                    </ul>
+
+                    <h3>Комплектация:</h3>
+                    <ul>
+                        <li>Вешалки-плечики деревянные – 3 шт.</li>
+                        <li>Съёмные перекладины для брюк – 3 шт.</li>
+                        <li>Инструкция по уходу</li>
+                        <li>Подарочная упаковка</li>
+                        <li>Гарантийный талон</li>
+                    </ul>
+
+                    <h3>Обратите внимание:</h3>
+                    <p>
+                        Так как каждая вешалка изготавливается вручную из натурального дерева,
+                        текстура и оттенок могут незначительно отличаться от фото. Это не является
+                        браком – это особенность натурального материала, которая делает вашу вешалку
+                        уникальной!
+                    </p>
+                </div>
+            </div>
+
+            <!-- Characteristics Tab -->
+            <div id="characteristics" class="tab-content">
+                <table class="characteristics-table">
+                    <tr>
+                        <td>Материал</td>
+                        <td>Массив бука</td>
+                    </tr>
+                    <tr>
+                        <td>Покрытие</td>
+                        <td>Натуральное масло-воск</td>
+                    </tr>
+                    <tr>
+                        <td>Ширина</td>
+                        <td>44 см</td>
+                    </tr>
+                    <tr>
+                        <td>Толщина</td>
+                        <td>1.2 см</td>
+                    </tr>
+                    <tr>
+                        <td>Вес одной вешалки</td>
+                        <td>150 г</td>
+                    </tr>
+                    <tr>
+                        <td>Максимальная нагрузка</td>
+                        <td>5 кг</td>
+                    </tr>
+                    <tr>
+                        <td>Цвет</td>
+                        <td>Натуральный бук / ореховый оттенок</td>
+                    </tr>
+                    <tr>
+                        <td>Тип производства</td>
+                        <td>Ручная работа</td>
+                    </tr>
+                    <tr>
+                        <td>Страна производства</td>
+                        <td>Россия</td>
+                    </tr>
+                    <tr>
+                        <td>Тип крючка</td>
+                        <td>Металлический вращающийся, хромированный</td>
+                    </tr>
+                    <tr>
+                        <td>Форма плечиков</td>
+                        <td>Анатомическая</td>
+                    </tr>
+                    <tr>
+                        <td>Перекладина для брюк</td>
+                        <td>Да, съёмная</td>
+                    </tr>
+                    <tr>
+                        <td>Назначение</td>
+                        <td>Для пиджаков, костюмов, платьев, верхней одежды</td>
+                    </tr>
+                    <tr>
+                        <td>Стиль</td>
+                        <td>Классический, премиум</td>
+                    </tr>
+                    <tr>
+                        <td>Количество в наборе</td>
+                        <td>3 штуки</td>
+                    </tr>
+                    <tr>
+                        <td>Упаковка</td>
+                        <td>Подарочная</td>
+                    </tr>
+                    <tr>
+                        <td>Гарантия</td>
+                        <td>12 месяцев</td>
+                    </tr>
+                    <tr>
+                        <td>Бренд</td>
+                        <td>Мастерская "Родное дерево"</td>
+                    </tr>
+                    <tr>
+                        <td>Артикул</td>
+                        <td>WHH-2025-001</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Reviews Tab -->
+            <div id="reviews" class="tab-content">
+                <div class="reviews">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">⭐⭐⭐⭐⭐ Ольга</div>
+                                <div class="review-date">Москва • 20 октября 2025</div>
+                            </div>
+                        </div>
+                        <div class="review-text">
+                            Купила эти вешалки для дорогих костюмов мужа. Качество потрясающее! Дерево гладкое,
+                            приятное на ощупь, запах натурального дерева. Костюмы теперь висят идеально, без
+                            заломов. Очень довольна покупкой!
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">⭐⭐⭐⭐⭐ Александр</div>
+                                <div class="review-date">Санкт-Петербург • 15 октября 2025</div>
+                            </div>
+                        </div>
+                        <div class="review-text">
+                            Заказал для своего гардероба. Пришли в красивой упаковке, можно сразу дарить.
+                            Вешалки очень качественные, крепкие. Крючок вращается плавно. За такую цену -
+                            отличное приобретение!
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">⭐⭐⭐⭐⭐ Мария</div>
+                                <div class="review-date">Екатеринбург • 10 октября 2025</div>
+                            </div>
+                        </div>
+                        <div class="review-text">
+                            Искала именно деревянные вешалки для платьев. Эти идеальны! Форма анатомическая,
+                            платья не деформируются, плечики не торчат. Покрытие приятное, матовое. Рекомендую!
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">⭐⭐⭐⭐⭐ Дмитрий</div>
+                                <div class="review-date">Казань • 5 октября 2025</div>
+                            </div>
+                        </div>
+                        <div class="review-text">
+                            Купил в подарок родителям. Им очень понравилось! Говорят, что это совсем другой
+                            уровень по сравнению с обычными вешалками из магазина. Буду заказывать ещё для себя.
+                        </div>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div>
+                                <div class="review-author">⭐⭐⭐⭐⭐ Елена</div>
+                                <div class="review-date">Новосибирск • 1 октября 2025</div>
+                            </div>
+                        </div>
+                        <div class="review-text">
+                            Вешалки просто шикарные! Дерево качественное, обработка идеальная. Пальто на них
+                            висит как в бутике. Очень рада, что нашла такие. Спасибо мастеру!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Это предпросмотр карточки товара для маркетплейса Ozon</p>
+        <p>Мастерская "Родное дерево" • 2025</p>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tabbuttons;
+
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+
+            tabbuttons = document.getElementsByClassName("tab-button");
+            for (i = 0; i < tabbuttons.length; i++) {
+                tabbuttons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+</html>
