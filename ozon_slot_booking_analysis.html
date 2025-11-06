@@ -295,24 +295,32 @@
         <div class="info-box">
             <strong>Дата составления:</strong> 05 ноября 2025<br>
             <strong>Последнее обновление:</strong> 06 ноября 2025<br>
-            <strong>Версия документа:</strong> 2.0<br>
-            <strong>Статус:</strong> Аналитический отчёт с техническим заданием и официальной спецификацией
+            <strong>Версия документа:</strong> 3.0<br>
+            <strong>Статус:</strong> Полное техническое задание с детальной спецификацией
         </div>
 
         <div class="toc">
             <h3>📑 Содержание</h3>
             <ul>
-                <li><a href="#executive-summary">1. Краткое резюме проекта</a></li>
+                <li><a href="#executive-summary">1. Краткое резюме проекта (Цель и описание)</a></li>
                 <li><a href="#market-analysis">2. Анализ рынка и конкурентов</a></li>
                 <li><a href="#problem-statement">3. Постановка задачи</a></li>
                 <li><a href="#functional-requirements">4. Функциональные требования</a></li>
                 <li><a href="#technical-architecture">5. Техническая архитектура</a></li>
                 <li><a href="#tech-stack">6. Технологический стек</a></li>
                 <li><a href="#api-integration">7. Интеграция с Ozon Seller API</a></li>
-                <li><a href="#implementation-roadmap">8. План реализации</a></li>
-                <li><a href="#risks">9. Риски и ограничения</a></li>
-                <li><a href="#budget">10. Бюджет и ресурсы</a></li>
-                <li><a href="#conclusion">11. Заключение</a></li>
+                <li><a href="#data-models">8. Данные и модели</a></li>
+                <li><a href="#statuses-events">9. Статусы, события и уведомления</a></li>
+                <li><a href="#bot-commands">10. Команды бота и навигация</a></li>
+                <li><a href="#ui-requirements">11. Требования к интерфейсу</a></li>
+                <li><a href="#errors-edge-cases">12. Ошибки и пограничные случаи</a></li>
+                <li><a href="#non-functional">13. Нефункциональные требования</a></li>
+                <li><a href="#testing">14. Тестирование и приёмка</a></li>
+                <li><a href="#deployment">15. Развёртывание и операционка</a></li>
+                <li><a href="#implementation-roadmap">16. План реализации</a></li>
+                <li><a href="#risks">17. Риски и ограничения</a></li>
+                <li><a href="#budget">18. Бюджет и ресурсы</a></li>
+                <li><a href="#conclusion">19. Заключение</a></li>
             </ul>
         </div>
 
@@ -1468,22 +1476,1119 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li><strong>Webhook от Ozon:</strong> Возможность получать уведомления о изменениях (если доступно)</li>
         </ul>
 
-        <h3>7.3. Безопасность API ключей</h3>
+        <h3>7.3. Минимальные вызовы для фич</h3>
+
+        <p>Для каждой ключевой функции бота определены минимально необходимые API методы:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Фича</th>
+                    <th>Методы</th>
+                    <th>Заметки</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Загрузка заказов</strong></td>
+                    <td>
+                        <code>/v1/supply-order/list</code><br>
+                        <code>/v2/supply-order/list</code><br>
+                        <code>/v3/supply-order/list</code><br>
+                        <code>/v1/supply-order/get</code><br>
+                        <code>/v1/supply-order/items</code>
+                    </td>
+                    <td>Пагинация и кэш, гранулярные фильтры магазинов</td>
+                </tr>
+                <tr>
+                    <td><strong>Получение окон</strong></td>
+                    <td>
+                        <code>/v1/draft/timeslot/info</code><br>
+                        <code>/v1/supply-order/timeslot/get</code>
+                    </td>
+                    <td>Сопоставление с пользовательскими предпочтениями</td>
+                </tr>
+                <tr>
+                    <td><strong>Обновление тайм-слота</strong></td>
+                    <td><code>/v1/supply-order/timeslot/update</code></td>
+                    <td>Операция «бронь» при доступности</td>
+                </tr>
+                <tr>
+                    <td><strong>Статусы</strong></td>
+                    <td>
+                        <code>/v1/supply-order/timeslot/status</code><br>
+                        <code>/v1/supply-order/status/counter</code>
+                    </td>
+                    <td>Фоновая проверка и ретраи</td>
+                </tr>
+                <tr>
+                    <td><strong>Справочники</strong></td>
+                    <td>
+                        <code>/v1/warehouse/fbo/list</code><br>
+                        <code>/v1/cluster/list</code>
+                    </td>
+                    <td>Нормализация направлений/складов</td>
+                </tr>
+                <tr>
+                    <td><strong>Валидация магазина</strong></td>
+                    <td><code>/v1/roles</code></td>
+                    <td>Проверка валидности API ключей при добавлении магазина</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>7.4. Особенности работы с API</h3>
+
+        <ul>
+            <li><strong>Аутентификация:</strong> Client-Id + Api-Key в заголовках</li>
+            <li><strong>Rate Limiting:</strong> Ozon ограничивает количество запросов (обычно 100-200 req/min)</li>
+            <li><strong>Кэширование:</strong> Кэшировать список складов и справочную информацию</li>
+            <li><strong>Retry Logic:</strong> Реализовать повторные попытки при ошибках сети</li>
+            <li><strong>Webhook от Ozon:</strong> Возможность получать уведомления о изменениях (если доступно)</li>
+        </ul>
+
+        <div class="warning-box">
+            <h4>⚠️ Обработка ошибок API</h4>
+            <ul>
+                <li><strong>401/403:</strong> Помечаем магазин «ошибка ключей», отключаем трекинг, уведомляем пользователя</li>
+                <li><strong>429 (Too Many Requests):</strong> Экспоненциальный ретрай с джиттером, бэк-офф до 30 мин</li>
+                <li><strong>5xx (Server Errors):</strong> Экспоненциальный ретрай с джиттером, бэк-офф до 30 мин</li>
+                <li><strong>Timeout:</strong> Повторная попытка с увеличенным таймаутом</li>
+            </ul>
+        </div>
+
+        <h3>7.5. Безопасность API ключей</h3>
 
         <div class="danger-box">
             <h4>🔐 Критически важно</h4>
             <ul>
-                <li>Хранить API ключи в зашифрованном виде в БД (AES-256)</li>
+                <li>Хранить API ключи в зашифрованном виде в БД (AES-256 или KMS/DPAPI/аналог)</li>
                 <li>Использовать переменные окружения для мастер-ключа шифрования</li>
                 <li>Никогда не логировать API ключи</li>
                 <li>Реализовать ротацию ключей</li>
                 <li>Использовать HTTPS для всех соединений</li>
+                <li>Rate-limits per store для защиты от злоупотреблений</li>
             </ul>
         </div>
 
-        <h2 id="implementation-roadmap">8. План реализации</h2>
+        <h2 id="data-models">8. Данные и модели</h2>
 
-        <h3>8.1. Фаза 1: MVP (4-6 недель)</h3>
+        <p>В этом разделе описываются основные сущности системы, их поля и бизнес-правила.</p>
+
+        <h3>8.1. Модель Пользователя (User)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>UUID</td>
+                    <td>Внутренний ID пользователя</td>
+                </tr>
+                <tr>
+                    <td><code>telegramUserId</code></td>
+                    <td>BigInt</td>
+                    <td>Telegram User ID (уникальный)</td>
+                </tr>
+                <tr>
+                    <td><code>timezone</code></td>
+                    <td>String</td>
+                    <td>Часовой пояс пользователя (по умолчанию UTC)</td>
+                </tr>
+                <tr>
+                    <td><code>balanceCount</code></td>
+                    <td>Integer</td>
+                    <td>Текущий остаток бронирований</td>
+                </tr>
+                <tr>
+                    <td><code>balanceExpireAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата истечения баланса (30 дней от последней покупки)</td>
+                </tr>
+                <tr>
+                    <td><code>createdAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата регистрации</td>
+                </tr>
+                <tr>
+                    <td><code>lastActiveAt</code></td>
+                    <td>DateTime</td>
+                    <td>Последняя активность</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <h4>Бизнес-правила:</h4>
+            <ul>
+                <li>Баланс истекает через 30 дней от последней покупки</li>
+                <li>Каждая новая покупка продлевает срок: <code>balanceExpireAt = now + 30 дней</code></li>
+                <li>При истечении баланса <code>balanceCount</code> обнуляется</li>
+                <li>За 3 дня до истечения отправляется предупреждающее уведомление</li>
+            </ul>
+        </div>
+
+        <h3>8.2. Модель Магазина (Store/Cabinet)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>storeId</code></td>
+                    <td>UUID</td>
+                    <td>Внутренний ID магазина</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>UUID</td>
+                    <td>Ссылка на пользователя</td>
+                </tr>
+                <tr>
+                    <td><code>title</code></td>
+                    <td>String</td>
+                    <td>Название магазина (задается пользователем)</td>
+                </tr>
+                <tr>
+                    <td><code>clientId</code></td>
+                    <td>String</td>
+                    <td>Client ID из Ozon</td>
+                </tr>
+                <tr>
+                    <td><code>apiKeyEncrypted</code></td>
+                    <td>String</td>
+                    <td>Зашифрованный API Key</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>Enum</td>
+                    <td><code>VALID</code>, <code>INVALID_KEY</code>, <code>ERROR</code></td>
+                </tr>
+                <tr>
+                    <td><code>lastValidatedAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата последней проверки ключей</td>
+                </tr>
+                <tr>
+                    <td><code>createdAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата добавления</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <h4>Ограничения:</h4>
+            <ul>
+                <li>≤ 5 магазинов на одного пользователя</li>
+                <li>Статус проверяется пинговым запросом <code>/v1/roles</code></li>
+                <li>При статусе <code>INVALID_KEY</code> или <code>ERROR</code> отслеживание поставок отключается</li>
+            </ul>
+        </div>
+
+        <h3>8.3. Модель Заказа/Поставки (Supply Order)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>orderId</code></td>
+                    <td>UUID</td>
+                    <td>Внутренний ID заказа</td>
+                </tr>
+                <tr>
+                    <td><code>ozonSupplyOrderId</code></td>
+                    <td>String/BigInt</td>
+                    <td>ID поставки в системе Ozon</td>
+                </tr>
+                <tr>
+                    <td><code>storeId</code></td>
+                    <td>UUID</td>
+                    <td>Ссылка на магазин</td>
+                </tr>
+                <tr>
+                    <td><code>state</code></td>
+                    <td>Enum</td>
+                    <td><code>NEW</code>, <code>SEARCHING</code>, <code>FOUND</code>, <code>PAUSED</code>, <code>FAILED</code></td>
+                </tr>
+                <tr>
+                    <td><code>trackingEnabled</code></td>
+                    <td>Boolean</td>
+                    <td>Включено ли отслеживание</td>
+                </tr>
+                <tr>
+                    <td><code>warehouseFrom</code></td>
+                    <td>String</td>
+                    <td>Склад отгрузки</td>
+                </tr>
+                <tr>
+                    <td><code>warehouseTo</code></td>
+                    <td>String</td>
+                    <td>Склад назначения (кластер)</td>
+                </tr>
+                <tr>
+                    <td><code>lastCheckedAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата последней проверки слотов</td>
+                </tr>
+                <tr>
+                    <td><code>bookedAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата успешного бронирования</td>
+                </tr>
+                <tr>
+                    <td><code>bookedSlot</code></td>
+                    <td>JSON</td>
+                    <td>Забронированный слот (дата, время)</td>
+                </tr>
+                <tr>
+                    <td><code>createdAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата создания записи</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <h4>Состояния заказа:</h4>
+            <ul>
+                <li><code>NEW</code>: Поставка загружена из Ozon, настройки слотов не заданы</li>
+                <li><code>SEARCHING</code>: Активен фоновый планировщик проверки окон (каждые 5–10 минут/адаптивно)</li>
+                <li><code>FOUND</code>: Бронь подтверждена, трекинг отключён</li>
+                <li><code>PAUSED</code>: Пользователь остановил отслеживание, фон не опрашивает</li>
+                <li><code>FAILED</code>: Превышен лимит ретраев/ошибка API, уведомление с причиной</li>
+            </ul>
+        </div>
+
+        <h3>8.4. Модель Интервалов (TimeSlot Preferences)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>slotId</code></td>
+                    <td>UUID</td>
+                    <td>ID интервала</td>
+                </tr>
+                <tr>
+                    <td><code>orderId</code></td>
+                    <td>UUID</td>
+                    <td>Ссылка на заказ</td>
+                </tr>
+                <tr>
+                    <td><code>date</code></td>
+                    <td>Date</td>
+                    <td>Дата поставки</td>
+                </tr>
+                <tr>
+                    <td><code>hourFrom</code></td>
+                    <td>Integer (0-23)</td>
+                    <td>Начало временного окна (час)</td>
+                </tr>
+                <tr>
+                    <td><code>hourTo</code></td>
+                    <td>Integer (0-23)</td>
+                    <td>Конец временного окна (час)</td>
+                </tr>
+                <tr>
+                    <td><code>priority</code></td>
+                    <td>Integer (1-5)</td>
+                    <td>Приоритет интервала (1 = высший)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning-box">
+            <h4>Ограничения:</h4>
+            <ul>
+                <li>До 5 интервалов на один заказ</li>
+                <li>Нормализация к времени склада/часовому поясу пользователя</li>
+                <li>Валидация: <code>hourFrom < hourTo</code></li>
+            </ul>
+        </div>
+
+        <h3>8.5. Модель Оплаты (Payment)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>paymentId</code></td>
+                    <td>UUID</td>
+                    <td>Внутренний ID платежа</td>
+                </tr>
+                <tr>
+                    <td><code>userId</code></td>
+                    <td>UUID</td>
+                    <td>Ссылка на пользователя</td>
+                </tr>
+                <tr>
+                    <td><code>invoiceId</code></td>
+                    <td>String</td>
+                    <td>ID инвойса от платёжного провайдера</td>
+                </tr>
+                <tr>
+                    <td><code>itemsCount</code></td>
+                    <td>Integer</td>
+                    <td>Количество купленных бронирований</td>
+                </tr>
+                <tr>
+                    <td><code>priceTotal</code></td>
+                    <td>Decimal</td>
+                    <td>Итоговая сумма</td>
+                </tr>
+                <tr>
+                    <td><code>provider</code></td>
+                    <td>String</td>
+                    <td>T-Pay, СБП, Яндекс.Пэй, Card</td>
+                </tr>
+                <tr>
+                    <td><code>status</code></td>
+                    <td>Enum</td>
+                    <td><code>PENDING</code>, <code>SUCCESS</code>, <code>FAILED</code></td>
+                </tr>
+                <tr>
+                    <td><code>paidAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата успешной оплаты</td>
+                </tr>
+                <tr>
+                    <td><code>createdAt</code></td>
+                    <td>DateTime</td>
+                    <td>Дата создания</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box">
+            <h4>Логика при успешной оплате:</h4>
+            <ol>
+                <li>Увеличиваем <code>user.balanceCount += payment.itemsCount</code></li>
+                <li>Обновляем срок: <code>user.balanceExpireAt = now + 30 дней</code></li>
+                <li>Отправляем уведомление пользователю о пополнении баланса</li>
+            </ol>
+        </div>
+
+        <h3>8.6. Журнал проверки слотов (Slot Check Log)</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Поле</th>
+                    <th>Тип</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>logId</code></td>
+                    <td>UUID</td>
+                    <td>ID записи</td>
+                </tr>
+                <tr>
+                    <td><code>orderId</code></td>
+                    <td>UUID</td>
+                    <td>Ссылка на заказ</td>
+                </tr>
+                <tr>
+                    <td><code>attemptAt</code></td>
+                    <td>DateTime</td>
+                    <td>Время попытки</td>
+                </tr>
+                <tr>
+                    <td><code>window</code></td>
+                    <td>JSON</td>
+                    <td>Найденное окно (если есть)</td>
+                </tr>
+                <tr>
+                    <td><code>result</code></td>
+                    <td>Enum</td>
+                    <td><code>NO_SLOTS</code>, <code>FOUND</code>, <code>BOOKED</code>, <code>ERROR</code></td>
+                </tr>
+                <tr>
+                    <td><code>apiLatencyMs</code></td>
+                    <td>Integer</td>
+                    <td>Латентность API запроса (мс)</td>
+                </tr>
+                <tr>
+                    <td><code>errorMessage</code></td>
+                    <td>Text</td>
+                    <td>Сообщение об ошибке (если есть)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info-box">
+            <p><strong>Назначение:</strong> Аудит для поддержки и антифрод, анализ производительности</p>
+        </div>
+
+        <h2 id="statuses-events">9. Статусы, события и уведомления</h2>
+
+        <h3>9.1. Жизненный цикл поставки</h3>
+
+        <div class="architecture-diagram">
+            <pre style="text-align: left; font-size: 0.85em;">
+┌─────────┐
+│   NEW   │  Поставка загружена из Ozon
+└────┬────┘
+     │ Пользователь задает интервалы
+     ▼
+┌──────────────┐
+│  SEARCHING   │  Активен фоновый поиск
+└──┬────────┬──┘
+   │        │ Пользователь нажал "Пауза"
+   │        ▼
+   │   ┌────────┐
+   │   │ PAUSED │  Отслеживание приостановлено
+   │   └───┬────┘
+   │       │ Пользователь снял с паузы
+   │       ▼
+   │   ┌──────────────┐
+   │   │  SEARCHING   │
+   │   └──────────────┘
+   │
+   │ Слот найден и забронирован
+   ▼
+┌──────┐
+│ FOUND│  Успешное бронирование
+└──────┘
+
+   │ Ошибка API / превышен лимит ретраев
+   ▼
+┌────────┐
+│ FAILED │  Требуется вмешательство пользователя
+└────────┘
+            </pre>
+        </div>
+
+        <h3>9.2. События и уведомления</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Событие</th>
+                    <th>Триггер</th>
+                    <th>Уведомление</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Успешное бронирование</strong></td>
+                    <td>Состояние → <code>FOUND</code></td>
+                    <td>
+                        ✅ Слот забронирован!<br>
+                        Поставка: #12345<br>
+                        Дата: 15.11.2025<br>
+                        Время: 09:00-12:00<br>
+                        Склад: Коледино<br>
+                        Списано бронирований: 1
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Исчерпание баланса</strong></td>
+                    <td><code>balanceCount = 0</code></td>
+                    <td>
+                        ⚠️ Баланс исчерпан<br>
+                        Автопоиск приостановлен<br>
+                        Пополните баланс в разделе "Тарифы"
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Истечение баланса (за 3 дня)</strong></td>
+                    <td><code>balanceExpireAt - 3 дня</code></td>
+                    <td>
+                        ⏰ Баланс истекает через 3 дня<br>
+                        Осталось бронирований: 5<br>
+                        Продлите срок в разделе "Тарифы"
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Истечение баланса (в день X)</strong></td>
+                    <td><code>balanceExpireAt = today</code></td>
+                    <td>
+                        ❗ Баланс истекает сегодня<br>
+                        Неиспользованные бронирования сгорят<br>
+                        Продлите прямо сейчас
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Ошибка ключей</strong></td>
+                    <td>401/403 от API</td>
+                    <td>
+                        🔑 Ошибка API ключей<br>
+                        Магазин: "Мой магазин"<br>
+                        Проверьте ключи в разделе "Мои кабинеты"
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Нет доступных окон</strong></td>
+                    <td>24 часа без результатов</td>
+                    <td>
+                        ℹ️ Слоты не найдены<br>
+                        Поставка: #12345<br>
+                        За последние 24 часа не появилось подходящих слотов<br>
+                        Попробуйте изменить параметры поиска
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Ошибка бронирования</strong></td>
+                    <td>Состояние → <code>FAILED</code></td>
+                    <td>
+                        ❌ Ошибка бронирования<br>
+                        Поставка: #12345<br>
+                        Причина: [описание ошибки]<br>
+                        Обратитесь в техподдержку
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="bot-commands">10. Команды бота и навигация</h2>
+
+        <h3>10.1. Команды</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Команда</th>
+                    <th>Описание</th>
+                    <th>Доступность</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><code>/start</code></td>
+                    <td>Приветствие и переход на главную страницу</td>
+                    <td>Всегда</td>
+                </tr>
+                <tr>
+                    <td><code>/help</code></td>
+                    <td>Справка по использованию бота</td>
+                    <td>Всегда</td>
+                </tr>
+                <tr>
+                    <td><code>/balance</code></td>
+                    <td>Показать текущий баланс бронирований</td>
+                    <td>Для зарегистрированных</td>
+                </tr>
+                <tr>
+                    <td><code>/stores</code></td>
+                    <td>Быстрый доступ к разделу "Мои кабинеты"</td>
+                    <td>Для зарегистрированных</td>
+                </tr>
+                <tr>
+                    <td><code>/supplies</code></td>
+                    <td>Быстрый доступ к разделу "Поставки"</td>
+                    <td>Для зарегистрированных</td>
+                </tr>
+                <tr>
+                    <td><code>/tariffs</code></td>
+                    <td>Быстрый доступ к разделу "Тарифы"</td>
+                    <td>Для зарегистрированных</td>
+                </tr>
+                <tr>
+                    <td><code>/support</code></td>
+                    <td>Связаться с техподдержкой</td>
+                    <td>Всегда</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>10.2. Структура навигации</h3>
+
+        <div class="architecture-diagram">
+            <pre style="text-align: left; font-size: 0.85em;">
+📱 ГЛАВНАЯ
+├─ Остаток бронирований: 10 шт. (до 01.12.2025)
+├─ 🏪 Мои кабинеты
+│  ├─ Список магазинов (до 5)
+│  ├─ ➕ Добавить магазин
+│  └─ 🗑️ Удалить магазин
+├─ 📦 Поставки
+│  ├─ Фильтры:
+│  │  ├─ По магазинам (Все / Конкретный)
+│  │  └─ По статусу (Все / В поиске / Слот найден / На паузе)
+│  ├─ Список заказов
+│  │  └─ [Карточка заказа]
+│  │     ├─ Переключатель: Отслеживаем ↔ Пауза
+│  │     └─ ✏️ Редактировать слоты
+│  └─ 🔄 Обновить список
+├─ 💳 Тарифы
+│  ├─ Выбор количества бронирований
+│  ├─ Расчёт стоимости (прогрессивная цена)
+│  └─ 💰 Оплатить
+├─ 📖 Инструкция
+│  └─ Краткое руководство по работе
+└─ 💬 Техподдержка
+   └─ Переход в бот поддержки
+            </pre>
+        </div>
+
+        <h3>10.3. Редактор слотов</h3>
+
+        <p>При нажатии "Редактировать" открывается форма настройки до 5 временных интервалов:</p>
+
+        <div class="info-box">
+            <h4>Элементы формы:</h4>
+            <ul>
+                <li><strong>Слот 1:</strong>
+                    <ul>
+                        <li>📅 Дата: [выпадающий календарь]</li>
+                        <li>🕐 Время с: [выпадающий список 00-23]</li>
+                        <li>🕐 Время до: [выпадающий список 00-23]</li>
+                    </ul>
+                </li>
+                <li><strong>Слот 2-5:</strong> аналогично</li>
+                <li>➕ Добавить слот (если меньше 5)</li>
+                <li>🗑️ Удалить слот</li>
+                <li>💾 Сохранить и начать поиск</li>
+                <li>❌ Отмена</li>
+            </ul>
+        </div>
+
+        <h2 id="ui-requirements">11. Требования к интерфейсу</h2>
+
+        <h3>11.1. Главная страница</h3>
+
+        <div class="success-box">
+            <h4>Элементы главной:</h4>
+            <ul>
+                <li><strong>Баланс:</strong> Крупным шрифтом "Осталось: 10 бронирований"</li>
+                <li><strong>Срок действия:</strong> "Действителен до: 01.12.2025"</li>
+                <li><strong>Кнопки навигации:</strong>
+                    <ul>
+                        <li>🏪 Мои кабинеты</li>
+                        <li>📦 Поставки</li>
+                        <li>💳 Тарифы</li>
+                        <li>📖 Инструкция</li>
+                        <li>💬 Техподдержка</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>11.2. Список поставок</h3>
+
+        <div class="info-box">
+            <h4>Фильтры:</h4>
+            <ul>
+                <li>Выпадающий список: "Все магазины" / "Магазин 1" / "Магазин 2"...</li>
+                <li>Переключатель статусов: "Все" / "В поиске" / "Слот найден" / "На паузе"</li>
+            </ul>
+
+            <h4>Карточка заказа:</h4>
+            <ul>
+                <li><strong>Номер поставки:</strong> #12345</li>
+                <li><strong>Маршрут:</strong> Хоругвино → Коледино</li>
+                <li><strong>Статус:</strong> <span class="badge badge-warning">В поиске</span></li>
+                <li><strong>Переключатель:</strong> Отслеживаем ↔ Пауза</li>
+                <li><strong>Кнопка:</strong> ✏️ Редактировать</li>
+                <li><strong>Последняя проверка:</strong> 5 минут назад</li>
+            </ul>
+        </div>
+
+        <h3>11.3. Тарифы</h3>
+
+        <div class="success-box">
+            <h4>Прогрессивная ценовая шкала:</h4>
+            <ul>
+                <li>5-10 бронирований: <strong>300₽ за бронирование</strong></li>
+                <li>11-50 бронирований: <strong>200₽ за бронирование</strong></li>
+                <li>51+ бронирований: <strong>100₽ за бронирование</strong></li>
+            </ul>
+
+            <h4>Элементы:</h4>
+            <ul>
+                <li>Ползунок или инпут для выбора количества</li>
+                <li>Динамический расчёт: "Итого: 2000₽ за 10 бронирований"</li>
+                <li>Кнопка "💰 Оплатить"</li>
+                <li>Выбор способа оплаты: T-Pay / СБП / Яндекс.Пэй / Карта</li>
+            </ul>
+        </div>
+
+        <h3>11.4. Мои кабинеты</h3>
+
+        <div class="info-box">
+            <h4>Список магазинов:</h4>
+            <ul>
+                <li>Название магазина</li>
+                <li>Client ID (первые 4 символа + ***)</li>
+                <li>Статус: ✅ Валиден / ❌ Ошибка ключей</li>
+                <li>Кнопка "🗑️ Удалить"</li>
+            </ul>
+
+            <h4>Добавление магазина:</h4>
+            <ul>
+                <li>Поле: Название магазина (опционально)</li>
+                <li>Поле: Client ID</li>
+                <li>Поле: API Key (скрыто при вводе)</li>
+                <li>Кнопка "💾 Сохранить"</li>
+                <li>Валидация при сохранении через <code>/v1/roles</code></li>
+            </ul>
+        </div>
+
+        <h3>11.5. Инструкция</h3>
+
+        <p>Краткое руководство по работе с ботом:</p>
+        <ol>
+            <li>Добавьте магазин OZON (Client ID + API Key с ролью Supply order)</li>
+            <li>Создайте черновики поставок в личном кабинете OZON</li>
+            <li>В разделе "Поставки" бота выберите заказ и задайте до 5 удобных слотов</li>
+            <li>Бот автоматически найдёт и забронирует подходящий слот</li>
+            <li>При необходимости пополните баланс в разделе "Тарифы"</li>
+        </ol>
+
+        <h2 id="errors-edge-cases">12. Ошибки и пограничные случаи</h2>
+
+        <h3>12.1. Валидация и ограничения</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Случай</th>
+                    <th>Обработка</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Нет добавленных магазинов</strong></td>
+                    <td>Раздел "Поставки" показывает: "Сначала добавьте магазин в разделе 'Мои кабинеты'"</td>
+                </tr>
+                <tr>
+                    <td><strong>Баланс = 0</strong></td>
+                    <td>
+                        • Блокируем запуск автопоиска<br>
+                        • Показываем уведомление: "Пополните баланс в разделе 'Тарифы'"<br>
+                        • Кнопка "Начать поиск" неактивна
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Попытка добавить > 5 магазинов</strong></td>
+                    <td>Запрет на добавление, сообщение: "Достигнут лимит: максимум 5 магазинов"</td>
+                </tr>
+                <tr>
+                    <td><strong>Попытка добавить > 5 интервалов</strong></td>
+                    <td>Валидация формы, запрет сохранения, подсветка ошибки</td>
+                </tr>
+                <tr>
+                    <td><strong>Неверный формат Client ID / API Key</strong></td>
+                    <td>Валидация при вводе, сообщение об ошибке формата</td>
+                </tr>
+                <tr>
+                    <td><strong>Невалидные ключи (401/403 от API)</strong></td>
+                    <td>
+                        • Помечаем магазин статусом <code>INVALID_KEY</code><br>
+                        • Отключаем трекинг для всех заказов этого магазина<br>
+                        • Отправляем уведомление пользователю
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Конфликт слотов (пересекающиеся интервалы)</strong></td>
+                    <td>Дедупликация и сортировка по приоритету (первый заданный = высший)</td>
+                </tr>
+                <tr>
+                    <td><strong>Смена часового пояса пользователя</strong></td>
+                    <td>Все времена нормализуются к складу/локали, пересчёт при смене настроек</td>
+                </tr>
+                <tr>
+                    <td><strong>Ошибка API 429 (Too Many Requests)</strong></td>
+                    <td>Экспоненциальный ретрай с джиттером, бэк-офф до 30 мин, логирование</td>
+                </tr>
+                <tr>
+                    <td><strong>Ошибка API 5xx</strong></td>
+                    <td>Экспоненциальный ретрай с джиттером, бэк-офф до 30 мин, алерт в мониторинг</td>
+                </tr>
+                <tr>
+                    <td><strong>Неуспешная оплата</strong></td>
+                    <td>
+                        • Баланс не меняется<br>
+                        • Логируем инвойс со статусом <code>FAILED</code><br>
+                        • Показываем сообщение: "Оплата не прошла. Попробуйте другой способ"
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Дубликат заказа при загрузке</strong></td>
+                    <td>Проверка по <code>ozonSupplyOrderId</code>, обновление существующей записи</td>
+                </tr>
+                <tr>
+                    <td><strong>Удаление магазина с активными поставками</strong></td>
+                    <td>Предупреждение: "У вас есть X активных поставок. Удалить магазин?"</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>12.2. Retry стратегия</h3>
+
+        <div class="warning-box">
+            <h4>Политика повторных попыток:</h4>
+            <ul>
+                <li><strong>1-я попытка:</strong> немедленно</li>
+                <li><strong>2-я попытка:</strong> через 1 мин</li>
+                <li><strong>3-я попытка:</strong> через 5 мин</li>
+                <li><strong>4-я попытка:</strong> через 15 мин</li>
+                <li><strong>5-я попытка:</strong> через 30 мин</li>
+                <li><strong>После 5 попыток:</strong> переход в состояние <code>FAILED</code>, уведомление пользователя</li>
+            </ul>
+            <p><strong>Джиттер:</strong> ±10% от времени ожидания для предотвращения синхронизированных запросов</p>
+        </div>
+
+        <h2 id="non-functional">13. Нефункциональные требования</h2>
+
+        <h3>13.1. Доступность и надёжность</h3>
+
+        <ul>
+            <li><strong>Доступность:</strong> 99.5% в месяц (допустимый даунтайм ~3.6 часа/месяц)</li>
+            <li><strong>RTO (Recovery Time Objective):</strong> ≤ 30 минут</li>
+            <li><strong>RPO (Recovery Point Objective):</strong> ≤ 15 минут</li>
+            <li><strong>Резервное копирование:</strong> Ежедневные бэкапы БД, хранение 30 дней</li>
+        </ul>
+
+        <h3>13.2. Производительность</h3>
+
+        <ul>
+            <li><strong>Пропускная способность:</strong> ≥ 1000 активных заказов при опросе каждые 10 мин</li>
+            <li><strong>Латентность API Ozon:</strong> P50 < 500ms, P95 < 2s, P99 < 5s</li>
+            <li><strong>Время отклика бота:</strong> < 1 секунды на команду пользователя</li>
+            <li><strong>Параллельные воркеры:</strong> Масштабируемое количество worker'ов для проверки слотов</li>
+        </ul>
+
+        <h3>13.3. Безопасность</h3>
+
+        <ul>
+            <li><strong>Шифрование API ключей:</strong> AES-256 или использование KMS (AWS KMS, Azure Key Vault, и т.д.)</li>
+            <li><strong>Аудит действий:</strong> Логирование всех операций с поставками и оплатами</li>
+            <li><strong>Ограничение доступа:</strong> Principle of Least Privilege для БД и сервисов</li>
+            <li><strong>Rate limiting per store:</strong> Максимум 100 запросов/мин на магазин</li>
+            <li><strong>HTTPS:</strong> Все внешние соединения только через HTTPS</li>
+            <li><strong>Защита от SSRF:</strong> Валидация всех URL перед запросами</li>
+        </ul>
+
+        <h3>13.4. Логирование и мониторинг</h3>
+
+        <ul>
+            <li><strong>Структурированные логи:</strong> JSON формат с корреляцией по <code>requestId</code></li>
+            <li><strong>Уровни логирования:</strong> DEBUG (dev), INFO (prod), WARN, ERROR</li>
+            <li><strong>Метрики:</strong>
+                <ul>
+                    <li>Успех/ошибка бронирований (rate, count)</li>
+                    <li>Латентность API запросов (histogram)</li>
+                    <li>Квоты API (gauge)</li>
+                    <li>Активные пользователи (gauge)</li>
+                    <li>Выручка (counter)</li>
+                </ul>
+            </li>
+            <li><strong>Алерты:</strong>
+                <ul>
+                    <li>Пик ошибок 5xx/429 (> 10% за 5 мин)</li>
+                    <li>Доступность < 99% за час</li>
+                    <li>Очередь задач > 1000 элементов</li>
+                    <li>Worker'ы не работают > 5 минут</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>13.5. Масштабируемость</h3>
+
+        <ul>
+            <li><strong>Горизонтальное масштабирование:</strong> Worker'ы, веб-сервер, БД (read replicas)</li>
+            <li><strong>Кэширование:</strong> Redis для FSM state, сессий, справочников</li>
+            <li><strong>Очереди:</strong> RabbitMQ/Redis для задач проверки слотов</li>
+            <li><strong>Load Balancing:</strong> Распределение нагрузки между инстансами</li>
+        </ul>
+
+        <h2 id="testing">14. Тестирование и приёмка</h2>
+
+        <h3>14.1. Юнит-тесты</h3>
+
+        <ul>
+            <li>Парсинг ответов Ozon API (timeslots, supply orders)</li>
+            <li>Нормализация времени (часовые пояса, преобразование в UTC)</li>
+            <li>Приоритезация интервалов (сортировка, дедупликация)</li>
+            <li>Биллинг логика (начисление баланса, продление срока)</li>
+            <li>Валидация форм (интервалы, ключи API)</li>
+        </ul>
+
+        <h3>14.2. Интеграционные тесты</h3>
+
+        <ul>
+            <li>Мок Ozon API для сценариев:
+                <ul>
+                    <li>"Нет доступных окон"</li>
+                    <li>"Окно появилось"</li>
+                    <li>"Бронь успешна"</li>
+                    <li>"Бронь неудачна (конфликт)"</li>
+                    <li>"Ошибки 401, 429, 5xx"</li>
+                </ul>
+            </li>
+            <li>Тестирование платёжного флоу (успешная/неуспешная оплата)</li>
+            <li>Тестирование уведомлений (отправка через Telegram)</li>
+        </ul>
+
+        <h3>14.3. E2E тесты</h3>
+
+        <ol>
+            <li>Пользователь регистрируется через /start</li>
+            <li>Добавляет магазин с валидными ключами</li>
+            <li>Система загружает список поставок из Ozon</li>
+            <li>Пользователь выбирает поставку и задаёт 3 интервала</li>
+            <li>Система начинает автопоиск</li>
+            <li>Мок Ozon API возвращает доступный слот</li>
+            <li>Система бронирует слот и списывает 1 бронирование</li>
+            <li>Пользователь получает уведомление об успешном бронировании</li>
+            <li>Статус поставки меняется на <code>FOUND</code></li>
+        </ol>
+
+        <h3>14.4. Критерии приёмки</h3>
+
+        <div class="success-box">
+            <h4>Обязательные критерии:</h4>
+            <ol>
+                <li>✅ Пользователь может добавить до 5 магазинов с валидными ключами</li>
+                <li>✅ Редактор слотов сохраняет ≤ 5 интервалов и запускает трекинг</li>
+                <li>✅ При появлении подходящего окна выполняется бронирование и списывается 1 баланс</li>
+                <li>✅ Раздел "Тарифы" пополняет баланс мгновенно и продлевает срок на 30 дней</li>
+                <li>✅ Нотификация отправляется при каждом успешном бронировании</li>
+                <li>✅ Фильтры в разделе "Поставки" работают корректно</li>
+                <li>✅ Переключатель "Пауза" останавливает/возобновляет трекинг</li>
+                <li>✅ При баланс = 0 автопоиск блокируется</li>
+                <li>✅ При ошибке ключей магазин помечается, трекинг отключается</li>
+                <li>✅ Все критичные бизнес-сценарии покрыты тестами</li>
+            </ol>
+        </div>
+
+        <h3>14.5. Нагрузочное тестирование</h3>
+
+        <ul>
+            <li><strong>Сценарий 1:</strong> 1000 активных заказов, опрос каждые 10 мин</li>
+            <li><strong>Сценарий 2:</strong> 100 одновременных пользователей в Telegram боте</li>
+            <li><strong>Сценарий 3:</strong> Пиковая нагрузка: 500 req/s к Ozon API (с rate limiting)</li>
+            <li><strong>Цель:</strong> Подтвердить, что система выдерживает указанную нагрузку без деградации</li>
+        </ul>
+
+        <h2 id="deployment">15. Развёртывание и операционка</h2>
+
+        <h3>15.1. Окружения</h3>
+
+        <ul>
+            <li><strong>Development:</strong> Локальная разработка, моки API</li>
+            <li><strong>Staging:</strong> Тестовое окружение с тестовыми ключами Ozon</li>
+            <li><strong>Production:</strong> Рабочее окружение с реальными данными</li>
+        </ul>
+
+        <h3>15.2. Инфраструктура</h3>
+
+        <ul>
+            <li><strong>Telegram Bot API:</strong> Вебхуки (prod) / Long Polling (dev)</li>
+            <li><strong>Часовой пояс:</strong> UTC для всех серверных компонентов</li>
+            <li><strong>Планировщик:</strong> Worker-процесс, расписание 5–10 мин, адаптивно на основе квот и ошибок</li>
+            <li><strong>Хранилище:</strong> PostgreSQL (основная БД), Redis (кэш, очереди, FSM state)</li>
+            <li><strong>Очереди:</strong> Redis Queue или RabbitMQ для задач отслеживания</li>
+            <li><strong>Платёжный провайдер:</strong> Интеграция по выбору (ЮKassa, CloudPayments, Stripe), вебхук подтверждения</li>
+        </ul>
+
+        <h3>15.3. CI/CD</h3>
+
+        <ul>
+            <li><strong>Репозиторий:</strong> GitHub/GitLab</li>
+            <li><strong>Pipeline:</strong>
+                <ol>
+                    <li>Линтинг (flake8, black, mypy для Python)</li>
+                    <li>Юнит-тесты (pytest)</li>
+                    <li>Интеграционные тесты</li>
+                    <li>Сборка Docker образа</li>
+                    <li>Push в Docker Registry</li>
+                    <li>Deploy на staging (автоматически)</li>
+                    <li>Deploy на production (вручную после одобрения)</li>
+                </ol>
+            </li>
+            <li><strong>Infrastructure as Code:</strong> Terraform или Ansible для управления инфраструктурой</li>
+        </ul>
+
+        <h3>15.4. Мониторинг</h3>
+
+        <ul>
+            <li><strong>Дашборды:</strong> Grafana с метриками по:
+                <ul>
+                    <li>Успехи/ошибки бронирований (rate)</li>
+                    <li>Латентность API (histogram, P50/P95/P99)</li>
+                    <li>Активные пользователи/магазины/заказы</li>
+                    <li>Баланс бронирований (распределение)</li>
+                    <li>Выручка (динамика)</li>
+                </ul>
+            </li>
+            <li><strong>Алерты:</strong> PagerDuty/Opsgenie/Telegram для критичных событий</li>
+            <li><strong>Логи:</strong> Centralized logging (ELK Stack или Loki)</li>
+        </ul>
+
+        <h3>15.5. Поддержка</h3>
+
+        <div class="info-box">
+            <h4>Техническая поддержка пользователей:</h4>
+            <ul>
+                <li><strong>Канал:</strong> Кнопка «Техподдержка» на главной странице открывает чат с Telegram-ботом поддержки</li>
+                <li><strong>Журналирование заявок:</strong>
+                    <ul>
+                        <li>userId</li>
+                        <li>storeId (если применимо)</li>
+                        <li>orderId (если применимо)</li>
+                        <li>Категория (вопрос / проблема / баг)</li>
+                        <li>Текст обращения</li>
+                        <li>Статус (открыта / в работе / решена / закрыта)</li>
+                        <li>Назначенный оператор</li>
+                    </ul>
+                </li>
+                <li><strong>SLA:</strong>
+                    <ul>
+                        <li>Ответ на обращение: до 24 часов</li>
+                        <li>Решение проблемы: до 72 часов</li>
+                        <li>Критичные баги: до 4 часов</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>15.6. Обслуживание БД</h3>
+
+        <ul>
+            <li><strong>Бэкапы:</strong> Ежедневные полные бэкапы, инкрементальные каждые 6 часов</li>
+            <li><strong>Retention:</strong> 30 дней хранения бэкапов</li>
+            <li><strong>Тест восстановления:</strong> Ежемесячно проверяем восстановление из бэкапа</li>
+            <li><strong>Индексы:</strong> Мониторинг производительности запросов, добавление индексов по мере роста данных</li>
+            <li><strong>Архивация:</strong> Старые заявки в поддержку (> 6 месяцев) архивируются в отдельное хранилище</li>
+        </ul>
+
+        <h2 id="implementation-roadmap">16. План реализации</h2>
+
+        <h3>16.1. Фаза 1: MVP (4-6 недель)</h3>
 
         <table>
             <thead>
@@ -1527,7 +2632,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h3>8.2. Фаза 2: Расширенный функционал (4-6 недель)</h3>
+        <h3>16.2. Фаза 2: Расширенный функционал (4-6 недель)</h3>
 
         <ul>
             <li>Автоматическое бронирование (с подтверждением)</li>
@@ -1537,7 +2642,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li>Интеграция с платёжными системами</li>
         </ul>
 
-        <h3>8.3. Фаза 3: Масштабирование (8-12 недель)</h3>
+        <h3>16.3. Фаза 3: Масштабирование (8-12 недель)</h3>
 
         <ul>
             <li>Оптимизация производительности</li>
@@ -1548,7 +2653,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li>Интеграция с Wildberries (расширение на другие маркетплейсы)</li>
         </ul>
 
-        <h3>8.4. Команда разработки</h3>
+        <h3>16.4. Команда разработки</h3>
 
         <table>
             <thead>
@@ -1587,9 +2692,9 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h2 id="risks">9. Риски и ограничения</h2>
+        <h2 id="risks">17. Риски и ограничения</h2>
 
-        <h3>9.1. Технические риски</h3>
+        <h3>17.1. Технические риски</h3>
 
         <table>
             <thead>
@@ -1657,7 +2762,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h3>9.2. Бизнес-риски</h3>
+        <h3>17.2. Бизнес-риски</h3>
 
         <ul>
             <li><strong>Юридические риски:</strong> Убедиться, что автоматизация не нарушает ToS Ozon</li>
@@ -1666,7 +2771,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li><strong>Зависимость от Ozon:</strong> Бизнес полностью завязан на экосистему одного маркетплейса</li>
         </ul>
 
-        <h3>9.3. Операционные риски</h3>
+        <h3>17.3. Операционные риски</h3>
 
         <ul>
             <li>Необходимость 24/7 поддержки пользователей</li>
@@ -1674,9 +2779,9 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li>Высокие требования к uptime (99.9%+)</li>
         </ul>
 
-        <h2 id="budget">10. Бюджет и ресурсы</h2>
+        <h2 id="budget">18. Бюджет и ресурсы</h2>
 
-        <h3>10.1. Оценка затрат на разработку</h3>
+        <h3>18.1. Оценка затрат на разработку</h3>
 
         <table>
             <thead>
@@ -1720,7 +2825,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h3>10.2. Инфраструктурные расходы (месяц)</h3>
+        <h3>18.2. Инфраструктурные расходы (месяц)</h3>
 
         <table>
             <thead>
@@ -1783,7 +2888,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h3>10.3. Модель монетизации</h3>
+        <h3>18.3. Модель монетизации</h3>
 
         <h4>Предлагаемые тарифы</h4>
 
@@ -1878,9 +2983,9 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </tbody>
         </table>
 
-        <h2 id="conclusion">11. Заключение</h2>
+        <h2 id="conclusion">19. Заключение</h2>
 
-        <h3>11.1. Плюсы проекта</h3>
+        <h3>19.1. Плюсы проекта</h3>
 
         <div class="success-box">
             <h4>✅ Преимущества</h4>
@@ -1895,7 +3000,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </ul>
         </div>
 
-        <h3>11.2. Минусы и вызовы</h3>
+        <h3>19.2. Минусы и вызовы</h3>
 
         <div class="danger-box">
             <h4>❌ Недостатки и риски</h4>
@@ -1909,7 +3014,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             </ul>
         </div>
 
-        <h3>11.3. Рекомендации</h3>
+        <h3>19.3. Рекомендации</h3>
 
         <ol>
             <li><strong>Начать с MVP:</strong> Фокус на мониторинг и уведомления, без агрессивного автобронирования</li>
@@ -1920,7 +3025,7 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
             <li><strong>Диверсификация:</strong> Не зависеть только от Ozon, добавить другие маркетплейсы</li>
         </ol>
 
-        <h3>11.4. Следующие шаги</h3>
+        <h3>19.4. Следующие шаги</h3>
 
         <div class="info-box">
             <h4>🚀 План действий</h4>
@@ -1963,13 +3068,41 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
         <div style="text-align: center; color: #6c757d; padding: 20px;">
             <p><strong>Техническое задание подготовлено:</strong> 05 ноября 2025</p>
             <p><strong>Последнее обновление:</strong> 06 ноября 2025</p>
-            <p><strong>Версия:</strong> 2.0</p>
+            <p><strong>Версия:</strong> 3.0</p>
             <p style="margin-top: 20px; font-size: 0.9em;">
                 Документ создан на основе анализа рынка, технических требований, официальной документации Ozon Seller API и лучших практик разработки Telegram-ботов 2025 года
             </p>
-            <p style="margin-top: 10px; font-size: 0.9em;">
-                <strong>Версия 2.0:</strong> Добавлены официальные описания функций приложения, детальный пользовательский сценарий, полный список API endpoints для роли Supply order, системные ограничения и правила работы с бронированиями
-            </p>
+
+            <div style="text-align: left; max-width: 800px; margin: 20px auto;">
+                <h4 style="color: #005bff; margin-bottom: 10px;">История изменений:</h4>
+
+                <p style="margin-top: 10px; font-size: 0.9em;">
+                    <strong>Версия 3.0 (06.11.2025):</strong> Полное техническое задание с детальной спецификацией:
+                </p>
+                <ul style="font-size: 0.9em; text-align: left; margin-left: 40px;">
+                    <li>Добавлен раздел 7.3: Минимальные вызовы API для каждой фичи</li>
+                    <li>Добавлен раздел 8: Данные и модели (User, Store, Supply Order, TimeSlot, Payment, Log)</li>
+                    <li>Добавлен раздел 9: Статусы, события и уведомления с жизненным циклом поставки</li>
+                    <li>Добавлен раздел 10: Команды бота и навигация с детальной структурой</li>
+                    <li>Добавлен раздел 11: Требования к интерфейсу (все экраны и элементы)</li>
+                    <li>Добавлен раздел 12: Ошибки и пограничные случаи с retry стратегией</li>
+                    <li>Добавлен раздел 13: Нефункциональные требования (доступность, производительность, безопасность)</li>
+                    <li>Добавлен раздел 14: Тестирование и приёмка (Unit, Integration, E2E, критерии)</li>
+                    <li>Добавлен раздел 15: Развёртывание и операционка (CI/CD, мониторинг, поддержка)</li>
+                    <li>Добавлена прогрессивная ценовая шкала тарифов (300₽/200₽/100₽ за бронирование)</li>
+                    <li>Детализированы все модели данных с полями и типами</li>
+                    <li>Описаны все пользовательские сценарии и edge cases</li>
+                    <li>Добавлены SLA для поддержки и метрики производительности</li>
+                </ul>
+
+                <p style="margin-top: 10px; font-size: 0.9em;">
+                    <strong>Версия 2.0 (06.11.2025):</strong> Добавлены официальные описания функций приложения, детальный пользовательский сценарий, полный список API endpoints для роли Supply order, системные ограничения и правила работы с бронированиями
+                </p>
+
+                <p style="margin-top: 10px; font-size: 0.9em;">
+                    <strong>Версия 1.0 (05.11.2025):</strong> Первая версия с анализом рынка, конкурентов, технической архитектурой и планом реализации
+                </p>
+            </div>
         </div>
     </div>
 </body>
