@@ -14,8 +14,10 @@ import subprocess
 import speech_recognition as sr
 from pydub import AudioSegment
 import math
+from datetime import datetime
 
-TEMP_DIR = "/tmp/video_transcribe"
+import tempfile
+TEMP_DIR = os.path.join(tempfile.gettempdir(), "video_transcribe")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 def convert_to_wav(input_file):
@@ -317,7 +319,7 @@ def create_html(transcription_data, output_file, source_file):
         <div class="info">
             <p><strong>📂 Источник:</strong> {os.path.basename(source_file)}</p>
             <p><strong>📍 Путь:</strong> {source_file}</p>
-            <p><strong>🕐 Создано:</strong> {subprocess.run(['date', '+%Y-%m-%d %H:%M:%S'], capture_output=True, text=True).stdout.strip()}</p>
+            <p><strong>🕐 Создано:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         </div>
 
         <div class="stats">
@@ -388,7 +390,7 @@ def main():
         print(f"❌ Файл не найден: {input_file}")
         sys.exit(1)
 
-    output_html = "/home/user/ads/transcription.html"
+    output_html = os.path.join(os.getcwd(), "transcription.html")
 
     print("="*60)
     print("🎬 ТРАНСКРИБАЦИЯ ВИДЕО/АУДИО")

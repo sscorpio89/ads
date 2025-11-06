@@ -15,8 +15,10 @@ import os
 import sys
 import subprocess
 import speech_recognition as sr
+from datetime import datetime
+import tempfile
 
-TEMP_DIR = "/tmp/video_transcribe"
+TEMP_DIR = os.path.join(tempfile.gettempdir(), "video_transcribe")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 def download_video_with_cookies(url, cookies_file):
@@ -165,7 +167,7 @@ def create_html(transcription, output_file, video_url):
 
         <div class="info">
             <p><strong>Источник:</strong> <a href="{video_url}" target="_blank">{video_url}</a></p>
-            <p class="timestamp"><strong>Создано:</strong> {subprocess.run(['date', '+%Y-%m-%d %H:%M:%S'], capture_output=True, text=True).stdout.strip()}</p>
+            <p class="timestamp"><strong>Создано:</strong> {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         </div>
 
         <div class="transcription">
@@ -182,7 +184,7 @@ def create_html(transcription, output_file, video_url):
     print(f"\n✓ HTML файл создан: {output_file}")
 
 def main():
-    cookies_file = "/home/user/ads/cookies.txt"
+    cookies_file = os.path.join(os.getcwd(), "cookies.txt")
 
     if len(sys.argv) < 2:
         print("Использование: python3 transcribe_with_cookies.py <URL>")
@@ -199,7 +201,7 @@ def main():
         sys.exit(1)
 
     video_url = sys.argv[1]
-    output_html = "/home/user/ads/transcription.html"
+    output_html = os.path.join(os.getcwd(), "transcription.html")
 
     try:
         # Скачиваем видео

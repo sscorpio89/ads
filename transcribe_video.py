@@ -7,9 +7,11 @@ import subprocess
 import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.utils import which
+from datetime import datetime
+import tempfile
 
 # Временная директория для файлов
-TEMP_DIR = "/tmp/video_transcribe"
+TEMP_DIR = os.path.join(tempfile.gettempdir(), "video_transcribe")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
 def download_video(url):
@@ -127,7 +129,7 @@ def create_html(transcription, output_file):
 <body>
     <div class="container">
         <h1>Транскрибация видео</h1>
-        <p class="timestamp">Создано: {subprocess.run(['date', '+%Y-%m-%d %H:%M:%S'], capture_output=True, text=True).stdout.strip()}</p>
+        <p class="timestamp">Создано: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
         <div class="transcription">
 {transcription}
         </div>
@@ -147,7 +149,7 @@ def main():
         sys.exit(1)
 
     video_url = sys.argv[1]
-    output_html = "/home/user/ads/transcription.html"
+    output_html = os.path.join(os.getcwd(), "transcription.html")
 
     try:
         # Скачиваем и извлекаем аудио
