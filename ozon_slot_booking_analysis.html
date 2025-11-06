@@ -294,8 +294,9 @@
 
         <div class="info-box">
             <strong>Дата составления:</strong> 05 ноября 2025<br>
-            <strong>Версия документа:</strong> 1.0<br>
-            <strong>Статус:</strong> Аналитический отчёт с техническим заданием
+            <strong>Последнее обновление:</strong> 06 ноября 2025<br>
+            <strong>Версия документа:</strong> 2.0<br>
+            <strong>Статус:</strong> Аналитический отчёт с техническим заданием и официальной спецификацией
         </div>
 
         <div class="toc">
@@ -550,6 +551,255 @@
             <li>Интеграция с T-Pay, СБП, Яндекс.Пэй, банковские карты</li>
             <li>Промокоды и реферальная программа</li>
         </ul>
+
+        <h3>4.3. Официальное описание функций приложения</h3>
+
+        <div class="info-box">
+            <h4>📱 Основные разделы приложения</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Раздел</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Главная страница</strong></td>
+                        <td>Отображение оставшихся бронирований и навигация по разделам</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Мои кабинеты</strong></td>
+                        <td>Управление личными кабинетами OZON (до 5 кабинетов)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Поставки</strong></td>
+                        <td>Просмотр и управление заказами с фильтрацией</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Бронирование слотов</strong></td>
+                        <td>Настройка удобного времени поставок (до 5 слотов на заказ)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Тарифы</strong></td>
+                        <td>Покупка дополнительных бронирований</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Техподдержка</strong></td>
+                        <td>Связь с поддержкой через Telegram-бота</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h4>Детальный пользовательский сценарий (User Journey)</h4>
+
+        <div class="success-box">
+            <h4>🚀 Шаг 1: Начало работы</h4>
+            <ol>
+                <li>Пользователь открывает приложение в Telegram</li>
+                <li>На главной странице отображается баланс бронирований</li>
+                <li>Пользователь нажимает "Мои кабинеты"</li>
+                <li>Добавляет первый магазин OZON:
+                    <ul>
+                        <li><strong>Client ID</strong> (идентификатор продавца)</li>
+                        <li><strong>API key</strong> с ролью <code>Supply order</code></li>
+                    </ul>
+                </li>
+                <li>Система проверяет валидность ключей через Ozon API</li>
+                <li>При успехе кабинет добавляется, при ошибке показывается сообщение</li>
+            </ol>
+        </div>
+
+        <div class="warning-box">
+            <h4>⚠️ Важно: Получение API ключа</h4>
+            <p>Для получения API ключа с ролью <code>Supply order</code>:</p>
+            <ol>
+                <li>Зайти в личный кабинет Ozon → Настройки → API ключи</li>
+                <li>Создать новый ключ</li>
+                <li><strong>Обязательно выбрать роль "Supply order"</strong></li>
+                <li>Скопировать Client ID и API Key</li>
+            </ol>
+            <p><strong>Роль Supply order</strong> позволяет получать информацию по поставке FBO и работать со слотами.</p>
+        </div>
+
+        <div class="info-box">
+            <h4>📦 Шаг 2: Работа с поставками</h4>
+            <ol>
+                <li><strong>Создание черновиков поставок:</strong>
+                    <ul>
+                        <li>Пользователь создает черновики поставок <strong>в личном кабинете Ozon</strong> (не в боте)</li>
+                        <li>Выбирает склады отгрузки и направления</li>
+                        <li>Товарный состав должен быть согласован</li>
+                        <li>Поставка должна находиться в статусе "Черновик"</li>
+                    </ul>
+                </li>
+                <li><strong>Синхронизация с ботом:</strong>
+                    <ul>
+                        <li>Пользователь переходит в раздел "Поставки" в боте</li>
+                        <li>Бот загружает список заказов из OZON API</li>
+                        <li>Отображает все черновики поставок</li>
+                    </ul>
+                </li>
+                <li><strong>Использование фильтров:</strong>
+                    <ul>
+                        <li><strong>По магазинам:</strong> Все магазины / конкретные магазины</li>
+                        <li><strong>По статусу:</strong> Все заказы / В поиске / Слот найден</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="success-box">
+            <h4>⏰ Шаг 3: Настройка удобных слотов</h4>
+            <ol>
+                <li>Пользователь выбирает заказ из списка</li>
+                <li>Нажимает кнопку "Редактировать"</li>
+                <li>Указывает <strong>до 5 удобных временных промежутков</strong> для поставки:
+                    <ul>
+                        <li>Дата поставки</li>
+                        <li>Временной диапазон (например, 9:00-12:00)</li>
+                        <li>Можно выбрать несколько дней и время</li>
+                    </ul>
+                </li>
+                <li>Нажимает "Сохранить настройки"</li>
+                <li>Система переводит заказ в статус <span class="badge badge-warning">В поиске</span></li>
+                <li><strong>Автоматический поиск:</strong>
+                    <ul>
+                        <li>Бот начинает периодический опрос Ozon API</li>
+                        <li>Проверяет доступность слотов по заданным параметрам</li>
+                        <li>При нахождении подходящего слота — автоматически бронирует</li>
+                    </ul>
+                </li>
+                <li><strong>Уведомление:</strong>
+                    <ul>
+                        <li>Пользователь получает Telegram уведомление об успешном бронировании</li>
+                        <li>Указывается дата, время и склад</li>
+                        <li>Списывается 1 бронирование с баланса</li>
+                        <li>Бот прекращает отслеживание этой поставки</li>
+                        <li>Статус меняется на <span class="badge badge-success">Слот найден</span></li>
+                    </ul>
+                </li>
+                <li>Пользователь видит забронированный слот в личном кабинете Ozon</li>
+            </ol>
+        </div>
+
+        <div class="info-box">
+            <h4>💳 Шаг 4: Покупка дополнительных бронирований</h4>
+            <ol>
+                <li>Когда бронирования заканчиваются, пользователь получает уведомление</li>
+                <li>Переходит в раздел "Тарифы"</li>
+                <li>Выбирает подходящий тарифный план</li>
+                <li>Оплачивает через:
+                    <ul>
+                        <li>T-Pay (Telegram платежи)</li>
+                        <li>СБП (Система быстрых платежей)</li>
+                        <li>Яндекс.Пэй</li>
+                        <li>Банковские карты</li>
+                    </ul>
+                </li>
+                <li>После оплаты бронирования доступны <strong>мгновенно</strong></li>
+                <li>Баланс обновляется на главной странице</li>
+            </ol>
+        </div>
+
+        <h4>Важные ограничения и правила</h4>
+
+        <div class="danger-box">
+            <h4>⚠️ Системные ограничения</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Параметр</th>
+                        <th>Ограничение</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Максимум кабинетов OZON</strong></td>
+                        <td><span class="badge badge-warning">5 кабинетов</span></td>
+                        <td>На одного пользователя Telegram</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Максимум слотов на заказ</strong></td>
+                        <td><span class="badge badge-warning">5 слотов</span></td>
+                        <td>Временных промежутков для одной поставки</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Расход бронирований</strong></td>
+                        <td><span class="badge badge-danger">1 бронирование</span></td>
+                        <td>Списывается при успешном бронировании слота</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Срок действия бронирований</strong></td>
+                        <td><span class="badge badge-info">30 дней</span></td>
+                        <td>С даты покупки. Каждая новая покупка обновляет срок на следующие 30 дней</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Статус поставки</strong></td>
+                        <td><span class="badge badge-warning">Черновик</span></td>
+                        <td>Бот работает только с черновиками поставок</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API роль</strong></td>
+                        <td><span class="badge badge-primary">Supply order</span></td>
+                        <td>Обязательная роль для API ключа</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="warning-box">
+            <h4>💡 Важные нюансы работы с бронированиями</h4>
+            <ul>
+                <li><strong>Поиск бесплатный:</strong> Бот может искать слоты бесконечно долго без списания средств</li>
+                <li><strong>Списание только за результат:</strong> Бронирование списывается только когда бот успешно забронировал слот</li>
+                <li><strong>Продление срока:</strong> При покупке новых бронирований до окончания текущего периода:
+                    <ul>
+                        <li>Старые бронирования сохраняются</li>
+                        <li>Срок продлевается на 30 дней с момента новой покупки</li>
+                        <li>Работает как у операторов связи с минутами</li>
+                    </ul>
+                </li>
+                <li><strong>Множественные поставки:</strong> Если создать 50 поставок и бот найдет слоты для всех — спишется 50 бронирований</li>
+                <li><strong>Рекомендация:</strong> Создавайте поставки разумно, контролируйте количество активных отслеживаний</li>
+            </ul>
+        </div>
+
+        <h4>Состояния поставки в боте</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Статус</th>
+                    <th>Описание</th>
+                    <th>Действия пользователя</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="badge badge-info">Новая</span></td>
+                    <td>Поставка загружена из Ozon, настройки слотов не заданы</td>
+                    <td>Нажать "Редактировать" и выбрать удобные слоты</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-warning">В поиске</span></td>
+                    <td>Бот активно ищет подходящие слоты по заданным параметрам</td>
+                    <td>Ожидать уведомления или изменить параметры</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-success">Слот найден</span></td>
+                    <td>Слот успешно забронирован, поставка готова к отгрузке</td>
+                    <td>Подготовить товар к отправке</td>
+                </tr>
+                <tr>
+                    <td><span class="badge badge-danger">Ошибка</span></td>
+                    <td>Произошла ошибка при бронировании или работе с API</td>
+                    <td>Проверить настройки кабинета или обратиться в поддержку</td>
+                </tr>
+            </tbody>
+        </table>
 
         <h2 id="technical-architecture">5. Техническая архитектура</h2>
 
@@ -835,16 +1085,332 @@
         <div class="info-box">
             <h4>📚 Официальная документация</h4>
             <p><a href="https://docs.ozon.ru/api/seller/" target="_blank">https://docs.ozon.ru/api/seller/</a></p>
+            <p><strong>Аутентификация:</strong> Для работы с Ozon Seller API необходимо использование клиентского идентификатора (Client ID) и уникального ключа (API Key)</p>
         </div>
 
-        <h4>Основные методы для работы со слотами</h4>
+        <div class="warning-box">
+            <h4>🔑 Роль API: Supply order</h4>
+            <p>Роль <strong>Supply order</strong> позволяет получать информацию по поставке FBO и предоставляет доступ ко всем необходимым методам для работы с поставками и слотами.</p>
+            <p>При создании API ключа в личном кабинете Ozon обязательно выберите роль <code>Supply order</code>.</p>
+        </div>
+
+        <h3>7.2. Полный список API методов роли Supply order</h3>
+
+        <p>Ниже представлен полный список endpoint'ов, доступных для роли <code>Supply order</code>:</p>
+
+        <h4>Работа с грузами (Cargoes)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes/create</code></td>
+                    <td>Создание груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes/create/info</code></td>
+                    <td>Получение информации о создании груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v2/cargoes/create/info</code></td>
+                    <td>Получение информации о создании груза (v2)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes/delete</code></td>
+                    <td>Удаление груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes/delete/status</code></td>
+                    <td>Статус удаления груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes-label/create</code></td>
+                    <td>Создание этикетки для груза</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><code>/v1/cargoes-label/file/*</code></td>
+                    <td>Получение файла этикетки груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes-label/get</code></td>
+                    <td>Получение этикетки груза</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cargoes/rules/get</code></td>
+                    <td>Получение правил для грузов</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Работа с кластерами и складами</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/cluster/list</code></td>
+                    <td>Список кластеров складов</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supplier/available_warehouses</code></td>
+                    <td>Список доступных складов для поставщика</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/warehouse/fbo/list</code></td>
+                    <td>Список складов FBO</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Работа с черновиками (Drafts)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/draft/create</code></td>
+                    <td>Создание черновика поставки</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/draft/create/info</code></td>
+                    <td>Получение информации о черновике</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/draft/supply/create</code></td>
+                    <td>Создание поставки из черновика</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/draft/supply/create/status</code></td>
+                    <td>Статус создания поставки из черновика</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/draft/timeslot/info</code></td>
+                    <td><strong>Получение доступных таймслотов</strong> (ключевой метод)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Управление поставками (Supply Orders)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/bundle</code></td>
+                    <td>Группировка поставок</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/cancel</code></td>
+                    <td>Отмена поставки</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/cancel/status</code></td>
+                    <td>Статус отмены поставки</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/content/update</code></td>
+                    <td>Обновление содержимого поставки</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/content/update/status</code></td>
+                    <td>Статус обновления содержимого</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/content/update/validation</code></td>
+                    <td>Валидация обновления содержимого</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/get</code></td>
+                    <td>Получение информации о поставке</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v2/supply-order/get</code></td>
+                    <td>Получение информации о поставке (v2)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v3/supply-order/get</code></td>
+                    <td>Получение информации о поставке (v3)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/items</code></td>
+                    <td>Получение товаров в поставке</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v2/supply-order/items</code></td>
+                    <td>Получение товаров в поставке (v2)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/list</code></td>
+                    <td>Список поставок</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v2/supply-order/list</code></td>
+                    <td>Список поставок (v2)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v3/supply-order/list</code></td>
+                    <td>Список поставок (v3)</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/status/counter</code></td>
+                    <td>Счетчики статусов поставок</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Работа с таймслотами</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/timeslot/get</code></td>
+                    <td>Получение информации о таймслоте поставки</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/timeslot/status</code></td>
+                    <td>Статус таймслота</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/timeslot/update</code></td>
+                    <td><strong>Обновление таймслота (бронирование)</strong> (ключевой метод)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Пропуска и документы</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/pass/create</code></td>
+                    <td>Создание пропуска на склад</td>
+                </tr>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/supply-order/pass/status</code></td>
+                    <td>Статус пропуска</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><code>/v1/supplier/orders/{orderId}/waybill_acceptance_results</code></td>
+                    <td>Результаты приемки по накладной (по ID заказа)</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><code>/v1/supplier/waybill_acceptance_results/{waybillId}</code></td>
+                    <td>Результаты приемки по накладной (по ID накладной)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Роли и права</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Метод</th>
+                    <th>Endpoint</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>POST</td>
+                    <td><code>/v1/roles</code></td>
+                    <td>Получение ролей и прав API ключа</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="success-box">
+            <h4>🎯 Ключевые методы для бота</h4>
+            <p>Для реализации функционала бронирования слотов наиболее важны следующие методы:</p>
+            <ul>
+                <li><code>/v1/draft/timeslot/info</code> — получение доступных таймслотов для черновика</li>
+                <li><code>/v1/supply-order/timeslot/update</code> — бронирование/изменение таймслота</li>
+                <li><code>/v1/supply-order/list</code> (v1/v2/v3) — получение списка поставок</li>
+                <li><code>/v1/supply-order/get</code> (v1/v2/v3) — получение деталей конкретной поставки</li>
+                <li><code>/v1/warehouse/fbo/list</code> — список доступных складов</li>
+                <li><code>/v1/cluster/list</code> — список кластеров</li>
+            </ul>
+        </div>
+
+        <h3>7.3. Основные методы для работы со слотами</h3>
 
         <pre><code>POST https://api-seller.ozon.ru/v1/draft/timeslot/info
 POST https://api-seller.ozon.ru/v1/draft/create
 POST https://api-seller.ozon.ru/v1/draft/supply/create
 POST https://api-seller.ozon.ru/v1/cargoes/create
-GET  https://api-seller.ozon.ru/v1/supply/list
-POST https://api-seller.ozon.ru/v1/supply/cancel</code></pre>
+POST https://api-seller.ozon.ru/v1/supply-order/list
+POST https://api-seller.ozon.ru/v1/supply-order/timeslot/update
+POST https://api-seller.ozon.ru/v1/supply-order/cancel</code></pre>
 
         <h4>Пример: Получение информации о слотах</h4>
 
@@ -1396,9 +1962,13 @@ async def get_timeslots(client_id: str, api_key: str, warehouse_id: int):
 
         <div style="text-align: center; color: #6c757d; padding: 20px;">
             <p><strong>Техническое задание подготовлено:</strong> 05 ноября 2025</p>
-            <p><strong>Версия:</strong> 1.0</p>
+            <p><strong>Последнее обновление:</strong> 06 ноября 2025</p>
+            <p><strong>Версия:</strong> 2.0</p>
             <p style="margin-top: 20px; font-size: 0.9em;">
-                Документ создан на основе анализа рынка, технических требований и лучших практик разработки Telegram-ботов 2025 года
+                Документ создан на основе анализа рынка, технических требований, официальной документации Ozon Seller API и лучших практик разработки Telegram-ботов 2025 года
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9em;">
+                <strong>Версия 2.0:</strong> Добавлены официальные описания функций приложения, детальный пользовательский сценарий, полный список API endpoints для роли Supply order, системные ограничения и правила работы с бронированиями
             </p>
         </div>
     </div>
