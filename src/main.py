@@ -11,6 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
 from .handlers.supply_handlers import router as supply_router
+from .handlers.shop_handlers import router as shop_router
 from .config.settings import settings
 
 
@@ -45,6 +46,7 @@ app.add_middleware(
 
 # Подключение роутеров
 app.include_router(supply_router)
+app.include_router(shop_router)
 
 
 # Статические файлы для Telegram Mini App
@@ -106,6 +108,12 @@ async def root():
             <h1>🚚 Управление поставками Ozon FBO</h1>
 
             <div class="card">
+                <h3>🏪 Мои магазины</h3>
+                <p>Добавьте и управляйте магазинами Ozon Seller</p>
+                <button class="button" onclick="manageShops()">Управление магазинами</button>
+            </div>
+
+            <div class="card">
                 <h3>Создать заявку на поставку</h3>
                 <p>Создайте новую заявку на поставку товаров на склад Ozon</p>
                 <button class="button" onclick="createSupply()">Создать заявку</button>
@@ -131,6 +139,10 @@ async def root():
 
             // Установка цветовой схемы
             document.body.style.backgroundColor = tg.themeParams.bg_color || '#ffffff';
+
+            function manageShops() {
+                window.location.href = '/static/shops.html';
+            }
 
             function createSupply() {
                 // TODO: Открыть форму создания заявки

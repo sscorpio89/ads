@@ -10,6 +10,15 @@ from .supply import (
     SupplyListResponse,
 )
 
+from .shop import (
+    Shop,
+    ShopCreateRequest,
+    ShopUpdateRequest,
+    ShopResponse,
+    ShopListResponse,
+    ShopCreatedResponse,
+)
+
 __all__ = [
     "TimeslotInfo",
     "SupplyDraft",
@@ -18,4 +27,10 @@ __all__ = [
     "CargoRequest",
     "SupplyResponse",
     "SupplyListResponse",
+    "Shop",
+    "ShopCreateRequest",
+    "ShopUpdateRequest",
+    "ShopResponse",
+    "ShopListResponse",
+    "ShopCreatedResponse",
 ]
