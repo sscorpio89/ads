@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Руководство: Создание Telegram Mini App для бронирования слотов Ozon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #0088cc;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            border-bottom: 4px solid #0088cc;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: #0066cc;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-left: 5px solid #0088cc;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        h4 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .danger-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            color: inherit;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background: #0088cc;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tr:hover {
+            background: #e9ecef;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .toc li {
+            margin-bottom: 8px;
+        }
+
+        a {
+            color: #0088cc;
+            text-decoration: none;
+            border-bottom: 1px dashed #0088cc;
+        }
+
+        a:hover {
+            color: #0056b3;
+            border-bottom: 1px solid #0056b3;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-primary {
+            background: #007bff;
+            color: white;
+        }
+
+        .badge-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .badge-info {
+            background: #17a2b8;
+            color: white;
+        }
+
+        .step-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .step-box h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .architecture-diagram {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Руководство: Создание Telegram Mini App для бронирования слотов Ozon</h1>
+
+        <div class="info-box">
+            <strong>Дата составления:</strong> 06 ноября 2025<br>
+            <strong>Версия документа:</strong> 1.0<br>
+            <strong>Аналог:</strong> @STPulse_slot_bot<br>
+            <strong>Основано на:</strong> Техническое задание v3.0
+        </div>
+
+        <div class="toc">
+            <h3>📑 Содержание</h3>
+            <ul>
+                <li><a href="#introduction">1. Введение в Telegram Mini Apps</a></li>
+                <li><a href="#architecture">2. Архитектура решения</a></li>
+                <li><a href="#setup">3. Настройка бота через BotFather</a></li>
+                <li><a href="#frontend">4. Frontend: React + Vite для Mini App</a></li>
+                <li><a href="#backend">5. Backend: Python + FastAPI</a></li>
+                <li><a href="#telegram-integration">6. Интеграция с Telegram Web App API</a></li>
+                <li><a href="#ozon-integration">7. Интеграция с Ozon Seller API</a></li>
+                <li><a href="#database">8. База данных и модели</a></li>
+                <li><a href="#authentication">9. Аутентификация и безопасность</a></li>
+                <li><a href="#deployment">10. Развертывание и хостинг</a></li>
+                <li><a href="#testing">11. Тестирование Mini App</a></li>
+                <li><a href="#best-practices">12. Best Practices и оптимизация</a></li>
+            </ul>
+        </div>
+
+        <h2 id="introduction">1. Введение в Telegram Mini Apps</h2>
+
+        <p>Telegram Mini Apps (ранее Web Apps) — это веб-приложения, которые запускаются внутри Telegram мессенджера и имеют доступ к специальному JavaScript API для взаимодействия с платформой Telegram.</p>
+
+        <h3>1.1. Что такое Telegram Mini App?</h3>
+
+        <ul>
+            <li><strong>Веб-приложение</strong> — работает как обычный сайт (HTML/CSS/JavaScript)</li>
+            <li><strong>Встроенный в Telegram</strong> — открывается прямо в мессенджере без внешнего браузера</li>
+            <li><strong>Доступ к Telegram API</strong> — через <code>window.Telegram.WebApp</code></li>
+            <li><strong>Нативный UI</strong> — кнопки, темы, жесты интегрированы с Telegram</li>
+            <li><strong>Аутентификация</strong> — пользователь уже авторизован через Telegram</li>
+        </ul>
+
+        <h3>1.2. Преимущества Mini App для нашего проекта</h3>
+
+        <div class="success-box">
+            <ul>
+                <li>✅ <strong>Богатый UI:</strong> Полноценный интерфейс с формами, таблицами, графиками</li>
+                <li>✅ <strong>Быстрая разработка:</strong> Используем React/Vue/любой фреймворк</li>
+                <li>✅ <strong>Нет установки:</strong> Пользователь просто открывает бота</li>
+                <li>✅ <strong>Встроенные платежи:</strong> Telegram Payments API</li>
+                <li>✅ <strong>Кроссплатформенность:</strong> iOS, Android, Desktop, Web</li>
+                <li>✅ <strong>Обновления:</strong> Мгновенное обновление без App Store</li>
+            </ul>
+        </div>
+
+        <h3>1.3. Как это работает?</h3>
+
+        <div class="architecture-diagram">
+            <pre style="text-align: left; font-size: 0.85em;">
+┌─────────────────────────────────────────────────────────────┐
+│                    TELEGRAM CLIENT                          │
+│                   (iOS/Android/Desktop)                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     │ 1. Пользователь нажимает кнопку "Открыть"
+                     │    или отправляет команду /start
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    TELEGRAM BOT                             │
+│                  (@YourSlotBot)                             │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     │ 2. Бот отправляет Web App URL
+                     │    в виде Inline кнопки или ответа
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│              TELEGRAM WEB APP CONTAINER                     │
+│         (Встроенный браузер внутри Telegram)                │
+│                                                             │
+│  ┌───────────────────────────────────────────────────────┐ │
+│  │           YOUR MINI APP (React/Vue/etc)               │ │
+│  │         https://your-domain.com/miniapp               │ │
+│  │                                                       │ │
+│  │  • HTML/CSS/JavaScript                                │ │
+│  │  • window.Telegram.WebApp API                         │ │
+│  │  • Доступ к user_id, theme, locale                    │ │
+│  └───────────────────────────────────────────────────────┘ │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+                     │ 3. Mini App отправляет запросы
+                     │    к вашему backend API
+                     ▼
+┌─────────────────────────────────────────────────────────────┐
+│                   YOUR BACKEND API                          │
+│              (FastAPI/Node.js/Django)                       │
+│                                                             │
+│  • Валидация initData от Telegram                          │
+│  • CRUD операции с БД                                      │
+│  • Интеграция с Ozon API                                   │
+│  • Бизнес-логика                                           │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+       ┌─────────────┼─────────────┐
+       │             │             │
+       ▼             ▼             ▼
+   ┌─────────┐  ┌─────────┐  ┌──────────────┐
+   │   DB    │  │  Redis  │  │  Ozon API    │
+   │Postgres │  │  Cache  │  │              │
+   └─────────┘  └─────────┘  └──────────────┘
+            </pre>
+        </div>
+
+        <h2 id="architecture">2. Архитектура решения</h2>
+
+        <h3>2.1. Технологический стек</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Компонент</th>
+                    <th>Технология</th>
+                    <th>Обоснование</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Frontend (Mini App)</strong></td>
+                    <td>React 18 + TypeScript + Vite</td>
+                    <td>Быстрая разработка, типобезопасность, HMR</td>
+                </tr>
+                <tr>
+                    <td><strong>UI библиотека</strong></td>
+                    <td>Telegram UI Kit или Material-UI</td>
+                    <td>Готовые компоненты в стиле Telegram</td>
+                </tr>
+                <tr>
+                    <td><strong>State Management</strong></td>
+                    <td>Zustand или Redux Toolkit</td>
+                    <td>Управление состоянием приложения</td>
+                </tr>
+                <tr>
+                    <td><strong>HTTP Client</strong></td>
+                    <td>Axios или Fetch API</td>
+                    <td>Запросы к backend API</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend API</strong></td>
+                    <td>Python 3.11 + FastAPI</td>
+                    <td>Async, высокая производительность, OpenAPI</td>
+                </tr>
+                <tr>
+                    <td><strong>ORM</strong></td>
+                    <td>SQLAlchemy 2.0 + Alembic</td>
+                    <td>Async поддержка, миграции</td>
+                </tr>
+                <tr>
+                    <td><strong>Database</strong></td>
+                    <td>PostgreSQL 15+</td>
+                    <td>ACID, JSONB, надежность</td>
+                </tr>
+                <tr>
+                    <td><strong>Cache</strong></td>
+                    <td>Redis 7+</td>
+                    <td>Сессии, кэш API, rate limiting</td>
+                </tr>
+                <tr>
+                    <td><strong>Task Queue</strong></td>
+                    <td>Celery + RabbitMQ</td>
+                    <td>Фоновая проверка слотов</td>
+                </tr>
+                <tr>
+                    <td><strong>Telegram Bot</strong></td>
+                    <td>aiogram 3.x</td>
+                    <td>Уведомления, команды</td>
+                </tr>
+                <tr>
+                    <td><strong>Hosting Frontend</strong></td>
+                    <td>Vercel / Netlify / Cloudflare Pages</td>
+                    <td>CDN, HTTPS, бесплатный SSL</td>
+                </tr>
+                <tr>
+                    <td><strong>Hosting Backend</strong></td>
+                    <td>Railway / Render / DigitalOcean</td>
+                    <td>Докер, автоскейлинг</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>2.2. Структура проекта</h3>
+
+        <pre><code>ozon-slot-bot/
+├── frontend/                    # Telegram Mini App (React)
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── components/         # React компоненты
+│   │   │   ├── Home/
+│   │   │   ├── Stores/
+│   │   │   ├── Supplies/
+│   │   │   ├── Tariffs/
+│   │   │   └── Settings/
+│   │   ├── hooks/              # Custom hooks
+│   │   │   └── useTelegram.ts
+│   │   ├── services/           # API клиенты
+│   │   │   └── api.ts
+│   │   ├── store/              # State management
+│   │   │   └── store.ts
+│   │   ├── types/              # TypeScript types
+│   │   ├── utils/              # Утилиты
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts
+│   └── .env
+│
+├── backend/                     # FastAPI Backend
+│   ├── app/
+│   │   ├── api/                # API endpoints
+│   │   │   ├── auth.py
+│   │   │   ├── stores.py
+│   │   │   ├── supplies.py
+│   │   │   ├── payments.py
+│   │   │   └── webhooks.py
+│   │   ├── core/               # Конфигурация
+│   │   │   ├── config.py
+│   │   │   └── security.py
+│   │   ├── models/             # SQLAlchemy модели
+│   │   │   ├── user.py
+│   │   │   ├── store.py
+│   │   │   ├── supply.py
+│   │   │   └── payment.py
+│   │   ├── schemas/            # Pydantic схемы
+│   │   ├── services/           # Бизнес-логика
+│   │   │   ├── ozon.py
+│   │   │   ├── telegram.py
+│   │   │   └── billing.py
+│   │   ├── tasks/              # Celery tasks
+│   │   │   └── slot_checker.py
+│   │   ├── db/                 # Database
+│   │   │   └── session.py
+│   │   └── main.py
+│   ├── alembic/                # Миграции БД
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── .env
+│
+├── bot/                         # Telegram Bot (aiogram)
+│   ├── handlers/
+│   │   ├── start.py
+│   │   ├── webapp.py
+│   │   └── notifications.py
+│   ├── keyboards/
+│   ├── middlewares/
+│   ├── bot.py
+│   └── config.py
+│
+├── docker-compose.yml
+├── .gitignore
+└── README.md</code></pre>
+
+        <h2 id="setup">3. Настройка бота через BotFather</h2>
+
+        <div class="step-box">
+            <h3>Шаг 1: Создание бота</h3>
+        </div>
+
+        <ol>
+            <li>Откройте Telegram и найдите <strong>@BotFather</strong></li>
+            <li>Отправьте команду <code>/newbot</code></li>
+            <li>Введите имя бота: <code>Ozon Slot Booking</code></li>
+            <li>Введите username: <code>your_slot_bot</code></li>
+            <li>Сохраните полученный <strong>BOT_TOKEN</strong></li>
+        </ol>
+
+        <div class="step-box">
+            <h3>Шаг 2: Настройка Mini App</h3>
+        </div>
+
+        <ol>
+            <li>Отправьте BotFather команду <code>/newapp</code></li>
+            <li>Выберите созданного бота</li>
+            <li>Введите название Mini App: <code>Ozon Slots</code></li>
+            <li>Введите описание: <code>Автоматическое бронирование слотов для поставок на Ozon</code></li>
+            <li>Загрузите иконку 640x360 (PNG)</li>
+            <li>Загрузите GIF демонстрацию (опционально)</li>
+            <li>Введите <strong>Web App URL</strong>: <code>https://your-domain.com/miniapp</code></li>
+        </ol>
+
+        <div class="warning-box">
+            <h4>⚠️ Важно:</h4>
+            <ul>
+                <li>URL должен быть <strong>HTTPS</strong> (обязательно!)</li>
+                <li>Домен должен быть уже доступен на момент создания</li>
+                <li>Для разработки можно использовать ngrok или локальный HTTPS</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>Шаг 3: Настройка команд бота</h3>
+        </div>
+
+        <p>Отправьте BotFather команду <code>/setcommands</code> и введите:</p>
+
+        <pre><code>start - Открыть главную страницу
+help - Помощь по использованию
+balance - Показать баланс бронирований
+stores - Мои кабинеты OZON
+supplies - Мои поставки
+tariffs - Тарифы и оплата
+support - Техническая поддержка</code></pre>
+
+        <div class="step-box">
+            <h3>Шаг 4: Настройка меню кнопки</h3>
+        </div>
+
+        <p>Отправьте BotFather команду <code>/setmenubutton</code>:</p>
+
+        <ul>
+            <li><strong>Button text:</strong> <code>Открыть приложение</code></li>
+            <li><strong>URL:</strong> <code>https://your-domain.com/miniapp</code></li>
+        </ul>
+
+        <h2 id="frontend">4. Frontend: React + Vite для Mini App</h2>
+
+        <h3>4.1. Инициализация проекта</h3>
+
+        <pre><code># Создаем React проект с TypeScript
+npm create vite@latest frontend -- --template react-ts
+
+cd frontend
+
+# Устанавливаем зависимости
+npm install
+
+# Telegram Web App SDK
+npm install @twa-dev/sdk
+
+# Axios для API
+npm install axios
+
+# State management
+npm install zustand
+
+# UI библиотека (опционально)
+npm install @mui/material @emotion/react @emotion/styled
+
+# Роутинг
+npm install react-router-dom
+
+# Dev dependencies
+npm install -D @types/node</code></pre>
+
+        <h3>4.2. Настройка Vite</h3>
+
+        <p><strong>vite.config.ts:</strong></p>
+
+        <pre><code>import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import path from 'path'
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+  server: {
+    port: 3000,
+    // Для локальной разработки с Telegram
+    https: true, // Важно! Telegram требует HTTPS
+  },
+  build: {
+    outDir: 'dist',
+    sourcemap: false,
+  },
+})</code></pre>
+
+        <h3>4.3. Интеграция Telegram WebApp SDK</h3>
+
+        <p><strong>src/hooks/useTelegram.ts:</strong></p>
+
+        <pre><code>import { useEffect, useState } from 'react';
+import WebApp from '@twa-dev/sdk';
+
+export const useTelegram = () => {
+  const [user, setUser] = useState(WebApp.initDataUnsafe?.user);
+  const [initData, setInitData] = useState(WebApp.initData);
+
+  useEffect(() => {
+    // Готовность приложения
+    WebApp.ready();
+
+    // Расширяем на весь экран
+    WebApp.expand();
+
+    // Применяем тему Telegram
+    document.body.style.backgroundColor = WebApp.backgroundColor;
+
+    // Слушаем изменения темы
+    WebApp.onEvent('themeChanged', () => {
+      document.body.style.backgroundColor = WebApp.backgroundColor;
+    });
+
+    return () => {
+      WebApp.offEvent('themeChanged');
+    };
+  }, []);
+
+  // Закрыть Mini App
+  const close = () => {
+    WebApp.close();
+  };
+
+  // Показать главную кнопку
+  const showMainButton = (text: string, onClick: () => void) => {
+    WebApp.MainButton.setText(text);
+    WebApp.MainButton.show();
+    WebApp.MainButton.onClick(onClick);
+  };
+
+  // Скрыть главную кнопку
+  const hideMainButton = () => {
+    WebApp.MainButton.hide();
+  };
+
+  // Показать кнопку "Назад"
+  const showBackButton = (onClick: () => void) => {
+    WebApp.BackButton.show();
+    WebApp.BackButton.onClick(onClick);
+  };
+
+  // Скрыть кнопку "Назад"
+  const hideBackButton = () => {
+    WebApp.BackButton.hide();
+  };
+
+  // Тактильная обратная связь
+  const hapticFeedback = (type: 'light' | 'medium' | 'heavy' | 'error' | 'success' | 'warning') => {
+    if (type === 'light' || type === 'medium' || type === 'heavy') {
+      WebApp.HapticFeedback.impactOccurred(type);
+    } else {
+      WebApp.HapticFeedback.notificationOccurred(type as any);
+    }
+  };
+
+  // Открыть ссылку
+  const openLink = (url: string) => {
+    WebApp.openLink(url);
+  };
+
+  // Показать всплывающее окно
+  const showPopup = (params: {
+    title: string;
+    message: string;
+    buttons: Array<{ id: string; type?: 'default' | 'ok' | 'close' | 'cancel' | 'destructive'; text: string }>;
+  }) => {
+    return new Promise<string>((resolve) => {
+      WebApp.showPopup(params, (buttonId) => {
+        resolve(buttonId);
+      });
+    });
+  };
+
+  // Показать подтверждение
+  const showConfirm = (message: string) => {
+    return new Promise<boolean>((resolve) => {
+      WebApp.showConfirm(message, (confirmed) => {
+        resolve(confirmed);
+      });
+    });
+  };
+
+  // Проверка, запущено ли внутри Telegram
+  const isInTelegram = WebApp.initData !== '';
+
+  return {
+    user,
+    initData,
+    isInTelegram,
+    theme: WebApp.themeParams,
+    platform: WebApp.platform,
+    version: WebApp.version,
+    close,
+    showMainButton,
+    hideMainButton,
+    showBackButton,
+    hideBackButton,
+    hapticFeedback,
+    openLink,
+    showPopup,
+    showConfirm,
+  };
+};</code></pre>
+
+        <h3>4.4. API клиент</h3>
+
+        <p><strong>src/services/api.ts:</strong></p>
+
+        <pre><code>import axios from 'axios';
+import WebApp from '@twa-dev/sdk';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://your-api.com';
+
+// Создаем axios инстанс
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Interceptor для добавления Telegram initData
+api.interceptors.request.use((config) => {
+  const initData = WebApp.initData;
+  if (initData) {
+    config.headers['X-Telegram-Init-Data'] = initData;
+  }
+  return config;
+});
+
+// Interceptor для обработки ошибок
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      WebApp.showAlert('Ошибка аутентификации. Перезапустите приложение.');
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default api;</code></pre>
+
+        <h3>4.5. Пример компонента Главной страницы</h3>
+
+        <p><strong>src/components/Home/Home.tsx:</strong></p>
+
+        <pre><code>import React, { useEffect, useState } from 'react';
+import { useTelegram } from '@/hooks/useTelegram';
+import api from '@/services/api';
+import './Home.css';
+
+interface UserBalance {
+  balance_count: number;
+  balance_expire_at: string;
+}
+
+export const Home: React.FC = () => {
+  const { user, showMainButton, hideMainButton, hapticFeedback } = useTelegram();
+  const [balance, setBalance] = useState<UserBalance | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadBalance();
+    hideMainButton();
+  }, []);
+
+  const loadBalance = async () => {
+    try {
+      const response = await api.get('/api/user/balance');
+      setBalance(response.data);
+    } catch (error) {
+      console.error('Failed to load balance:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNavigate = (path: string) => {
+    hapticFeedback('light');
+    // Используем react-router для навигации
+    window.location.hash = path;
+  };
+
+  if (loading) {
+    return <div className="loading">Загрузка...</div>;
+  }
+
+  return (
+    <div className="home">
+      <div className="welcome">
+        <h1>Привет, {user?.first_name}! 👋</h1>
+        <p>Добро пожаловать в систему бронирования слотов Ozon</p>
+      </div>
+
+      <div className="balance-card">
+        <div className="balance-icon">💎</div>
+        <div className="balance-info">
+          <h2>Баланс бронирований</h2>
+          <div className="balance-count">{balance?.balance_count || 0} шт.</div>
+          {balance?.balance_expire_at && (
+            <div className="balance-expiry">
+              Действителен до: {new Date(balance.balance_expire_at).toLocaleDateString('ru-RU')}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="menu-grid">
+        <button className="menu-item" onClick={() => handleNavigate('/stores')}>
+          <div className="menu-icon">🏪</div>
+          <div className="menu-title">Мои кабинеты</div>
+          <div className="menu-desc">Управление магазинами OZON</div>
+        </button>
+
+        <button className="menu-item" onClick={() => handleNavigate('/supplies')}>
+          <div className="menu-icon">📦</div>
+          <div className="menu-title">Поставки</div>
+          <div className="menu-desc">Просмотр и отслеживание</div>
+        </button>
+
+        <button className="menu-item" onClick={() => handleNavigate('/tariffs')}>
+          <div className="menu-icon">💳</div>
+          <div className="menu-title">Тарифы</div>
+          <div className="menu-desc">Пополнение баланса</div>
+        </button>
+
+        <button className="menu-item" onClick={() => handleNavigate('/instructions')}>
+          <div className="menu-icon">📖</div>
+          <div className="menu-title">Инструкция</div>
+          <div className="menu-desc">Как пользоваться</div>
+        </button>
+
+        <button className="menu-item" onClick={() => handleNavigate('/support')}>
+          <div className="menu-icon">💬</div>
+          <div className="menu-title">Техподдержка</div>
+          <div className="menu-desc">Связаться с нами</div>
+        </button>
+      </div>
+    </div>
+  );
+};</code></pre>
+
+        <h3>4.6. Стили с учетом Telegram темы</h3>
+
+        <p><strong>src/App.css:</strong></p>
+
+        <pre><code>:root {
+  --tg-theme-bg-color: var(--tg-theme-bg-color, #ffffff);
+  --tg-theme-text-color: var(--tg-theme-text-color, #000000);
+  --tg-theme-hint-color: var(--tg-theme-hint-color, #999999);
+  --tg-theme-link-color: var(--tg-theme-link-color, #2481cc);
+  --tg-theme-button-color: var(--tg-theme-button-color, #2481cc);
+  --tg-theme-button-text-color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--tg-theme-bg-color);
+  color: var(--tg-theme-text-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app {
+  min-height: 100vh;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Адаптация под темную тему Telegram */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tg-theme-bg-color: #18222d;
+    --tg-theme-text-color: #ffffff;
+    --tg-theme-hint-color: #708499;
+  }
+}</code></pre>
+
+        <h2 id="backend">5. Backend: Python + FastAPI</h2>
+
+        <h3>5.1. Инициализация проекта</h3>
+
+        <pre><code># Создаем виртуальное окружение
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
+# Устанавливаем зависимости
+pip install fastapi uvicorn sqlalchemy alembic psycopg2-binary redis celery pydantic-settings python-dotenv aiohttp cryptography</code></pre>
+
+        <p><strong>requirements.txt:</strong></p>
+
+        <pre><code>fastapi==0.104.1
+uvicorn[standard]==0.24.0
+sqlalchemy==2.0.23
+alembic==1.12.1
+psycopg2-binary==2.9.9
+asyncpg==0.29.0
+redis==5.0.1
+celery==5.3.4
+pydantic==2.5.0
+pydantic-settings==2.1.0
+python-dotenv==1.0.0
+aiohttp==3.9.1
+cryptography==41.0.7
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4</code></pre>
+
+        <h3>5.2. Структура FastAPI приложения</h3>
+
+        <p><strong>backend/app/main.py:</strong></p>
+
+        <pre><code>from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.api import auth, stores, supplies, payments
+from app.core.config import settings
+
+app = FastAPI(
+    title="Ozon Slot Bot API",
+    description="API для Telegram Mini App бронирования слотов Ozon",
+    version="1.0.0",
+)
+
+# CORS для Telegram WebApp
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Подключаем роутеры
+app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(stores.router, prefix="/api/stores", tags=["stores"])
+app.include_router(supplies.router, prefix="/api/supplies", tags=["supplies"])
+app.include_router(payments.router, prefix="/api/payments", tags=["payments"])
+
+@app.get("/")
+async def root():
+    return {"message": "Ozon Slot Bot API"}
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+</code></pre>
+
+        <h3>5.3. Валидация Telegram initData</h3>
+
+        <p><strong>backend/app/core/security.py:</strong></p>
+
+        <pre><code>import hashlib
+import hmac
+from urllib.parse import parse_qsl
+from typing import Dict, Optional
+from fastapi import HTTPException, Header
+from app.core.config import settings
+
+def validate_telegram_init_data(init_data: str) -> Dict[str, any]:
+    """
+    Валидирует initData от Telegram WebApp
+    Документация: https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app
+    """
+    try:
+        # Парсим query string
+        parsed_data = dict(parse_qsl(init_data))
+
+        # Извлекаем hash
+        received_hash = parsed_data.pop('hash', None)
+        if not received_hash:
+            raise HTTPException(status_code=401, detail="Missing hash")
+
+        # Создаем data-check-string
+        data_check_arr = [f"{k}={v}" for k, v in sorted(parsed_data.items())]
+        data_check_string = '\n'.join(data_check_arr)
+
+        # Вычисляем secret_key
+        secret_key = hmac.new(
+            key=b"WebAppData",
+            msg=settings.BOT_TOKEN.encode(),
+            digestmod=hashlib.sha256
+        ).digest()
+
+        # Вычисляем hash
+        calculated_hash = hmac.new(
+            key=secret_key,
+            msg=data_check_string.encode(),
+            digestmod=hashlib.sha256
+        ).hexdigest()
+
+        # Сравниваем
+        if not hmac.compare_digest(received_hash, calculated_hash):
+            raise HTTPException(status_code=401, detail="Invalid hash")
+
+        # Проверяем auth_date (не старше 24 часов)
+        import time
+        auth_date = int(parsed_data.get('auth_date', 0))
+        if abs(time.time() - auth_date) > 86400:  # 24 часа
+            raise HTTPException(status_code=401, detail="Data is outdated")
+
+        # Парсим user данные
+        import json
+        user_data = json.loads(parsed_data.get('user', '{}'))
+
+        return {
+            'user_id': user_data.get('id'),
+            'username': user_data.get('username'),
+            'first_name': user_data.get('first_name'),
+            'last_name': user_data.get('last_name'),
+            'language_code': user_data.get('language_code'),
+            'auth_date': auth_date,
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid initData: {str(e)}")
+
+async def get_current_user(
+    x_telegram_init_data: Optional[str] = Header(None)
+) -> Dict[str, any]:
+    """
+    Dependency для получения текущего пользователя из Telegram initData
+    """
+    if not x_telegram_init_data:
+        raise HTTPException(status_code=401, detail="Missing Telegram initData")
+
+    return validate_telegram_init_data(x_telegram_init_data)
+</code></pre>
+
+        <h3>5.4. API endpoint пример</h3>
+
+        <p><strong>backend/app/api/stores.py:</strong></p>
+
+        <pre><code>from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.ext.asyncio import AsyncSession
+from typing import List
+from app.core.security import get_current_user
+from app.db.session import get_db
+from app import models, schemas
+from app.services.ozon import validate_ozon_credentials
+from app.core.encryption import encrypt_api_key, decrypt_api_key
+
+router = APIRouter()
+
+@router.get("/", response_model=List[schemas.Store])
+async def get_stores(
+    current_user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Получить список магазинов пользователя"""
+    result = await db.execute(
+        select(models.Store).where(models.Store.user_id == current_user['user_id'])
+    )
+    stores = result.scalars().all()
+    return stores
+
+@router.post("/", response_model=schemas.Store)
+async def create_store(
+    store_data: schemas.StoreCreate,
+    current_user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Добавить новый магазин"""
+    # Проверяем лимит (максимум 5)
+    result = await db.execute(
+        select(func.count(models.Store.id)).where(
+            models.Store.user_id == current_user['user_id']
+        )
+    )
+    count = result.scalar()
+    if count >= 5:
+        raise HTTPException(status_code=400, detail="Максимум 5 магазинов")
+
+    # Валидируем ключи через Ozon API
+    is_valid = await validate_ozon_credentials(
+        store_data.client_id,
+        store_data.api_key
+    )
+
+    if not is_valid:
+        raise HTTPException(status_code=400, detail="Невалидные API ключи")
+
+    # Шифруем API key
+    encrypted_key = encrypt_api_key(store_data.api_key)
+
+    # Создаем магазин
+    store = models.Store(
+        user_id=current_user['user_id'],
+        title=store_data.title,
+        client_id=store_data.client_id,
+        api_key_encrypted=encrypted_key,
+        status='VALID'
+    )
+
+    db.add(store)
+    await db.commit()
+    await db.refresh(store)
+
+    return store
+
+@router.delete("/{store_id}")
+async def delete_store(
+    store_id: int,
+    current_user: dict = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Удалить магазин"""
+    result = await db.execute(
+        select(models.Store).where(
+            models.Store.id == store_id,
+            models.Store.user_id == current_user['user_id']
+        )
+    )
+    store = result.scalar_one_or_none()
+
+    if not store:
+        raise HTTPException(status_code=404, detail="Магазин не найден")
+
+    await db.delete(store)
+    await db.commit()
+
+    return {"message": "Магазин удален"}
+</code></pre>
+
+        <h2 id="telegram-integration">6. Интеграция с Telegram Web App API</h2>
+
+        <h3>6.1. Основные возможности Telegram WebApp API</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Функция</th>
+                    <th>API метод</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Инициализация</strong></td>
+                    <td><code>WebApp.ready()</code></td>
+                    <td>Сообщить Telegram что приложение готово</td>
+                </tr>
+                <tr>
+                    <td><strong>Расширение</strong></td>
+                    <td><code>WebApp.expand()</code></td>
+                    <td>Раскрыть на весь экран</td>
+                </tr>
+                <tr>
+                    <td><strong>Главная кнопка</strong></td>
+                    <td><code>WebApp.MainButton</code></td>
+                    <td>Кнопка внизу экрана</td>
+                </tr>
+                <tr>
+                    <td><strong>Кнопка назад</strong></td>
+                    <td><code>WebApp.BackButton</code></td>
+                    <td>Кнопка назад в header</td>
+                </tr>
+                <tr>
+                    <td><strong>Тактильная обратная связь</strong></td>
+                    <td><code>WebApp.HapticFeedback</code></td>
+                    <td>Вибрация при действиях</td>
+                </tr>
+                <tr>
+                    <td><strong>Данные пользователя</strong></td>
+                    <td><code>WebApp.initDataUnsafe.user</code></td>
+                    <td>ID, имя, username</td>
+                </tr>
+                <tr>
+                    <td><strong>Тема</strong></td>
+                    <td><code>WebApp.themeParams</code></td>
+                    <td>Цвета темы Telegram</td>
+                </tr>
+                <tr>
+                    <td><strong>Платформа</strong></td>
+                    <td><code>WebApp.platform</code></td>
+                    <td>ios / android / tdesktop</td>
+                </tr>
+                <tr>
+                    <td><strong>Всплывающие окна</strong></td>
+                    <td><code>WebApp.showPopup()</code></td>
+                    <td>Модальные окна</td>
+                </tr>
+                <tr>
+                    <td><strong>Подтверждения</strong></td>
+                    <td><code>WebApp.showConfirm()</code></td>
+                    <td>Диалог подтверждения</td>
+                </tr>
+                <tr>
+                    <td><strong>Открытие ссылок</strong></td>
+                    <td><code>WebApp.openLink()</code></td>
+                    <td>Открыть внешнюю ссылку</td>
+                </tr>
+                <tr>
+                    <td><strong>Закрытие</strong></td>
+                    <td><code>WebApp.close()</code></td>
+                    <td>Закрыть Mini App</td>
+                </tr>
+                <tr>
+                    <td><strong>Отправка данных</strong></td>
+                    <td><code>WebApp.sendData()</code></td>
+                    <td>Отправить данные в бота</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>6.2. Пример использования платежей Telegram</h3>
+
+        <pre><code>// В компоненте Tariffs
+import { useTelegram } from '@/hooks/useTelegram';
+
+const { showPopup } = useTelegram();
+
+const handlePayment = async (itemsCount: number, price: number) => {
+  try {
+    // Создаем инвойс на backend
+    const response = await api.post('/api/payments/create-invoice', {
+      items_count: itemsCount,
+      price_total: price,
+    });
+
+    const { invoice_url } = response.data;
+
+    // Открываем платежную форму Telegram
+    window.Telegram.WebApp.openInvoice(invoice_url, (status) => {
+      if (status === 'paid') {
+        showPopup({
+          title: 'Оплата успешна!',
+          message: `Вам начислено ${itemsCount} бронирований`,
+          buttons: [{ id: 'ok', type: 'ok', text: 'OK' }],
+        });
+      } else if (status === 'cancelled') {
+        showPopup({
+          title: 'Оплата отменена',
+          message: 'Вы можете попробовать снова',
+          buttons: [{ id: 'ok', type: 'close', text: 'Закрыть' }],
+        });
+      }
+    });
+  } catch (error) {
+    console.error('Payment error:', error);
+  }
+};</code></pre>
+
+        <h2 id="ozon-integration">7. Интеграция с Ozon Seller API</h2>
+
+        <h3>7.1. Ozon API клиент</h3>
+
+        <p><strong>backend/app/services/ozon.py:</strong></p>
+
+        <pre><code>import aiohttp
+from typing import List, Dict, Optional
+from app.core.config import settings
+
+class OzonAPI:
+    BASE_URL = "https://api-seller.ozon.ru"
+
+    def __init__(self, client_id: str, api_key: str):
+        self.client_id = client_id
+        self.api_key = api_key
+        self.session = None
+
+    async def __aenter__(self):
+        self.session = aiohttp.ClientSession(
+            headers={
+                "Client-Id": self.client_id,
+                "Api-Key": self.api_key,
+                "Content-Type": "application/json",
+            }
+        )
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        if self.session:
+            await self.session.close()
+
+    async def validate_credentials(self) -> bool:
+        """Проверка валидности API ключей"""
+        try:
+            async with self.session.post(
+                f"{self.BASE_URL}/v1/roles",
+                json={}
+            ) as response:
+                return response.status == 200
+        except Exception:
+            return False
+
+    async def get_supply_orders(
+        self,
+        limit: int = 100,
+        offset: int = 0,
+        status: Optional[str] = None
+    ) -> List[Dict]:
+        """Получить список поставок"""
+        payload = {
+            "limit": limit,
+            "offset": offset,
+        }
+
+        if status:
+            payload["status"] = status
+
+        async with self.session.post(
+            f"{self.BASE_URL}/v3/supply-order/list",
+            json=payload
+        ) as response:
+            data = await response.json()
+            return data.get("result", {}).get("supply_orders", [])
+
+    async def get_available_timeslots(
+        self,
+        warehouse_id: int,
+        delivery_type: str = "fbo"
+    ) -> List[Dict]:
+        """Получить доступные таймслоты"""
+        async with self.session.post(
+            f"{self.BASE_URL}/v1/draft/timeslot/info",
+            json={
+                "warehouse_id": warehouse_id,
+                "delivery_type": delivery_type
+            }
+        ) as response:
+            data = await response.json()
+            return data.get("result", {}).get("timeslots", [])
+
+    async def update_timeslot(
+        self,
+        supply_order_id: str,
+        timeslot_id: str
+    ) -> bool:
+        """Обновить (забронировать) таймслот"""
+        try:
+            async with self.session.post(
+                f"{self.BASE_URL}/v1/supply-order/timeslot/update",
+                json={
+                    "supply_order_id": supply_order_id,
+                    "timeslot_id": timeslot_id
+                }
+            ) as response:
+                return response.status == 200
+        except Exception:
+            return False
+
+async def validate_ozon_credentials(client_id: str, api_key: str) -> bool:
+    """Валидация Ozon API ключей"""
+    async with OzonAPI(client_id, api_key) as ozon:
+        return await ozon.validate_credentials()
+</code></pre>
+
+        <h3>7.2. Celery задача для проверки слотов</h3>
+
+        <p><strong>backend/app/tasks/slot_checker.py:</strong></p>
+
+        <pre><code>from celery import Celery
+from app.services.ozon import OzonAPI
+from app.core.encryption import decrypt_api_key
+from app.db.session import AsyncSessionLocal
+from app import models
+import asyncio
+
+celery_app = Celery('tasks', broker='redis://localhost:6379/0')
+
+@celery_app.task
+def check_slots_for_order(order_id: int):
+    """Проверить слоты для заказа"""
+    asyncio.run(_check_slots_async(order_id))
+
+async def _check_slots_async(order_id: int):
+    async with AsyncSessionLocal() as db:
+        # Получаем заказ
+        order = await db.get(models.SupplyOrder, order_id)
+        if not order or order.state != 'SEARCHING':
+            return
+
+        # Получаем магазин
+        store = await db.get(models.Store, order.store_id)
+        if not store or store.status != 'VALID':
+            return
+
+        # Получаем пользователя
+        user = await db.get(models.User, store.user_id)
+        if not user or user.balance_count <= 0:
+            return
+
+        # Получаем предпочтительные слоты
+        result = await db.execute(
+            select(models.TimeSlotPreference)
+            .where(models.TimeSlotPreference.order_id == order_id)
+            .order_by(models.TimeSlotPreference.priority)
+        )
+        preferences = result.scalars().all()
+
+        # Расшифровываем API key
+        api_key = decrypt_api_key(store.api_key_encrypted)
+
+        # Проверяем доступность слотов
+        async with OzonAPI(store.client_id, api_key) as ozon:
+            available_slots = await ozon.get_available_timeslots(
+                warehouse_id=order.warehouse_to_id
+            )
+
+            # Ищем подходящий слот
+            for pref in preferences:
+                for slot in available_slots:
+                    if _matches_preference(slot, pref):
+                        # Бронируем
+                        success = await ozon.update_timeslot(
+                            supply_order_id=order.ozon_supply_order_id,
+                            timeslot_id=slot['id']
+                        )
+
+                        if success:
+                            # Обновляем заказ
+                            order.state = 'FOUND'
+                            order.tracking_enabled = False
+                            order.booked_at = datetime.utcnow()
+                            order.booked_slot = slot
+
+                            # Списываем бронирование
+                            user.balance_count -= 1
+
+                            await db.commit()
+
+                            # Отправляем уведомление
+                            from app.services.telegram import send_booking_notification
+                            await send_booking_notification(user.telegram_user_id, order, slot)
+
+                            return
+
+def _matches_preference(slot: Dict, preference: models.TimeSlotPreference) -> bool:
+    """Проверить соответствие слота предпочтениям"""
+    # Здесь логика сравнения времени слота с предпочтениями
+    # Упрощенная версия
+    slot_date = datetime.fromisoformat(slot['from'])
+    return (
+        slot_date.date() == preference.date and
+        slot_date.hour >= preference.hour_from and
+        slot_date.hour < preference.hour_to
+    )
+
+# Настраиваем периодическую задачу
+celery_app.conf.beat_schedule = {
+    'check-slots-every-5-minutes': {
+        'task': 'app.tasks.slot_checker.check_all_active_orders',
+        'schedule': 300.0,  # 5 минут
+    },
+}
+</code></pre>
+
+        <h2 id="database">8. База данных и модели</h2>
+
+        <h3>8.1. SQLAlchemy модели</h3>
+
+        <p><strong>backend/app/models/user.py:</strong></p>
+
+        <pre><code>from sqlalchemy import Column, Integer, BigInteger, String, DateTime, Boolean
+from sqlalchemy.orm import relationship
+from datetime import datetime
+from app.db.base_class import Base
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    telegram_user_id = Column(BigInteger, unique=True, nullable=False, index=True)
+    username = Column(String, nullable=True)
+    first_name = Column(String, nullable=True)
+    last_name = Column(String, nullable=True)
+    language_code = Column(String, nullable=True)
+    timezone = Column(String, default="UTC")
+    balance_count = Column(Integer, default=0)
+    balance_expire_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    last_active_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    # Relationships
+    stores = relationship("Store", back_populates="user", cascade="all, delete-orphan")
+    payments = relationship("Payment", back_populates="user")
+</code></pre>
+
+        <h3>8.2. Alembic миграции</h3>
+
+        <pre><code># Инициализация Alembic
+alembic init alembic
+
+# Создание миграции
+alembic revision --autogenerate -m "Initial tables"
+
+# Применение миграции
+alembic upgrade head</code></pre>
+
+        <h2 id="authentication">9. Аутентификация и безопасность</h2>
+
+        <h3>9.1. Шифрование API ключей</h3>
+
+        <p><strong>backend/app/core/encryption.py:</strong></p>
+
+        <pre><code>from cryptography.fernet import Fernet
+from app.core.config import settings
+
+# Генерируем ключ шифрования (сохраняем в .env)
+# key = Fernet.generate_key()
+
+cipher_suite = Fernet(settings.ENCRYPTION_KEY.encode())
+
+def encrypt_api_key(api_key: str) -> str:
+    """Шифрование API ключа"""
+    encrypted = cipher_suite.encrypt(api_key.encode())
+    return encrypted.decode()
+
+def decrypt_api_key(encrypted_key: str) -> str:
+    """Расшифровка API ключа"""
+    decrypted = cipher_suite.decrypt(encrypted_key.encode())
+    return decrypted.decode()
+</code></pre>
+
+        <h3>9.2. Rate limiting</h3>
+
+        <pre><code>from fastapi import HTTPException
+from redis import Redis
+import time
+
+redis_client = Redis(host='localhost', port=6379, db=0)
+
+async def rate_limit(user_id: int, limit: int = 100, window: int = 60):
+    """
+    Rate limiting: максимум {limit} запросов за {window} секунд
+    """
+    key = f"rate_limit:{user_id}"
+    current = redis_client.get(key)
+
+    if current is None:
+        redis_client.setex(key, window, 1)
+        return
+
+    if int(current) >= limit:
+        raise HTTPException(
+            status_code=429,
+            detail="Too many requests. Please try again later."
+        )
+
+    redis_client.incr(key)
+</code></pre>
+
+        <h2 id="deployment">10. Развертывание и хостинг</h2>
+
+        <h3>10.1. Docker Compose для локальной разработки</h3>
+
+        <p><strong>docker-compose.yml:</strong></p>
+
+        <pre><code>version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ozonbot
+      POSTGRES_PASSWORD: secretpassword
+      POSTGRES_DB: ozonbot_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ozonbot:secretpassword@postgres:5432/ozonbot_db
+      REDIS_URL: redis://redis:6379/0
+      BOT_TOKEN: ${BOT_TOKEN}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY}
+    depends_on:
+      - postgres
+      - redis
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  celery_worker:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ozonbot:secretpassword@postgres:5432/ozonbot_db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A app.tasks.slot_checker worker --loglevel=info
+
+  celery_beat:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+asyncpg://ozonbot:secretpassword@postgres:5432/ozonbot_db
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - postgres
+      - redis
+    command: celery -A app.tasks.slot_checker beat --loglevel=info
+
+volumes:
+  postgres_data:
+</code></pre>
+
+        <h3>10.2. Dockerfile для backend</h3>
+
+        <p><strong>backend/Dockerfile:</strong></p>
+
+        <pre><code>FROM python:3.11-slim
+
+WORKDIR /app
+
+# Установка зависимостей
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование кода
+COPY . .
+
+# Запуск
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+</code></pre>
+
+        <h3>10.3. Развертывание Frontend на Vercel</h3>
+
+        <pre><code># Установка Vercel CLI
+npm install -g vercel
+
+# Логин
+vercel login
+
+# Развертывание
+cd frontend
+vercel --prod
+
+# Настройка переменных окружения в Vercel
+# VITE_API_BASE_URL=https://your-backend-api.com
+</code></pre>
+
+        <h3>10.4. Развертывание Backend на Railway</h3>
+
+        <ol>
+            <li>Зайти на <a href="https://railway.app" target="_blank">Railway.app</a></li>
+            <li>Создать новый проект</li>
+            <li>Подключить GitHub репозиторий</li>
+            <li>Добавить PostgreSQL и Redis сервисы</li>
+            <li>Настроить переменные окружения</li>
+            <li>Railway автоматически задеплоит при пуше в main</li>
+        </ol>
+
+        <h2 id="testing">11. Тестирование Mini App</h2>
+
+        <h3>11.1. Локальная разработка с HTTPS</h3>
+
+        <div class="warning-box">
+            <h4>⚠️ Telegram требует HTTPS!</h4>
+            <p>Для тестирования локально используйте один из вариантов:</p>
+        </div>
+
+        <h4>Вариант 1: ngrok</h4>
+
+        <pre><code># Установка ngrok
+brew install ngrok  # Mac
+# или скачать с https://ngrok.com
+
+# Запуск frontend на порту 3000
+npm run dev
+
+# В другом терминале запуск ngrok
+ngrok http 3000
+
+# Получите HTTPS URL: https://abc123.ngrok.io
+# Используйте этот URL в BotFather
+</code></pre>
+
+        <h4>Вариант 2: локальный SSL сертификат</h4>
+
+        <pre><code># Генерация самоподписанного сертификата
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes
+
+# Обновить vite.config.ts
+server: {
+  https: {
+    key: fs.readFileSync('./key.pem'),
+    cert: fs.readFileSync('./cert.pem'),
+  },
+  port: 3000,
+}</code></pre>
+
+        <h3>11.2. Отладка в Telegram</h3>
+
+        <ul>
+            <li><strong>Desktop версия:</strong> Откройте DevTools (Ctrl+Shift+I)</li>
+            <li><strong>iOS:</strong> Safari Web Inspector (подключите устройство)</li>
+            <li><strong>Android:</strong> Chrome DevTools (chrome://inspect)</li>
+        </ul>
+
+        <h3>11.3. Тестирование компонентов</h3>
+
+        <pre><code># Установка testing-library
+npm install -D @testing-library/react @testing-library/jest-dom vitest
+
+# Пример теста
+import { render, screen } from '@testing-library/react';
+import { Home } from './Home';
+
+test('renders home page', () => {
+  render(<Home />);
+  const heading = screen.getByText(/Привет/i);
+  expect(heading).toBeInTheDocument();
+});
+</code></pre>
+
+        <h2 id="best-practices">12. Best Practices и оптимизация</h2>
+
+        <h3>12.1. Производительность</h3>
+
+        <ul>
+            <li>✅ <strong>Lazy loading:</strong> Используйте <code>React.lazy()</code> для разделения кода</li>
+            <li>✅ <strong>Мемоизация:</strong> <code>useMemo</code>, <code>useCallback</code> для дорогих вычислений</li>
+            <li>✅ <strong>Виртуализация списков:</strong> <code>react-window</code> для длинных списков</li>
+            <li>✅ <strong>Оптимизация изображений:</strong> WebP формат, lazy loading</li>
+            <li>✅ <strong>Минификация:</strong> Vite автоматически минифицирует код</li>
+        </ul>
+
+        <h3>12.2. UX для Telegram</h3>
+
+        <ul>
+            <li>✅ Используйте цвета темы Telegram (<code>--tg-theme-*</code>)</li>
+            <li>✅ Добавляйте тактильную обратную связь на действия</li>
+            <li>✅ Используйте MainButton для основных действий</li>
+            <li>✅ Используйте BackButton для навигации назад</li>
+            <li>✅ Адаптируйте UI под темную и светлую темы</li>
+            <li>✅ Учитывайте safe area на iOS (notch)</li>
+        </ul>
+
+        <h3>12.3. Безопасность</h3>
+
+        <ul>
+            <li>✅ Всегда валидируйте initData на backend</li>
+            <li>✅ Не доверяйте данным от frontend</li>
+            <li>✅ Шифруйте API ключи в БД</li>
+            <li>✅ Используйте HTTPS для всех запросов</li>
+            <li>✅ Реализуйте rate limiting</li>
+            <li>✅ Логируйте все критичные операции</li>
+        </ul>
+
+        <h3>12.4. Мониторинг</h3>
+
+        <ul>
+            <li>✅ <strong>Sentry:</strong> Отслеживание ошибок frontend и backend</li>
+            <li>✅ <strong>Prometheus + Grafana:</strong> Метрики и дашборды</li>
+            <li>✅ <strong>Структурированные логи:</strong> JSON формат с корреляцией</li>
+            <li>✅ <strong>Алерты:</strong> Уведомления при критичных ошибках</li>
+        </ul>
+
+        <div class="success-box">
+            <h3>🎉 Готово!</h3>
+            <p>Теперь у вас есть полное руководство по созданию Telegram Mini App для бронирования слотов Ozon. Следуйте этим шагам, адаптируйте под свои нужды, и создайте отличное приложение!</p>
+        </div>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid #dee2e6;">
+
+        <h3>📚 Полезные ресурсы</h3>
+
+        <ul>
+            <li><strong>Telegram Mini Apps:</strong> <a href="https://core.telegram.org/bots/webapps" target="_blank">Официальная документация</a></li>
+            <li><strong>Telegram Bot API:</strong> <a href="https://core.telegram.org/bots/api" target="_blank">Документация</a></li>
+            <li><strong>Ozon Seller API:</strong> <a href="https://docs.ozon.ru/api/seller/" target="_blank">Документация</a></li>
+            <li><strong>React документация:</strong> <a href="https://react.dev/" target="_blank">react.dev</a></li>
+            <li><strong>FastAPI документация:</strong> <a href="https://fastapi.tiangolo.com/" target="_blank">fastapi.tiangolo.com</a></li>
+            <li><strong>Vite документация:</strong> <a href="https://vitejs.dev/" target="_blank">vitejs.dev</a></li>
+            <li><strong>@twa-dev/sdk:</strong> <a href="https://github.com/twa-dev/sdk" target="_blank">GitHub</a></li>
+        </ul>
+
+        <div style="text-align: center; color: #6c757d; padding: 20px; margin-top: 40px;">
+            <p><strong>Руководство подготовлено:</strong> 06 ноября 2025</p>
+            <p><strong>Версия:</strong> 1.0</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">
+                Основано на техническом задании v3.0 для бота бронирования слотов Ozon
+            </p>
+        </div>
+    </div>
+</body>
+</html>
