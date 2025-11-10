@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozon Slot Bot - Полная документация</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        nav h2 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 8px 0;
+        }
+
+        nav ul li a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover {
+            color: #667eea;
+            background: #f0f0f0;
+        }
+
+        .section {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #764ba2;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.5em;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            overflow-x: auto;
+            display: block;
+        }
+
+        table thead {
+            background: #667eea;
+            color: white;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        table tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        table tbody tr:hover {
+            background: #f0f0f0;
+        }
+
+        pre {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .badge-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .badge-info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background: #e0f2fe;
+            border-color: #0ea5e9;
+            color: #075985;
+        }
+
+        .alert-warning {
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .alert-danger {
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            font-weight: 700;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #667eea;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #667eea;
+        }
+
+        .timeline-item h4 {
+            margin-top: 0;
+        }
+
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #666;
+        }
+
+        .architecture-diagram {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre;
+            margin: 20px 0;
+        }
+
+        footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+            nav {
+                display: none;
+            }
+            .section {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 10px;
+            }
+            .section {
+                padding: 20px;
+            }
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚀 Ozon Slot Bot</h1>
+        <p>Полная техническая документация проекта</p>
+        <p style="font-size: 0.9em; margin-top: 10px;">Анализ рынка • Техдизайн • API спецификация • Roadmap</p>
+    </header>
+
+    <div class="container">
+        <nav>
+            <h2>📑 Содержание</h2>
+            <ul>
+                <li><a href="#market-analysis">Анализ рынка</a></li>
+                <li><a href="#services-comparison">Сравнение сервисов</a></li>
+                <li><a href="#tech-stack">Технологический стек</a></li>
+                <li><a href="#architecture">Архитектура системы</a></li>
+                <li><a href="#database">База данных</a></li>
+                <li><a href="#api-spec">API спецификация</a></li>
+                <li><a href="#roadmap">Roadmap разработки</a></li>
+                <li><a href="#mvp">MVP план</a></li>
+            </ul>
+        </nav>
+
+        <!-- PART 1: MARKET ANALYSIS -->
+        <div class="section" id="market-analysis">
+            <h1>📊 Анализ рынка сервисов для работы с таймслотами Ozon</h1>
+
+            <div class="alert alert-info">
+                <strong>Цель исследования:</strong> Найти и проанализировать существующие веб-сервисы и Telegram-боты для автобронирования таймслотов Ozon, выявить их сильные и слабые стороны, а также определить возможности для создания конкурентного продукта.
+            </div>
+
+            <h2>🔍 Обзор найденных сервисов</h2>
+
+            <div class="grid">
+                <div class="metric">
+                    <div class="metric-label">Найдено сервисов</div>
+                    <div class="metric-value">8</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">С автобронированием</div>
+                    <div class="metric-value">3</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Только мониторинг</div>
+                    <div class="metric-value">2</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Универсальные</div>
+                    <div class="metric-value">3</div>
+                </div>
+            </div>
+
+            <h3>1. MetricLab.Поставки</h3>
+            <div class="card">
+                <div class="card-header">🏢 MetricLab.Поставки</div>
+                <p><strong>Сайт:</strong> <a href="https://supplies.metriclab.ru/" target="_blank">supplies.metriclab.ru</a></p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-success">✓</span> Автобронирование слотов 24/7 без Premium+</li>
+                    <li><span class="badge badge-success">✓</span> Пере-бронирование заявок автоматически</li>
+                    <li><span class="badge badge-success">✓</span> Создание заявок для недоступных складов</li>
+                    <li><span class="badge badge-success">✓</span> Индивидуальные мощности (нет очередей)</li>
+                    <li><span class="badge badge-success">✓</span> Мгновенные уведомления в Telegram</li>
+                </ul>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Максимальная скорость бронирования</li>
+                    <li>✅ Работает без Premium+ подписки</li>
+                    <li>✅ Быстрая поддержка (в течение часа)</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Цена не публикуется открыто</li>
+                    <li>❌ Нет информации о работе с черновиками</li>
+                    <li>❌ Нет информации об API подключении</li>
+                </ul>
+            </div>
+
+            <h3>2. WBCON</h3>
+            <div class="card">
+                <div class="card-header">🏢 WBCON</div>
+                <p><strong>Сайт:</strong> <a href="https://wbcon.ru/" target="_blank">wbcon.ru</a></p>
+                <p><strong>Telegram:</strong> @wbcon_support</p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-success">✓</span> Автобронирование через официальный Ozon API</li>
+                    <li><span class="badge badge-success">✓</span> До 10 магазинов с одного аккаунта</li>
+                    <li><span class="badge badge-success">✓</span> Загрузка Excel файлов</li>
+                    <li><span class="badge badge-success">✓</span> Выбор типа поставки (кросс-докинг/напрямую)</li>
+                    <li><span class="badge badge-success">✓</span> Безлимитные поиски в рамках юр. лица</li>
+                </ul>
+
+                <h4>Цена:</h4>
+                <div class="alert alert-info">
+                    <strong>Создание бота:</strong> 5 000 ₽<br>
+                    <strong>Подписка:</strong> 2 500 ₽/месяц
+                </div>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Прозрачное ценообразование</li>
+                    <li>✅ Полное API подключение</li>
+                    <li>✅ Поддержка нескольких магазинов</li>
+                    <li>✅ Загрузка данных из Excel</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Высокая начальная стоимость</li>
+                    <li>❌ Один бот = одно юр. лицо</li>
+                </ul>
+            </div>
+
+            <h3>3. LimitBot</h3>
+            <div class="card">
+                <div class="card-header">🏢 LimitBot</div>
+                <p><strong>Сайт:</strong> <a href="https://limitbot.ru/" target="_blank">limitbot.ru</a></p>
+
+                <div class="alert alert-danger">
+                    <strong>⚠️ Предупреждение:</strong> Использование автоботов может привести к блокировке кабинета на маркетплейсе
+                </div>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-success">✓</span> Автоматическое нахождение и бронирование</li>
+                    <li><span class="badge badge-success">✓</span> Поддержка Wildberries и Ozon</li>
+                    <li><span class="badge badge-success">✓</span> Мониторинг лимитов поставки</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Риск блокировки аккаунта</li>
+                    <li>❌ Нет детальной информации о функционале</li>
+                    <li>❌ Нет информации о цене</li>
+                </ul>
+            </div>
+
+            <h3>4. GuruSeller</h3>
+            <div class="card">
+                <div class="card-header">🏢 GuruSeller</div>
+                <p><strong>Сайт:</strong> <a href="https://guruseller.ru/" target="_blank">guruseller.ru</a></p>
+                <p><strong>Telegram:</strong> @gurusellers_bot</p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-success">✓</span> Мониторинг окон поставок 24/7</li>
+                    <li><span class="badge badge-success">✓</span> Мгновенные уведомления</li>
+                    <li><span class="badge badge-success">✓</span> Тихие часы (настройка времени)</li>
+                    <li><span class="badge badge-success">✓</span> Фильтры по типу поставки</li>
+                    <li><span class="badge badge-success">✓</span> История сигналов</li>
+                    <li><span class="badge badge-warning">⚠</span> НЕ автобронирует (только уведомляет)</li>
+                </ul>
+
+                <div class="alert alert-success">
+                    <strong>✓ Безопасность:</strong> Не нарушает правила маркетплейса, работает только как монитор. Низкий риск блокировки.
+                </div>
+
+                <h4>Цена:</h4>
+                <p>Промокод <strong>GURU</strong>: 5 дней бесплатно</p>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Низкий риск блокировки</li>
+                    <li>✅ Гибкие настройки уведомлений</li>
+                    <li>✅ История сигналов</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Требует ручного бронирования</li>
+                    <li>❌ Нужно быть онлайн</li>
+                    <li>❌ Нет работы с черновиками</li>
+                </ul>
+            </div>
+
+            <h3>5. APIMonster</h3>
+            <div class="card">
+                <div class="card-header">🏢 APIMonster</div>
+                <p><strong>Сайт:</strong> <a href="https://apimonster.ru/" target="_blank">apimonster.ru</a></p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-info">✓</span> No-code платформа для интеграций</li>
+                    <li><span class="badge badge-info">✓</span> Интеграция Ozon с Telegram Bot</li>
+                    <li><span class="badge badge-info">✓</span> Передача заказов в CRM и Google Sheets</li>
+                    <li><span class="badge badge-info">✓</span> Синхронизация статусов</li>
+                    <li><span class="badge badge-info">✓</span> Уведомления о новых заказах</li>
+                </ul>
+
+                <h4>Цена:</h4>
+                <div class="alert alert-info">
+                    <strong>Пробный период:</strong> 30 дней с полным функционалом<br>
+                    <strong>Базовый тариф:</strong> ~67 операций/месяц<br>
+                    <strong>Настройка:</strong> Бесплатно под ключ
+                </div>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ No-code решение (без программистов)</li>
+                    <li>✅ Широкие возможности интеграции</li>
+                    <li>✅ Длительный тестовый период</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Не специализируется на бронировании слотов</li>
+                    <li>❌ Больше для управления заказами</li>
+                </ul>
+            </div>
+
+            <h3>6. SelSup</h3>
+            <div class="card">
+                <div class="card-header">🏢 SelSup</div>
+                <p><strong>Сайт:</strong> <a href="https://selsup.ru/" target="_blank">selsup.ru</a></p>
+                <p><strong>API:</strong> <a href="https://api.selsup.ru/" target="_blank">api.selsup.ru</a></p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-info">✓</span> Telegram-бот для уведомлений о заказах</li>
+                    <li><span class="badge badge-info">✓</span> API для Ozon, WB, AliExpress, YM, SMM</li>
+                    <li><span class="badge badge-info">✓</span> Аналитика и управление продажами</li>
+                    <li><span class="badge badge-info">✓</span> Интеграция с техподдержкой</li>
+                </ul>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Мультиплатформенность (много маркетплейсов)</li>
+                    <li>✅ Полный API</li>
+                    <li>✅ Аналитика продаж</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Не специализируется на бронировании слотов</li>
+                    <li>❌ Фокус на управлении заказами</li>
+                </ul>
+            </div>
+
+            <h3>7. OzHelperBot</h3>
+            <div class="card">
+                <div class="card-header">🏢 OzHelperBot</div>
+                <p><strong>Telegram:</strong> @OzHelperBot</p>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-info">✓</span> Контроль цен на Ozon</li>
+                    <li><span class="badge badge-info">✓</span> Анализ текущих и минимальных цен</li>
+                    <li><span class="badge badge-info">✓</span> Уведомления при падении цены</li>
+                    <li><span class="badge badge-info">✓</span> Отчеты по заказам</li>
+                    <li><span class="badge badge-info">✓</span> Аналитика остатков</li>
+                    <li><span class="badge badge-success">✓</span> Read-only режим (безопасно)</li>
+                </ul>
+
+                <h4>Цена:</h4>
+                <div class="alert alert-success">
+                    <strong>Месяц:</strong> 500 Stars (~850 ₽)<br>
+                    <strong>Год:</strong> 5000 Stars (~8500 ₽)<br>
+                    <strong>Пробный период:</strong> 3 дня бесплатно
+                </div>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Прозрачное ценообразование</li>
+                    <li>✅ Низкая стоимость</li>
+                    <li>✅ Максимальная безопасность (read-only)</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Не работает со слотами</li>
+                    <li>❌ Фокус на ценах и аналитике</li>
+                </ul>
+            </div>
+
+            <h3>8. Официальный бот Ozon</h3>
+            <div class="card">
+                <div class="card-header">🏢 Официальный бот Ozon</div>
+
+                <h4>Функционал:</h4>
+                <ul>
+                    <li><span class="badge badge-info">✓</span> Показ загруженности складов</li>
+                    <li><span class="badge badge-info">✓</span> Детализация по дням</li>
+                    <li><span class="badge badge-info">✓</span> Проверка приема товаров</li>
+                </ul>
+
+                <h4>Плюсы:</h4>
+                <ul>
+                    <li>✅ Официальный и безопасный</li>
+                    <li>✅ Бесплатный</li>
+                </ul>
+
+                <h4>Минусы:</h4>
+                <ul>
+                    <li>❌ Только информационная функция</li>
+                    <li>❌ Нет автобронирования</li>
+                    <li>❌ Нет уведомлений о доступных слотах</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SERVICES COMPARISON -->
+        <div class="section" id="services-comparison">
+            <h1>📊 Сравнительный анализ</h1>
+
+            <h2>Таблица функций</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Функция</th>
+                        <th>MetricLab</th>
+                        <th>WBCON</th>
+                        <th>LimitBot</th>
+                        <th>GuruSeller</th>
+                        <th>APIMonster</th>
+                        <th>SelSup</th>
+                        <th>OzHelperBot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Мониторинг слотов</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Автобронирование</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Telegram уведомления</strong></td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Подключение через API</strong></td>
+                        <td>❓</td>
+                        <td>✅</td>
+                        <td>❓</td>
+                        <td>❓</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Несколько магазинов</strong></td>
+                        <td>❓</td>
+                        <td>✅ (до 10)</td>
+                        <td>❓</td>
+                        <td>❓</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>❓</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Работа с черновиками</strong></td>
+                        <td>❌</td>
+                        <td>❓</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Редактирование заявок</strong></td>
+                        <td>❌</td>
+                        <td>❓</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Загрузка Excel</strong></td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Аналитика</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                        <td>✅</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Контроль цен</strong></td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>❌</td>
+                        <td>✅</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Общие функции (есть у большинства)</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">Мониторинг слотов</div>
+                    <p>Постоянное отслеживание появления свободных таймслотов на складах Ozon</p>
+                    <p><strong>Сервисы:</strong> MetricLab, WBCON, LimitBot, GuruSeller</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">Telegram уведомления</div>
+                    <p>Мгновенная отправка информации пользователю о важных событиях</p>
+                    <p><strong>Сервисы:</strong> Все</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">Ozon API</div>
+                    <p>Официальная интеграция с маркетплейсом</p>
+                    <p><strong>Сервисы:</strong> WBCON, APIMonster, SelSup, OzHelperBot</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">Фильтрация складов</div>
+                    <p>Выбор конкретных складов для мониторинга</p>
+                    <p><strong>Сервисы:</strong> MetricLab, WBCON, LimitBot, GuruSeller</p>
+                </div>
+            </div>
+
+            <h2>Уникальные функции по сервисам</h2>
+
+            <div class="card">
+                <div class="card-header">🔹 MetricLab</div>
+                <ul>
+                    <li><strong>Индивидуальные мощности</strong> для каждого клиента (нет очередей)</li>
+                    <li>Работа <strong>без Premium+ подписки</strong></li>
+                    <li>Создание заявок для <strong>недоступных складов</strong></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔹 WBCON</div>
+                <ul>
+                    <li><strong>Загрузка данных из Excel</strong></li>
+                    <li><strong>До 10 магазинов</strong> с одного аккаунта</li>
+                    <li>Выбор <strong>типа поставки</strong> (кросс-докинг/напрямую)</li>
+                    <li><strong>Безлимитные поиски</strong> в рамках юр. лица</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔹 GuruSeller</div>
+                <ul>
+                    <li><strong>Тихие часы</strong> (настройка времени уведомлений)</li>
+                    <li><strong>История сигналов</strong></li>
+                    <li><strong>Фильтры по типу поставки</strong></li>
+                    <li>Только мониторинг (<strong>безопасно</strong>)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔹 APIMonster</div>
+                <ul>
+                    <li><strong>No-code платформа</strong> (не требует программистов)</li>
+                    <li><strong>Интеграция с CRM и Google Sheets</strong></li>
+                    <li><strong>Синхронизация статусов</strong></li>
+                    <li><strong>30 дней бесплатно</strong></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔹 SelSup</div>
+                <ul>
+                    <li><strong>Мультиплатформенность</strong> (5+ маркетплейсов)</li>
+                    <li><strong>Полноценная аналитика продаж</strong></li>
+                    <li><strong>Публичный API</strong> для разработчиков</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">🔹 OzHelperBot</div>
+                <ul>
+                    <li><strong>Автоматический контроль цен</strong></li>
+                    <li><strong>Read-only режим</strong> (безопасность)</li>
+                    <li>Очень <strong>низкая цена</strong> (~850₽/мес)</li>
+                </ul>
+            </div>
+
+            <h2>Отсутствующие функции (возможности для развития)</h2>
+
+            <div class="alert alert-info">
+                <strong>💡 Ключевой вывод:</strong> Ни один из найденных сервисов не предлагает следующие функции, что открывает возможности для создания конкурентного продукта
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Функция</th>
+                        <th>Описание</th>
+                        <th>Потенциал</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Создание черновиков</strong></td>
+                        <td>Автоматизация создания черновиков через бот</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Редактирование заявок</strong></td>
+                        <td>Изменение состава поставки через бота</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td><strong>Умное перебронирование</strong></td>
+                        <td>Поиск более выгодных условий автоматически</td>
+                        <td><span class="badge badge-info">Средний</span></td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td><strong>Аналитика загруженности</strong></td>
+                        <td>Прогноз оптимального времени поставок</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td><strong>Групповое управление</strong></td>
+                        <td>Бронирование для нескольких магазинов сразу</td>
+                        <td><span class="badge badge-info">Средний</span></td>
+                    </tr>
+                    <tr>
+                        <td>6</td>
+                        <td><strong>Интеграция с 1С/ERP</strong></td>
+                        <td>Синхронизация с учетными системами</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td><strong>Калькулятор стоимости</strong></td>
+                        <td>Расчет оптимальности поставки</td>
+                        <td><span class="badge badge-info">Средний</span></td>
+                    </tr>
+                    <tr>
+                        <td>8</td>
+                        <td><strong>Планировщик поставок</strong></td>
+                        <td>График на основе остатков и прогноза продаж</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                    <tr>
+                        <td>9</td>
+                        <td><strong>Webhook уведомления</strong></td>
+                        <td>Интеграция со сторонними системами</td>
+                        <td><span class="badge badge-info">Средний</span></td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td><strong>Мобильное приложение</strong></td>
+                        <td>Нативное приложение iOS/Android</td>
+                        <td><span class="badge badge-success">Высокий</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TECH STACK -->
+        <div class="section" id="tech-stack">
+            <h1>🛠 Рекомендуемый технологический стек</h1>
+
+            <h2>Backend</h2>
+
+            <h3>Python 3.11+ как основной язык</h3>
+            <div class="card">
+                <h4>Преимущества:</h4>
+                <ul>
+                    <li>✅ Отличная поддержка асинхронности (asyncio)</li>
+                    <li>✅ Богатая экосистема для работы с API</li>
+                    <li>✅ Множество библиотек для Telegram (aiogram 3.x)</li>
+                    <li>✅ Простота разработки и поддержки</li>
+                    <li>✅ Хорошая производительность для мониторинга</li>
+                </ul>
+                <h4>Альтернативы:</h4>
+                <ul>
+                    <li>Node.js (для JS-команды)</li>
+                    <li>Go (для максимальной производительности)</li>
+                </ul>
+            </div>
+
+            <h3>Основные компоненты</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Компонент</th>
+                        <th>Технология</th>
+                        <th>Назначение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Bot Framework</strong></td>
+                        <td>Aiogram 3.x</td>
+                        <td>Telegram бот с FSM, middleware, фильтрами</td>
+                    </tr>
+                    <tr>
+                        <td><strong>База данных</strong></td>
+                        <td>PostgreSQL 15+</td>
+                        <td>Основное хранилище, JSONB для гибкости</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Кеш</strong></td>
+                        <td>Redis</td>
+                        <td>Кеш API, очереди, rate limiting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Task Queue</strong></td>
+                        <td>Celery + Redis</td>
+                        <td>Асинхронная обработка, периодические задачи</td>
+                    </tr>
+                    <tr>
+                        <td><strong>HTTP Client</strong></td>
+                        <td>httpx / aiohttp</td>
+                        <td>Асинхронные запросы к Ozon API</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ORM</strong></td>
+                        <td>SQLAlchemy 2.0</td>
+                        <td>Работа с БД, миграции через Alembic</td>
+                    </tr>
+                    <tr>
+                        <td><strong>API Server</strong></td>
+                        <td>FastAPI</td>
+                        <td>REST API для админки и интеграций</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Frontend (Admin Panel)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Компонент</th>
+                        <th>Технология</th>
+                        <th>Назначение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Framework</strong></td>
+                        <td>Next.js 14+ (React)</td>
+                        <td>SSR, API routes, отличная производительность</td>
+                    </tr>
+                    <tr>
+                        <td><strong>UI Kit</strong></td>
+                        <td>shadcn/ui + Tailwind</td>
+                        <td>Современный дизайн, кастомизация</td>
+                    </tr>
+                    <tr>
+                        <td><strong>State Management</strong></td>
+                        <td>Zustand / Tanstack Query</td>
+                        <td>Управление состоянием, кеширование</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Language</strong></td>
+                        <td>TypeScript</td>
+                        <td>Type safety, лучший DX</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Infrastructure</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Компонент</th>
+                        <th>Технология</th>
+                        <th>Назначение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Containerization</strong></td>
+                        <td>Docker + Docker Compose</td>
+                        <td>Изолированное окружение, легкий деплой</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reverse Proxy</strong></td>
+                        <td>Nginx</td>
+                        <td>SSL termination, load balancing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Monitoring</strong></td>
+                        <td>Prometheus + Grafana</td>
+                        <td>Метрики, алерты, дашборды</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error Tracking</strong></td>
+                        <td>Sentry</td>
+                        <td>Отслеживание ошибок</td>
+                    </tr>
+                    <tr>
+                        <td><strong>CI/CD</strong></td>
+                        <td>GitHub Actions</td>
+                        <td>Автоматизация тестов и деплоя</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Tech Stack для MVP</h2>
+            <pre><code>Backend:
+- Python 3.11+
+- Aiogram 3.x
+- FastAPI (для админ API)
+- PostgreSQL 15
+- Redis
+- Celery
+- SQLAlchemy 2.0
+
+Frontend (опционально):
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+
+Infrastructure:
+- Docker + Docker Compose
+- Nginx
+- GitHub Actions
+
+Monitoring:
+- Sentry (errors)
+- Simple logging</code></pre>
+
+            <h2>Стоимость инфраструктуры для MVP</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Компонент</th>
+                        <th>Стоимость</th>
+                        <th>Провайдер</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>VPS (2-4 CPU, 4-8GB RAM)</td>
+                        <td>5-10€/месяц</td>
+                        <td>Hetzner / DigitalOcean</td>
+                    </tr>
+                    <tr>
+                        <td>Домен</td>
+                        <td>10€/год</td>
+                        <td>Любой регистратор</td>
+                    </tr>
+                    <tr>
+                        <td>SSL сертификат</td>
+                        <td>Бесплатно</td>
+                        <td>Let's Encrypt</td>
+                    </tr>
+                    <tr>
+                        <td>Мониторинг</td>
+                        <td>Бесплатно</td>
+                        <td>Sentry Free Tier</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ИТОГО</strong></td>
+                        <td><strong>~100€ на 3 месяца</strong></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ARCHITECTURE -->
+        <div class="section" id="architecture">
+            <h1>🏗 Архитектура системы</h1>
+
+            <h2>Общая архитектура</h2>
+            <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────┐
+│                         USER LAYER                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   Telegram   │  │  Web Admin   │  │  Mobile App  │         │
+│  │     Bot      │  │   Panel      │  │  (Future)    │         │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘         │
+└─────────┼──────────────────┼──────────────────┼────────────────┘
+          │                  │                  │
+┌─────────┼──────────────────┼──────────────────┼────────────────┐
+│         │      APPLICATION LAYER              │                │
+│  ┌──────▼───────┐  ┌──────▼───────┐  ┌───────▼──────┐         │
+│  │   Bot        │  │   FastAPI    │  │   GraphQL    │         │
+│  │   Server     │◄─┤   REST API   │◄─┤   Gateway    │         │
+│  │  (Aiogram)   │  │              │  │   (Future)   │         │
+│  └──────┬───────┘  └──────┬───────┘  └──────────────┘         │
+│         │                  │                                    │
+│  ┌─────────────────▼────────────────────────────────┐          │
+│  │          Business Logic Layer                    │          │
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────┐│          │
+│  │  │   Slot       │ │  User        │ │ Payment  ││          │
+│  │  │   Monitor    │ │  Service     │ │ Service  ││          │
+│  │  └──────────────┘ └──────────────┘ └──────────┘│          │
+│  └───────────────────────────────────────────────────┘         │
+└─────────────────────────────────┬──────────────────────────────┘
+                                  │
+┌─────────────────────────────────▼──────────────────────────────┐
+│                      TASK QUEUE LAYER                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   Celery     │  │   Celery     │  │    Redis     │         │
+│  │   Worker 1   │  │   Worker N   │  │    Broker    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────┬──────────────────────────────┘
+                                  │
+┌─────────────────────────────────▼──────────────────────────────┐
+│                      DATA LAYER                                │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │  PostgreSQL  │  │    Redis     │  │   S3/Minio   │         │
+│  │  (Main DB)   │  │    Cache     │  │  (Files)     │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└─────────────────────────────────┬──────────────────────────────┘
+                                  │
+┌─────────────────────────────────▼──────────────────────────────┐
+│                   EXTERNAL SERVICES                            │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐         │
+│  │   Ozon API   │  │  Telegram    │  │   Sentry     │         │
+│  │   Seller     │  │     API      │  │  (Errors)    │         │
+│  └──────────────┘  └──────────────┘  └──────────────┘         │
+└────────────────────────────────────────────────────────────────┘
+            </div>
+
+            <h2>Поток данных: Мониторинг слотов</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>1. Scheduler (Celery Beat)</h4>
+                    <p>Каждую минуту запускает задачу проверки слотов</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>2. Celery Worker</h4>
+                    <p>Получает список активных пользователей из PostgreSQL</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>3. Для каждого пользователя</h4>
+                    <p>Запрашивает доступные слоты через Ozon API</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>4. Сравнение с кешем</h4>
+                    <p>Проверяет Redis cache на наличие новых слотов</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>5. При нахождении новых слотов</h4>
+                    <p>Сохраняет в PostgreSQL и ставит в очередь уведомление</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>6. Notification Worker</h4>
+                    <p>Отправляет уведомление через Telegram API</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATABASE -->
+        <div class="section" id="database">
+            <h1>🗄 Схема базы данных</h1>
+
+            <h2>PostgreSQL Tables</h2>
+
+            <h3>users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Поле</th>
+                        <th>Тип</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>BIGSERIAL PK</td>
+                        <td>Уникальный ID</td>
+                    </tr>
+                    <tr>
+                        <td>telegram_id</td>
+                        <td>BIGINT UNIQUE</td>
+                        <td>ID пользователя в Telegram</td>
+                    </tr>
+                    <tr>
+                        <td>ozon_client_id</td>
+                        <td>VARCHAR(255)</td>
+                        <td>Client ID от Ozon</td>
+                    </tr>
+                    <tr>
+                        <td>ozon_api_key</td>
+                        <td>TEXT</td>
+                        <td>Зашифрованный API ключ</td>
+                    </tr>
+                    <tr>
+                        <td>subscription_status</td>
+                        <td>VARCHAR(50)</td>
+                        <td>trial, active, expired</td>
+                    </tr>
+                    <tr>
+                        <td>preferences</td>
+                        <td>JSONB</td>
+                        <td>Настройки пользователя</td>
+                    </tr>
+                    <tr>
+                        <td>created_at</td>
+                        <td>TIMESTAMP</td>
+                        <td>Дата регистрации</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>slots</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Поле</th>
+                        <th>Тип</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>BIGSERIAL PK</td>
+                        <td>Уникальный ID</td>
+                    </tr>
+                    <tr>
+                        <td>user_id</td>
+                        <td>BIGINT FK</td>
+                        <td>Ссылка на пользователя</td>
+                    </tr>
+                    <tr>
+                        <td>warehouse_id</td>
+                        <td>BIGINT</td>
+                        <td>ID склада</td>
+                    </tr>
+                    <tr>
+                        <td>slot_datetime</td>
+                        <td>TIMESTAMP</td>
+                        <td>Дата и время слота</td>
+                    </tr>
+                    <tr>
+                        <td>delivery_type</td>
+                        <td>VARCHAR(50)</td>
+                        <td>FBO, FBS, etc</td>
+                    </tr>
+                    <tr>
+                        <td>found_at</td>
+                        <td>TIMESTAMP</td>
+                        <td>Когда найден</td>
+                    </tr>
+                    <tr>
+                        <td>notified_at</td>
+                        <td>TIMESTAMP</td>
+                        <td>Когда отправлено уведомление</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>subscriptions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Поле</th>
+                        <th>Тип</th>
+                        <th>Описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>BIGSERIAL PK</td>
+                        <td>Уникальный ID</td>
+                    </tr>
+                    <tr>
+                        <td>user_id</td>
+                        <td>BIGINT FK</td>
+                        <td>Ссылка на пользователя</td>
+                    </tr>
+                    <tr>
+                        <td>plan</td>
+                        <td>VARCHAR(50)</td>
+                        <td>free, standard, pro, business</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>VARCHAR(50)</td>
+                        <td>pending, active, expired</td>
+                    </tr>
+                    <tr>
+                        <td>started_at</td>
+                        <td>TIMESTAMP</td>
+                        <td>Начало подписки</td>
+                    </tr>
+                    <tr>
+                        <td>expires_at</td>
+                        <td>TIMESTAMP</td>
+                        <td>Окончание подписки</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Redis Schema</h2>
+            <pre><code># User slot cache (TTL: 5 minutes)
+slots:{user_id} → JSON array
+
+# FSM states
+fsm:{telegram_id}:state → state name
+fsm:{telegram_id}:data → JSON data
+
+# Rate limiting
+rate_limit:api:{api_key}:{minute} → count (TTL: 60s)
+rate_limit:ozon:{user_id}:{minute} → count (TTL: 60s)
+
+# Ozon API cache (TTL: 10 minutes)
+ozon:warehouses → JSON array
+ozon:user:{user_id}:profile → JSON
+
+# Task locks
+lock:monitor:{user_id} → lock flag
+
+# Analytics counters
+stats:daily:{date}:new_users → counter
+stats:daily:{date}:notifications_sent → counter</code></pre>
+        </div>
+
+        <!-- API SPEC -->
+        <div class="section" id="api-spec">
+            <h1>📡 API Спецификация</h1>
+
+            <div class="alert alert-info">
+                <strong>Base URL:</strong> https://api.ozonslotbot.com/v1<br>
+                <strong>Authentication:</strong> Bearer Token (JWT) или X-API-Key header
+            </div>
+
+            <h2>Users API</h2>
+
+            <h3>GET /users/me</h3>
+            <p>Получить информацию о текущем пользователе</p>
+
+            <h4>Response 200:</h4>
+            <pre><code>{
+  "id": 123,
+  "telegram_id": 987654321,
+  "username": "john_doe",
+  "subscription": {
+    "status": "active",
+    "plan": "standard",
+    "expires_at": "2025-12-31T23:59:59Z"
+  },
+  "preferences": {
+    "warehouses": [123, 456],
+    "delivery_types": ["FBO"],
+    "quiet_hours": {
+      "enabled": true,
+      "start": "22:00",
+      "end": "08:00"
+    }
+  },
+  "stats": {
+    "total_notifications": 150,
+    "total_slots_found": 45
+  }
+}</code></pre>
+
+            <h3>PATCH /users/me</h3>
+            <p>Обновить настройки пользователя</p>
+
+            <h4>Request:</h4>
+            <pre><code>{
+  "preferences": {
+    "warehouses": [123, 456, 789],
+    "quiet_hours": {
+      "enabled": true,
+      "start": "23:00",
+      "end": "09:00"
+    }
+  }
+}</code></pre>
+
+            <h2>Slots API</h2>
+
+            <h3>GET /slots</h3>
+            <p>Получить историю найденных слотов</p>
+
+            <h4>Query Parameters:</h4>
+            <ul>
+                <li><code>limit</code> (int, default: 50)</li>
+                <li><code>offset</code> (int, default: 0)</li>
+                <li><code>warehouse_id</code> (int, optional)</li>
+                <li><code>from_date</code> (datetime, optional)</li>
+                <li><code>to_date</code> (datetime, optional)</li>
+            </ul>
+
+            <h4>Response 200:</h4>
+            <pre><code>{
+  "total": 150,
+  "items": [
+    {
+      "id": 1001,
+      "warehouse": {
+        "id": 123,
+        "name": "Москва (Южное Бутово)"
+      },
+      "delivery_type": "FBO",
+      "slot_datetime": "2025-11-15T14:00:00Z",
+      "found_at": "2025-11-10T10:30:00Z",
+      "clicked": true
+    }
+  ]
+}</code></pre>
+
+            <h3>GET /slots/stats</h3>
+            <p>Получить статистику по слотам</p>
+
+            <h4>Response 200:</h4>
+            <pre><code>{
+  "period": "week",
+  "total_slots_found": 45,
+  "by_warehouse": [
+    {
+      "warehouse_id": 123,
+      "warehouse_name": "Москва (Южное Бутово)",
+      "count": 25
+    }
+  ],
+  "by_day": [
+    {"date": "2025-11-04", "count": 8},
+    {"date": "2025-11-05", "count": 12}
+  ]
+}</code></pre>
+
+            <h2>Webhooks API</h2>
+
+            <h3>POST /webhooks</h3>
+            <p>Создать webhook подписку</p>
+
+            <h4>Request:</h4>
+            <pre><code>{
+  "url": "https://your-app.com/webhooks/ozon-slots",
+  "secret": "your-secret-key",
+  "events": ["slot.found", "subscription.expired"]
+}</code></pre>
+
+            <h4>Response 201:</h4>
+            <pre><code>{
+  "id": 789,
+  "url": "https://your-app.com/webhooks/ozon-slots",
+  "events": ["slot.found", "subscription.expired"],
+  "is_active": true
+}</code></pre>
+
+            <h2>Webhook Events</h2>
+
+            <h3>Event: slot.found</h3>
+            <pre><code>{
+  "event": "slot.found",
+  "timestamp": "2025-11-10T10:30:00Z",
+  "data": {
+    "user_id": 123,
+    "slot": {
+      "warehouse": {
+        "id": 123,
+        "name": "Москва"
+      },
+      "slot_datetime": "2025-11-15T14:00:00Z"
+    }
+  }
+}</code></pre>
+
+            <h2>Error Codes</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>HTTP Status</th>
+                        <th>Error Code</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>400</td>
+                        <td>INVALID_REQUEST</td>
+                        <td>Неверный формат запроса</td>
+                    </tr>
+                    <tr>
+                        <td>401</td>
+                        <td>UNAUTHORIZED</td>
+                        <td>Отсутствует аутентификация</td>
+                    </tr>
+                    <tr>
+                        <td>403</td>
+                        <td>FORBIDDEN</td>
+                        <td>Недостаточно прав</td>
+                    </tr>
+                    <tr>
+                        <td>404</td>
+                        <td>NOT_FOUND</td>
+                        <td>Ресурс не найден</td>
+                    </tr>
+                    <tr>
+                        <td>429</td>
+                        <td>RATE_LIMIT_EXCEEDED</td>
+                        <td>Превышен лимит запросов</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>INTERNAL_ERROR</td>
+                        <td>Внутренняя ошибка сервера</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ROADMAP -->
+        <div class="section" id="roadmap">
+            <h1>🗺 Roadmap разработки</h1>
+
+            <h2>Sprint 1: Фундамент (2 недели)</h2>
+            <div class="card">
+                <div class="card-header">Week 1: Infrastructure & Database</div>
+                <ul>
+                    <li>☐ <strong>INFRA-001:</strong> Настроить Docker Compose (PostgreSQL, Redis, PgAdmin)</li>
+                    <li>☐ <strong>INFRA-002:</strong> Создать структуру проекта (monorepo)</li>
+                    <li>☐ <strong>INFRA-003:</strong> Настроить pre-commit hooks (black, flake8, mypy)</li>
+                    <li>☐ <strong>INFRA-004:</strong> CI/CD pipeline (GitHub Actions)</li>
+                    <li>☐ <strong>DB-001:</strong> Создать PostgreSQL схему</li>
+                    <li>☐ <strong>DB-002:</strong> Настроить Alembic для миграций</li>
+                    <li>☐ <strong>DB-003:</strong> SQLAlchemy модели</li>
+                    <li>☐ <strong>OZON-001:</strong> Ozon API client с rate limiting</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Week 2: Telegram Bot Core</div>
+                <ul>
+                    <li>☐ <strong>BOT-001:</strong> Инициализация Aiogram 3.x</li>
+                    <li>☐ <strong>BOT-002:</strong> Структура handlers</li>
+                    <li>☐ <strong>BOT-003:</strong> Команды /start, /help, /status</li>
+                    <li>☐ <strong>BOT-004:</strong> Middleware (logging, auth, throttling)</li>
+                    <li>☐ <strong>BOT-006:</strong> FSM для регистрации</li>
+                    <li>☐ <strong>BOT-007:</strong> Handler регистрации с валидацией</li>
+                    <li>☐ <strong>BOT-010:</strong> Меню настроек (склады, тихие часы)</li>
+                </ul>
+            </div>
+
+            <h2>Sprint 2: Мониторинг и уведомления (2 недели)</h2>
+            <div class="card">
+                <div class="card-header">Week 3: Slot Monitoring</div>
+                <ul>
+                    <li>☐ <strong>SVC-001:</strong> SlotMonitorService</li>
+                    <li>☐ <strong>SVC-002:</strong> NotificationService</li>
+                    <li>☐ <strong>WORKER-001:</strong> Настроить Celery + Redis</li>
+                    <li>☐ <strong>WORKER-002:</strong> Задача мониторинга (каждую минуту)</li>
+                    <li>☐ <strong>WORKER-003:</strong> Задача уведомлений</li>
+                    <li>☐ <strong>BOT-014:</strong> Форматирование сообщений о слотах</li>
+                    <li>☐ <strong>BOT-015:</strong> Inline клавиатура для слотов</li>
+                </ul>
+            </div>
+
+            <h2>Sprint 3: Подписки и платежи (1.5 недели)</h2>
+            <div class="card">
+                <div class="card-header">Week 4-5: Payment System</div>
+                <ul>
+                    <li>☐ <strong>SUB-001:</strong> SubscriptionService</li>
+                    <li>☐ <strong>SUB-002:</strong> Middleware проверки подписки</li>
+                    <li>☐ <strong>PAY-001:</strong> Telegram Payments API интеграция</li>
+                    <li>☐ <strong>PAY-002:</strong> Процесс покупки в боте</li>
+                    <li>☐ <strong>SUB-004:</strong> Celery задача проверки истекших подписок</li>
+                    <li>☐ <strong>DEPLOY-001:</strong> Подготовка к деплою</li>
+                    <li>☐ <strong>DEPLOY-002:</strong> Деплой на VPS</li>
+                </ul>
+            </div>
+
+            <h2>Метрики успеха</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">MVP (3 месяца)</div>
+                    <ul>
+                        <li>100+ активных пользователей</li>
+                        <li>70%+ retention</li>
+                        <li>20%+ конверсия в платную подписку</li>
+                        <li>NPS > 40</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">6 месяцев</div>
+                    <ul>
+                        <li>500+ платящих пользователей</li>
+                        <li>Выход в прибыль</li>
+                        <li>LTV > 5000₽</li>
+                        <li>CAC < 1000₽</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <div class="card-header">Через год</div>
+                    <ul>
+                        <li>2000+ платящих пользователей</li>
+                        <li>2+ маркетплейса</li>
+                        <li>Команда 3-5 человек</li>
+                        <li>Масштабируемая инфраструктура</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- MVP -->
+        <div class="section" id="mvp">
+            <h1>🚀 План MVP</h1>
+
+            <div class="alert alert-success">
+                <strong>Срок разработки:</strong> 4-6 недель<br>
+                <strong>Стоимость инфраструктуры:</strong> ~100€ на 3 месяца<br>
+                <strong>Подход:</strong> Бот-монитор БЕЗ автобронирования (безопасно)
+            </div>
+
+            <h2>Почему без автобронирования?</h2>
+            <ul>
+                <li>✅ Безопасно - не нарушает правила маркетплейса</li>
+                <li>✅ Низкий риск блокировки пользователей</li>
+                <li>✅ Проще разработка и тестирование</li>
+                <li>✅ Меньше юридических рисков</li>
+                <li>✅ Быстрее выход на рынок</li>
+            </ul>
+
+            <h2>Функционал MVP</h2>
+
+            <h3>1. Регистрация и настройка (Неделя 1)</h3>
+            <ul>
+                <li>Регистрация через Telegram бота</li>
+                <li>Подключение магазина Ozon (Client-ID, API-Key)</li>
+                <li>Валидация API ключей</li>
+                <li>Хранение настроек пользователя</li>
+            </ul>
+
+            <h3>2. Мониторинг слотов (Неделя 2-3)</h3>
+            <ul>
+                <li>Проверка доступных слотов каждую 1-5 минут</li>
+                <li>Выбор складов для мониторинга</li>
+                <li>Фильтрация по типу поставки (FBO)</li>
+                <li>Отображение деталей найденных слотов</li>
+            </ul>
+
+            <h3>3. Уведомления (Неделя 3)</h3>
+            <ul>
+                <li>Мгновенные push-уведомления в Telegram</li>
+                <li>Настройка "тихих часов"</li>
+                <li>Кнопка "Забронировать на Ozon" (deep link)</li>
+            </ul>
+
+            <h3>4. Базовая аналитика (Неделя 4)</h3>
+            <ul>
+                <li>История найденных слотов</li>
+                <li>Статистика по складам</li>
+                <li>Команда /stats</li>
+            </ul>
+
+            <h3>5. Подписка (Неделя 4-5)</h3>
+            <ul>
+                <li>Telegram Stars для оплаты</li>
+                <li>Бесплатный пробный период 7 дней</li>
+                <li>Подписка: 500-700 Stars/месяц (~900₽)</li>
+            </ul>
+
+            <h2>Тарифные планы</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>План</th>
+                        <th>Цена</th>
+                        <th>Функции</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Старт (Trial)</strong></td>
+                        <td>Бесплатно 7 дней</td>
+                        <td>1 магазин, 2 склада, проверка каждые 5 минут</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Стандарт</strong></td>
+                        <td>500 Stars/мес (~850₽)</td>
+                        <td>1 магазин, все склады, проверка каждую минуту, тихие часы, история 30 дней</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Про</strong></td>
+                        <td>1000 Stars/мес (~1700₽)</td>
+                        <td>5 магазинов, аналитика, экспорт, веб-интерфейс, история 90 дней</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Бизнес</strong></td>
+                        <td>2500 Stars/мес (~4250₽)</td>
+                        <td>20 магазинов, черновики, автобронирование*, API, webhooks</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><em>* Автобронирование добавляется на этапе 3 разработки (опционально)</em></p>
+
+            <h2>Ключевой фокус</h2>
+            <blockquote>
+                Не просто "бот для слотов", а <strong>комплексное решение для оптимизации логистики</strong> на маркетплейсах с постепенным добавлением функций на основе обратной связи пользователей.
+            </blockquote>
+        </div>
+    </div>
+
+    <footer>
+        <p><strong>Ozon Slot Bot</strong> - Техническая документация проекта</p>
+        <p>Создано: Ноябрь 2025</p>
+    </footer>
+</body>
+</html>
