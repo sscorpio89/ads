@@ -202,8 +202,8 @@
 
 ---
 
-### 8. **STPulse (@stpulse_ozon)**
-**Telegram:** @stpulse_ozon, @stpulsehelper
+### 8. **STPulse**
+**Telegram:** https://t.me/STPulse_slot_bot, @stpulsehelper
 
 #### Функционал:
 - ✅ Автоматизация и оцифровка бизнеса на Ozon
